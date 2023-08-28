@@ -1,13 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Header from './components/Header';
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import Carte from './pages/Carte';
+import ObjectDetail from './pages/ObjectDetail';
+import Order from './pages/Order';
+import Panier from './pages/Panier';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   return (
-    <View>
-      <Header></Header>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen name="Carte"component={Carte}/>
+            <Stack.Screen name="ObjectDetail" component={ObjectDetail} />
+            <Stack.Screen name="Order" component={Order} />
+            <Stack.Screen name="Panier" component={Panier} />
+        </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
+
+export default App;
