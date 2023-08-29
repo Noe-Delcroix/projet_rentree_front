@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ImageBackground, Text } from 'react-native';
+import { View, StyleSheet, ImageBackground, Text, TouchableOpacity } from 'react-native';
 import { Svg, Rect } from 'react-native-svg';
 
-const TextForImage = () => {
+const TextForImage = ({navigation}) => {
   const [titleText, setTitleText] = useState("$Title");
   const bodyText = '$Description';
 
   const onPressTitle = () => {
-    setTitleText("Renvoi");
+    navigation.navigate('ObjectDetail');
   };
 
   return (
     <View style={styles.textContainer}>
       <Text style={styles.baseText}>
-        <Text style={styles.titleText} onPress={onPressTitle}>
+      <TouchableOpacity onPress={onPressTitle}>
+        <Text style={styles.titleText}>
           {titleText}
         </Text>
+        </TouchableOpacity>
         <Text numberOfLines={5}>{bodyText}</Text>
       </Text>
     </View>
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
   },
   baseText: {
     fontFamily: 'Cochin',
-    color: 'pink',
+    color: 'black',
   },
   titleText: {
     fontSize: 20,
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Product() {
+export default function Product({title, image, description, allergenes, navigation}) {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -58,7 +60,7 @@ export default function Product() {
         <Svg width="100" height="150">
         </Svg>
       </ImageBackground>
-      <TextForImage />
+      <TextForImage navigation={navigation}/>
     </View>
   );
 }

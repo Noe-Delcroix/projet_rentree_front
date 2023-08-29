@@ -8,18 +8,12 @@ export default function Carte({ navigation }) {
         <View>
             <Text>Carte</Text>
             <Button
-                title="look the product detail"
-                onPress={() =>
-                    navigation.navigate('ObjectDetail')
-                }
-            />
-            <Button
                 title="Panier"
                 onPress={() =>
                     navigation.navigate('Panier')
                 }
             />
-            <Product></Product>
+            <Product navigation={navigation}></Product>
         </View>
     );
 }
