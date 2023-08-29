@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
+import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import Product from '../components/Product';
 
 export default function Carte({ navigation }) {
     return (
@@ -17,6 +19,7 @@ export default function Carte({ navigation }) {
                     navigation.navigate('Panier')
                 }
             />
+            <Product></Product>
         </View>
     );
 }
