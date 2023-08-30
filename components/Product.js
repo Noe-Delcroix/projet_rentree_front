@@ -47,7 +47,13 @@ const styles = StyleSheet.create({
 
 export default function Product({title, image, price, description, allergenes, navigation}) {
   const onPressCard = ()=> {
-    navigation.navigate('ObjectDetail');
+    navigation.navigate('ObjectDetail',
+    {
+      title: title,
+      image: image,
+      description: description,
+      allergenes: allergenes
+    });
   };
 
   const windowWidth = Dimensions.get('window').width;

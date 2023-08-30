@@ -1,12 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import Product from '../components/Product';
+import { Image } from 'react-native-web';
 
-export default function ObjectDetail({ navigation }) {
+const styles = StyleSheet.create({
+    container: {
+        paddingTop: 50,
+    },
+    fullwidthImage: {
+        width: '100%', // Utilisez '100%' pour occuper toute la largeur de l'écran
+        aspectRatio: 1,
+    },
+});
+
+export default function ObjectDetail({ route, navigation }) {
+    const { title, image, description, allergenes } = route.params;
+    
     return (
         <View>
-            <Text>ObjectDetail</Text>
-            <Product title={"oui"} description={"Une description super longue pour tester le saut de ligne ( c'est important pour éviter d'avoir trop de ligne apparante)"}></Product>
+            <Image
+                style={styles.fullwidthImage}
+                source={{
+                    uri: image,
+                }}
+            />
+            <Text>{title}</Text>
+            <Text>{description}</Text>
+            <Text>{allergenes}</Text>
         </View>
     );
 }
