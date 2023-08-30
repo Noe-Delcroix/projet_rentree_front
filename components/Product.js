@@ -31,15 +31,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 0,
   },
+  imageContainer: {
+    alignItems: 'center', // Center horizontally
+  },
   Image: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
     },
+  descriptionText: {
+    fontSize: 13,
+  },
+  descriptionContainer:{
+    flex: 1, 
+    marginLeft: 10, 
+    justifyContent: 'center', 
+  },
   checkboxContainer: {
-    flexDirection: 'row',
+    justifyContent: 'center',
   },
   checkbox: {
-    alignSelf: 'right',
+    alignSelf: 'flex-end',
   },
 });
 
@@ -59,52 +70,39 @@ export default function Product({title, image, price, description, allergenes, n
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [isSelected, setSelection] = useState(false);
-if(windowHeight>windowWidth){
+  const isPortrait = windowHeight > windowWidth;
+
   return (
-    <View style={styles.containerVer}>
-        <Card>
+    <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
+      <Card>
         <TouchableOpacity onPress={onPressCard}>
+          <View style={styles.imageContainer}>
           <Card.Image
-            style={{ padding: 0, width: '100%', height: 70 }}
-            source={{ uri: "https://static.cotemaison.fr/medias_10824/w_2048,h_1146,c_crop,x_0,y_184/w_960,h_540,c_fill,g_north/v1456392403/10-conseils-pour-rendre-votre-chien-heureux_5542245.jpg" }}
+            style={{ 
+              padding: 0, 
+              width: isPortrait ? 100 : 200, 
+              height: isPortrait ? 100 : 200, 
+            }}
+            source={{ uri: image }}
           />
+          </View>
           <Card.Title style={styles.titleText}>{title}</Card.Title>
-          </TouchableOpacity>
-          <Text  style={{textAlign: 'right', alignItems: "flex-start", fontSize: 13 }}>{price}€</Text>
-          <Text numberOfLines={3} style={{ width: 100, fontSize: 13 }}>{description}</Text>
+        </TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
+            <Text numberOfLines={isPortrait ? 3 : 4} style={styles.descriptionText}>
+              {description}
+            </Text>
+          </View>
           <View style={styles.checkboxContainer}>
-          <CheckBox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={styles.checkbox}
-        />
+            <CheckBox
+              value={isSelected}
+              onValueChange={setSelection}
+              style={styles.checkbox}
+            />
+          </View>
         </View>
-        </Card>
-        <Text>{windowHeight} * {windowWidth}</Text>
+      </Card>
     </View>
   );
-}else{
-  return (
-    <View style={styles.containerHor}>
-        <Card>
-        <TouchableOpacity onPress={onPressCard}>
-          <Card.Image
-            style={{ padding: 0, width: '100%', height: 70 }}
-            source={{ uri: "https://static.cotemaison.fr/medias_10824/w_2048,h_1146,c_crop,x_0,y_184/w_960,h_540,c_fill,g_north/v1456392403/10-conseils-pour-rendre-votre-chien-heureux_5542245.jpg" }}
-          />
-          <Card.Title style={styles.titleText}>{title}</Card.Title>
-          </TouchableOpacity>
-          <Text style={{ fontSize: 13 }}>{description}</Text>
-          <View style={styles.checkboxContainer}>
-          <CheckBox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={styles.checkbox}
-        />
-        </View>
-        </Card>
-        <Text>{windowHeight} * {windowWidth}</Text>
-    </View>
-  );
-}
 }

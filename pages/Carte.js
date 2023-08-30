@@ -20,7 +20,7 @@ export default function Carte({ navigation }) {
         const dishesTest = [
             {
                 title: "Pizza",
-                image: 'https://www.google.com/search?sca_esv=561284976&sxsrf=AB5stBiYjztn8Q7j12qmoCGDoA_nOb5-pA:1693394459016&q=pizza&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiXzcb5oYSBAxWFQkEAHWjPA38Q0pQJegQIDhAB&biw=1482&bih=754&dpr=1.25#imgrc=-Me1Spx03VgNoM',
+                image: 'https://images.ctfassets.net/nw5k25xfqsik/64VwvKFqxMWQORE10Tn8pY/200c0538099dc4d1cf62fd07ce59c2af/20220211142754-margherita-9920.jpg?w=1024',
                 description: "c'est une pizza lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
                 allergenes: "tomates, fruit, légumes",
                 price: 10
