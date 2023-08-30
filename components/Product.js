@@ -43,7 +43,13 @@ const styles = StyleSheet.create({
 
 export default function Product({title, image, description, allergenes, navigation}) {
   const onPressCard = ()=> {
-    navigation.navigate('ObjectDetail');
+    navigation.navigate('ObjectDetail',
+    {
+      title: title,
+      image: image,
+      description: description,
+      allergenes: allergenes
+    });
   };
 
   const [isSelected, setSelection] = useState(false);
