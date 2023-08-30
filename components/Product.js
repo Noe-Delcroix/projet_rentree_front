@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: '45%',
+    width: '50%',
     height: 200,
     alignItems: 'center',
     justifyContent: 'center',
@@ -80,14 +80,15 @@ export default function Product({title, image, price, description, allergenes, n
           <Card.Image
             style={{ 
               padding: 0, 
-              width: isPortrait ? 100 : 200, 
-              height: isPortrait ? 100 : 200, 
+              width: isPortrait ? windowWidth/3 : windowWidth/4, 
+              height: isPortrait ? windowHeight/6 : windowHeight/6, 
             }}
             source={{ uri: image }}
           />
           </View>
           <Card.Title style={styles.titleText}>{title}</Card.Title>
         </TouchableOpacity>
+        <Text  style={{textAlign: 'right',  fontSize: 13 }}>{price}€</Text>
         <View style={{ flexDirection: 'row' }}>
           <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
             <Text numberOfLines={isPortrait ? 3 : 4} style={styles.descriptionText}>

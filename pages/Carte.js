@@ -35,7 +35,6 @@ export default function Carte({ navigation }) {
         
     return (
         <View>
-            <Text>Carte</Text>
             <Button
                 title="Panier"
                 onPress={() =>
