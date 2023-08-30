@@ -13,7 +13,7 @@ export default function Carte({ navigation }) {
                     navigation.navigate('Panier')
                 }
             />
-            <Product navigation={navigation} title={"oui"} description={"Une description super longue pour tester le saut de ligne ( c'est important pour éviter d'avoir trop de ligne apparante)"}></Product>
+            <Product navigation={navigation} title={"oui"} price={"10"} description={"Une description super longue pour tester le saut de ligne ( c'est important pour éviter d'avoir trop de ligne apparante)"}></Product>
         </View>
     );
 }
