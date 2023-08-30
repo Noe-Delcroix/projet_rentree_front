@@ -6,13 +6,17 @@ import Order from './pages/Order';
 import Panier from './pages/Panier';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Product from './components/Product';
+import LogIn from './pages/LogIn';
+import Header from './components/Header';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+        screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
+            <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
             <Stack.Screen name="Carte"component={Carte}/>
             <Stack.Screen name="ObjectDetail" component={ObjectDetail} />
             <Stack.Screen name="Order" component={Order} />
