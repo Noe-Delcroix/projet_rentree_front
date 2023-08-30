@@ -22,7 +22,8 @@ export default function Carte({ navigation }) {
                 title: "Pizza",
                 image: 'https://www.google.com/search?sca_esv=561284976&sxsrf=AB5stBiYjztn8Q7j12qmoCGDoA_nOb5-pA:1693394459016&q=pizza&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiXzcb5oYSBAxWFQkEAHWjPA38Q0pQJegQIDhAB&biw=1482&bih=754&dpr=1.25#imgrc=-Me1Spx03VgNoM',
                 description: "c'est une pizza lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                allergenes: "tomates, fruit, légumes"
+                allergenes: "tomates, fruit, légumes",
+                price: 10
             }
         ]
         setDishes(dishesTest)
@@ -48,6 +49,7 @@ export default function Carte({ navigation }) {
                     image={dish.image}
                     description={dish.description}
                     allergenes={dish.allergenes}
+                    price={dish.price}
                     >
                     </Product>
         
