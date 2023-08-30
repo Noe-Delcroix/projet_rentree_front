@@ -5,6 +5,7 @@ import ObjectDetail from './pages/ObjectDetail';
 import Order from './pages/Order';
 import Panier from './pages/Panier';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Product from './components/Product';
 import LogIn from './pages/LogIn';
 import Header from './components/Header';
 
