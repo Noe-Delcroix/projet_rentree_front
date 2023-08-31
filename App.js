@@ -17,10 +17,10 @@ const App = () => {
         <Stack.Navigator
         screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
             <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="Carte"component={Carte}/>
-            <Stack.Screen name="ObjectDetail" component={ObjectDetail} />
-            <Stack.Screen name="Order" component={Order} />
-            <Stack.Screen name="Panier" component={Panier} />
+            <Stack.Screen name="Carte"component={Carte}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="Order" component={Order}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
         </Stack.Navigator>
     </NavigationContainer>
   );

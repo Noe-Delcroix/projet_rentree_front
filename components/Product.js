@@ -52,7 +52,8 @@ export default function Product({title, image, price, description, allergenes, n
       title: title,
       image: image,
       description: description,
-      allergenes: allergenes
+      allergenes: allergenes,
+      price: price
     });
   };
 
@@ -66,7 +67,7 @@ if(windowHeight>windowWidth){
         <TouchableOpacity onPress={onPressCard}>
           <Card.Image
             style={{ padding: 0, width: '100%', height: 70 }}
-            source={{ uri: "https://static.cotemaison.fr/medias_10824/w_2048,h_1146,c_crop,x_0,y_184/w_960,h_540,c_fill,g_north/v1456392403/10-conseils-pour-rendre-votre-chien-heureux_5542245.jpg" }}
+            source={{ uri: image }}
           />
           <Card.Title style={styles.titleText}>{title}</Card.Title>
           </TouchableOpacity>
