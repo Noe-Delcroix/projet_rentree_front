@@ -9,14 +9,13 @@ export default function Carte({ navigation }) {
     const [dishes, setDishes] = useState([])
 
     const loadDishes = async () => {
-        /*
+        
         try {
-            const response = await axios.get('mettre le lien de l api');
+            const response = await axios.get('http://localhost:8080/api/dishes');
             console.log(response);
             setDishes(response.data)
         } catch (error) {
         console.error(error);
-        }*/
         const dishesTest = [
             {
                 title: "Pizza",
@@ -27,6 +26,8 @@ export default function Carte({ navigation }) {
             }
         ]
         setDishes(dishesTest)
+        }
+        
     }
 
     useEffect(() => {
