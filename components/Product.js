@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
-    marginRight: 10,
   },
   containerHor: {
     //overflow: 'hidden',
@@ -21,7 +20,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
-    marginRight: 10,
   },
   fonts: {
     marginBottom: 8,
