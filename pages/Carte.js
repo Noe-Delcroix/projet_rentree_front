@@ -5,18 +5,14 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
 
-export default function Carte({ navigation, route, token }) {
-
-    console.log(token)
+export default function Carte({ navigation }) {
 
     const [dishes, setDishes] = useState([])
     const screenWidth = Dimensions.get('window').width;
 
-    const [selectedDishes, setSelectedDishes] = useState([])
-
     const loadDishes = async () => {
         try {
-            axios.get('http://localhost:8080/api/dishes').then((response) => {
+            axios.post('http://localhost:8080/api/dishes').then((response) => {
                 console.log(response.data);
                 console.log(response);
                 setDishes(response.data)
@@ -25,6 +21,16 @@ export default function Carte({ navigation, route, token }) {
             console.log('ERREUR')
             console.error(error);
         }
+        /*const dishesTest = [
+            {
+                title: "Pizza",
+                image: 'https://images.ctfassets.net/nw5k25xfqsik/64VwvKFqxMWQORE10Tn8pY/200c0538099dc4d1cf62fd07ce59c2af/20220211142754-margherita-9920.jpg?w=1024',
+                description: "c'est une pizza lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                allergenes: "tomates, fruit, légumes",
+                price: 10
+            }
+        ]
+        setDishes(dishesTest)*/
     }
 
     useEffect(() => {
@@ -40,15 +46,6 @@ export default function Carte({ navigation, route, token }) {
             <Text style={[styles.title, titleStyle]}>
                 La Carte
             </Text>
-            <Button
-                title="Panier"
-                onPress={() =>
-                    {
-                        console.log(selectedDishes)
-                        navigation.navigate('Panier', {dishes: selectedDishes})
-                    }
-                }
-            />
             <View style={[styles.productContainer, productContainerStyle]}>
             {dishes.map(dish => {
                 return(
@@ -60,7 +57,6 @@ export default function Carte({ navigation, route, token }) {
                     description={dish.description}
                     allergenes={dish.allergenes}
                     price={dish.price}
-                    setSelectedDishes={setSelectedDishes}
                     />        
                 )
             })}
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
     },
     largeScreenContainer: {
-        justifyContent: 'flex-start', 
+        justifyContent: 'flex-start',   
         columnGap: RFValue(20),  
     },
     title:{

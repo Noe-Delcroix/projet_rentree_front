@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   containerVer: {
     //overflow: 'hidden',
     width: '50%',
+    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
   containerHor: {
     //overflow: 'hidden',
     width: 300,
+    height: '45%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -31,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionText: {
-    fontSize: RFPercentage(1.75),
+    fontSize: RFPercentage(1.8),
   },
   descriptionContainer:{
     flex: 1, 
@@ -49,19 +51,19 @@ const styles = StyleSheet.create({
 
 export default function Product({name, image, price, description, allergenes, navigation, setSelectedDishes}) {
 
-  const onPressCard = () => {
+  const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
-        {
-          name: name,
-          image: image,
-          description: description,
-          allergenes: allergenes,
-          price: price
-        });
+    {
+      name: name,
+      image: image,
+      description: description,
+      allergenes: allergenes,
+      price: price
+    });
   };
 
   const dish = {
-    title: name,
+    name: name,
     image: image,
     description: description,
     allergenes: allergenes,
@@ -73,71 +75,44 @@ export default function Product({name, image, price, description, allergenes, na
   const [isSelected, setSelection] = useState(false);
   const isPortrait = windowHeight > windowWidth;
 
-
   const select = () => {
     setSelection(!isSelected)
-    if (!isSelected) {
+    if(!isSelected){
       console.log(dish)
       setSelectedDishes(arr => [...arr, dish])
     }
   }
-  if (windowHeight > windowWidth) {
-    return (
-        <View style={styles.containerVer}>
-          <Card>
-            <TouchableOpacity onPress={onPressCard}>
-              <Card.Image
-                  style={{padding: 0, width: '100%', height: 70}}
-                  source={{uri: image}}
-              />
-              <Card.Title style={styles.titleText}>{name}</Card.Title>
-            </TouchableOpacity>
-            <Text style={{textAlign: 'right', alignItems: "flex-start", fontSize: 13}}>{price}€</Text>
-            <Text numberOfLines={3} style={{width: 100, fontSize: 13}}>{description}</Text>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                  value={isSelected}
-                  onValueChange={select}
-                  style={styles.checkbox}
-              />
-            </View>
-          </Card>
-          <Text>{windowHeight} * {windowWidth}</Text>
+  return (
+    <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
+      <Card>
+        <TouchableOpacity onPress={onPressCard}>
+          <View style={styles.imageContainer}>
+          <Card.Image
+            style={{ 
+              width: isPortrait ? windowWidth * 0.35 : 300, 
+              height: isPortrait ? windowHeight *0.2 : 300, 
+            }}
+            source={{ uri: image }}
+          />
+          </View>
+          <Card.Title style={styles.titleText}>{name}</Card.Title>
+        </TouchableOpacity>
+        <Text  style={{textAlign: 'right',  fontSize: RFPercentage(1.8) }}>{price}€</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
+            <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
+              {description}
+            </Text>
+          </View>
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              value={isSelected}
+              onValueChange={setSelection}
+              style={styles.checkbox}
+            />
+          </View>
         </View>
-    );
-  } else {
-    return (
-        <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
-          <Card>
-            <TouchableOpacity onPress={onPressCard}>
-              <View style={styles.imageContainer}>
-                <Card.Image
-                    style={{
-                      width: isPortrait ? windowWidth / 3 : windowWidth / 4,
-                      height: isPortrait ? windowHeight / 6 : windowHeight / 6,
-                    }}
-                    source={{uri: image}}
-                />
-              </View>
-              <Card.Title style={styles.titleText}>{name}</Card.Title>
-            </TouchableOpacity>
-            <Text style={{textAlign: 'right', fontSize: 13}}>{price}€</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={[styles.descriptionContainer, {width: isPortrait ? '70%' : '100%'}]}>
-                <Text numberOfLines={isPortrait ? 3 : 4} style={styles.descriptionText}>
-                  {description}
-                </Text>
-              </View>
-              <View style={styles.checkboxContainer}>
-                <CheckBox
-                    value={isSelected}
-                    onValueChange={select}
-                    style={styles.checkbox}
-                />
-              </View>
-            </View>
-          </Card>
-        </View>
-    );
-  }
+      </Card>
+    </View>
+  );
 }
