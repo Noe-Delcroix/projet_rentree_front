@@ -4,9 +4,13 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import Product from '../components/Product';
 import axios from 'axios';
 
-export default function Carte({ navigation }) {
+export default function Carte({ navigation, route, token }) {
+
+    console.log(token)
 
     const [dishes, setDishes] = useState([])
+
+    const [selectedDishes, setSelectedDishes] = useState([])
 
     const loadDishes = async () => {
         
@@ -40,17 +44,21 @@ export default function Carte({ navigation }) {
             <Button
                 title="Panier"
                 onPress={() =>
-                    navigation.navigate('Panier')
+                    {
+                        console.log(selectedDishes)
+                        navigation.navigate('Panier', {dishes: selectedDishes})
+                    }
                 }
             />
             {dishes.map(dish => {
                 return(
                     <Product navigation={navigation} 
-                    title={dish.title}
-                    image={dish.image}
-                    description={dish.description}
-                    allergenes={dish.allergenes}
-                    price={dish.price}
+                        title={dish.title}
+                        image={dish.image}
+                        description={dish.description}
+                        allergenes={dish.allergenes}
+                        price={dish.price}
+                        setSelectedDishes={setSelectedDishes}
                     >
                     </Product>
         
