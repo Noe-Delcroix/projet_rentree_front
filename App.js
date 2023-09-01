@@ -4,11 +4,14 @@ import Carte from './pages/Carte';
 import ObjectDetail from './pages/ObjectDetail';
 import Order from './pages/Order';
 import Panier from './pages/Panier';
+import ProfileScreen from './pages/ProfilScreen';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Product from './components/Product';
 import LogIn from './pages/LogIn';
 import Header from './components/Header';
 import {useState} from "react";
+import WalletScreen from "./pages/WalletScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +29,10 @@ const App = () => {
             <Stack.Screen name="ObjectDetail" component={props => <ObjectDetail token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
             <Stack.Screen name="Order" component={props => <Order token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
             <Stack.Screen name="Panier" component={props => <Panier token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+
+            <Stack.Screen name="Profil"  component={props => <ProfileScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="Wallet"  component={props => <WalletScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+
         </Stack.Navigator>
     </NavigationContainer>
   );

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
 
 
-export default function Product({name, image, price, description, allergenes, navigation, setSelectedDishes}) {
+export default function Product({name, image, price, description, allergenes, navigation, addDishes, removeDishes}) {
 
   const onPressCard = () => {
     navigation.navigate('ObjectDetail',
@@ -75,12 +75,16 @@ export default function Product({name, image, price, description, allergenes, na
 
 
   const select = () => {
-    setSelection(!isSelected)
-    if (!isSelected) {
-      console.log(dish)
-      setSelectedDishes(arr => [...arr, dish])
+    setSelection(!isSelected);
+    console.log(dish)
+    if (isSelected) {
+      removeDishes(dish.title);
+    } else {
+      // Supprimez "dish" du tableau "selectedDishes"
+      addDishes(dish);
     }
-  }
+  };
+
   if (windowHeight > windowWidth) {
     return (
         <View style={styles.containerVer}>

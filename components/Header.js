@@ -31,19 +31,11 @@ export default function Header() {
         },
     });
 
-    const CircleBadge = ({ number }) => {
-        return (
-            <View style={styles.circle}>
-                <Text style={styles.number}>{number}</Text>
-            </View>
-        );
-    };
-    
+
 
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Delivecrous 🛒</Text>
-            <CircleBadge number={5} />
         </View>
     );
 }
