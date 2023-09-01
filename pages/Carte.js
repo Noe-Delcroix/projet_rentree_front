@@ -14,9 +14,15 @@ export default function Carte({ navigation, route, token }) {
 
     const [selectedDishes, setSelectedDishes] = useState([])
 
+    const config = {
+        headers:{
+            token: token,
+        }
+    };
+
     const loadDishes = async () => {
         try {
-            axios.get('http://localhost:8080/api/dishes').then((response) => {
+            axios.get('http://localhost:8080/api/dishes', config).then((response) => {
                 console.log(response.data);
                 console.log(response);
                 setDishes(response.data)
