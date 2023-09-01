@@ -1,12 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { Component, useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
 
 export default function Carte({ navigation }) {
 
     const [dishes, setDishes] = useState([])
+    const screenWidth = Dimensions.get('window').width;
 
     const loadDishes = async () => {
         try {
@@ -34,16 +36,23 @@ export default function Carte({ navigation }) {
     useEffect(() => {
         loadDishes();
     }, []);
-        
+
+    const productContainerStyle = screenWidth < 600 ? styles.smallScreenContainer : styles.largeScreenContainer;
+    const titleStyle = screenWidth < 600 ? styles.smallScreentitle : styles.largeScreentitle;
+
+
     return (
         <ScrollView>
-            <View style={styles.productContainer}>
+            <Text style={[styles.title, titleStyle]}>
+                La Carte
+            </Text>
+            <View style={[styles.productContainer, productContainerStyle]}>
             {dishes.map(dish => {
                 return(
                     <Product 
-                    key={dish.title}
+                    key={dish.name}
                     navigation={navigation}
-                    title={dish.title}
+                    name={dish.name}
                     image={dish.image}
                     description={dish.description}
                     allergenes={dish.allergenes}
@@ -58,9 +67,26 @@ export default function Carte({ navigation }) {
 
 const styles = StyleSheet.create({
     productContainer: {
-        flexDirection: 'row', // Affichez les produits côte à côte
-        flexWrap: 'wrap',    // Enveloppez les produits si l'espace est insuffisant
-        justifyContent: 'flex-start', // Espace uniformément entre les produits
-        paddingHorizontal: 10, // Ajoutez un peu de marge horizontale
+        flexDirection: 'row', 
+        flexWrap: 'wrap',    
+        paddingHorizontal: RFValue(10), 
+        rowGap: 0, 
     },
+    smallScreenContainer: {
+        justifyContent: 'space-between', 
+    },
+    largeScreenContainer: {
+        justifyContent: 'flex-start', 
+        columnGap: RFValue(20),  
+    },
+    title:{
+        fontWeight: 'bold',
+        fontSize: RFValue(30),
+    },
+    smallScreentitle:{
+        marginBottom: RFPercentage(2),
+    },
+    largeScreentitle:{
+        marginBottom: RFPercentage(0),
+    }
 });

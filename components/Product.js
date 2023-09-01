@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckBox, View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
 
 
@@ -12,6 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
+    height:'auto',
   },
   containerHor: {
     //overflow: 'hidden',
@@ -20,28 +22,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
-  },
-  fonts: {
-    marginBottom: 8,
+    height:'auto',
   },
   titleText: {
-    fontSize: 20,
+    fontSize: RFPercentage(2),
     fontWeight: 'bold',
     marginBottom: 0,
   },
   imageContainer: {
-    alignItems: 'center', // Center horizontally
+    alignItems: 'center',
   },
-  Image: {
-    width: 50,
-    height: 50,
-    },
   descriptionText: {
-    fontSize: 13,
+    fontSize: RFPercentage(1.75),
   },
   descriptionContainer:{
     flex: 1, 
-    marginLeft: 10, 
     justifyContent: 'center', 
   },
   checkboxContainer: {
@@ -54,11 +49,11 @@ const styles = StyleSheet.create({
 
 
 
-export default function Product({title, image, price, description, allergenes, navigation}) {
+export default function Product({name, image, price, description, allergenes, navigation}) {
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
     {
-      title: title,
+      name: name,
       image: image,
       description: description,
       allergenes: allergenes
@@ -77,14 +72,13 @@ export default function Product({title, image, price, description, allergenes, n
           <View style={styles.imageContainer}>
           <Card.Image
             style={{ 
-              padding: 0, 
               width: isPortrait ? windowWidth/3 : windowWidth/4, 
               height: isPortrait ? windowHeight/6 : windowHeight/6, 
             }}
             source={{ uri: image }}
           />
           </View>
-          <Card.Title style={styles.titleText}>{title}</Card.Title>
+          <Card.Title style={styles.titleText}>{name}</Card.Title>
         </TouchableOpacity>
         <Text  style={{textAlign: 'right',  fontSize: 13 }}>{price}€</Text>
         <View style={{ flexDirection: 'row' }}>
