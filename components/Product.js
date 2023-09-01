@@ -49,22 +49,65 @@ const styles = StyleSheet.create({
 
 
 
-export default function Product({name, image, price, description, allergenes, navigation}) {
+export default function Product({name, image, price, description, allergenes, navigation, setSelectedDishes}) {
+
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
     {
       name: name,
       image: image,
       description: description,
-      allergenes: allergenes
+      allergenes: allergenes,
+      price: price
     });
   };
+
+  const dish = {
+    title: title,
+    image: image,
+    description: description,
+    allergenes: allergenes,
+    price: price
+  }
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [isSelected, setSelection] = useState(false);
   const isPortrait = windowHeight > windowWidth;
 
+
+  const select = () => {
+    setSelection(!isSelected)
+    if(!isSelected){
+      console.log(dish)
+      setSelectedDishes(arr => [...arr, dish])
+    }
+  }
+if(windowHeight>windowWidth){
+  return (
+    <View style={styles.containerVer}>
+        <Card>
+        <TouchableOpacity onPress={onPressCard}>
+          <Card.Image
+            style={{ padding: 0, width: '100%', height: 70 }}
+            source={{ uri: image }}
+          />
+          <Card.Title style={styles.titleText}>{title}</Card.Title>
+          </TouchableOpacity>
+          <Text  style={{textAlign: 'right', alignItems: "flex-start", fontSize: 13 }}>{price}€</Text>
+          <Text numberOfLines={3} style={{ width: 100, fontSize: 13 }}>{description}</Text>
+          <View style={styles.checkboxContainer}>
+          <CheckBox
+          value={isSelected}
+          onValueChange={select}
+          style={styles.checkbox}
+        />
+        </View>
+        </Card>
+        <Text>{windowHeight} * {windowWidth}</Text>
+    </View>
+  );
+}else{
   return (
     <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
       <Card>
@@ -88,12 +131,11 @@ export default function Product({name, image, price, description, allergenes, na
             </Text>
           </View>
           <View style={styles.checkboxContainer}>
-            <CheckBox
-              value={isSelected}
-              onValueChange={setSelection}
-              style={styles.checkbox}
-            />
-          </View>
+          <CheckBox
+          value={isSelected}
+          onValueChange={select}
+          style={styles.checkbox}
+        />
         </View>
       </Card>
     </View>

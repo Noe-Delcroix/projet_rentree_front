@@ -8,19 +8,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Product from './components/Product';
 import LogIn from './pages/LogIn';
 import Header from './components/Header';
+import {useState} from "react";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+
+    const [token, setToken] = useState("")
+
+
   return (
     <NavigationContainer>
         <Stack.Navigator
         screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
-            <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="Carte"component={Carte}/>
-            <Stack.Screen name="ObjectDetail" component={ObjectDetail} />
-            <Stack.Screen name="Order" component={Order} />
-            <Stack.Screen name="Panier" component={Panier} />
+            <Stack.Screen name="LogIn" component={props => <LogIn setToken={setToken} {...props}/>} options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="Carte" component={props => <Carte token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="ObjectDetail" component={props => <ObjectDetail token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="Order" component={props => <Order token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+            <Stack.Screen name="Panier" component={props => <Panier token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
         </Stack.Navigator>
     </NavigationContainer>
   );
