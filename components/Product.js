@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckBox, View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
 
 
@@ -7,12 +8,12 @@ const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: '45%',
+    width: '50%',
     height: 200,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
-    marginRight: 10,
+    height:'auto',
   },
   containerHor: {
     //overflow: 'hidden',
@@ -21,35 +22,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
-    marginRight: 10,
-  },
-  fonts: {
-    marginBottom: 8,
+    height:'auto',
   },
   titleText: {
-    fontSize: 20,
+    fontSize: RFPercentage(2),
     fontWeight: 'bold',
     marginBottom: 0,
   },
-  Image: {
-    width: 30,
-    height: 30,
-    },
+  imageContainer: {
+    alignItems: 'center',
+  },
+  descriptionText: {
+    fontSize: RFPercentage(1.75),
+  },
+  descriptionContainer:{
+    flex: 1, 
+    justifyContent: 'center', 
+  },
   checkboxContainer: {
-    flexDirection: 'row',
+    justifyContent: 'center',
   },
   checkbox: {
-    alignSelf: 'right',
+    alignSelf: 'flex-end',
   },
 });
 
 
 
-export default function Product({title, image, price, description, allergenes, navigation, setSelectedDishes}) {
+export default function Product({name, image, price, description, allergenes, navigation, setSelectedDishes}) {
+
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
     {
-      title: title,
+      name: name,
       image: image,
       description: description,
       allergenes: allergenes,
@@ -68,6 +73,8 @@ export default function Product({title, image, price, description, allergenes, n
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [isSelected, setSelection] = useState(false);
+  const isPortrait = windowHeight > windowWidth;
+
 
   const select = () => {
     setSelection(!isSelected)
@@ -102,16 +109,27 @@ if(windowHeight>windowWidth){
   );
 }else{
   return (
-    <View style={styles.containerHor}>
-        <Card>
+    <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
+      <Card>
         <TouchableOpacity onPress={onPressCard}>
+          <View style={styles.imageContainer}>
           <Card.Image
-            style={{ padding: 0, width: '100%', height: 70 }}
-            source={{ uri: "https://static.cotemaison.fr/medias_10824/w_2048,h_1146,c_crop,x_0,y_184/w_960,h_540,c_fill,g_north/v1456392403/10-conseils-pour-rendre-votre-chien-heureux_5542245.jpg" }}
+            style={{ 
+              width: isPortrait ? windowWidth/3 : windowWidth/4, 
+              height: isPortrait ? windowHeight/6 : windowHeight/6, 
+            }}
+            source={{ uri: image }}
           />
-          <Card.Title style={styles.titleText}>{title}</Card.Title>
-          </TouchableOpacity>
-          <Text style={{ fontSize: 13 }}>{description}</Text>
+          </View>
+          <Card.Title style={styles.titleText}>{name}</Card.Title>
+        </TouchableOpacity>
+        <Text  style={{textAlign: 'right',  fontSize: 13 }}>{price}€</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
+            <Text numberOfLines={isPortrait ? 3 : 4} style={styles.descriptionText}>
+              {description}
+            </Text>
+          </View>
           <View style={styles.checkboxContainer}>
           <CheckBox
           value={isSelected}
@@ -119,9 +137,7 @@ if(windowHeight>windowWidth){
           style={styles.checkbox}
         />
         </View>
-        </Card>
-        <Text>{windowHeight} * {windowWidth}</Text>
+      </Card>
     </View>
   );
-}
 }

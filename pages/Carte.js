@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { Component, useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
 
@@ -9,38 +10,36 @@ export default function Carte({ navigation, route, token }) {
     console.log(token)
 
     const [dishes, setDishes] = useState([])
+    const screenWidth = Dimensions.get('window').width;
 
     const [selectedDishes, setSelectedDishes] = useState([])
 
     const loadDishes = async () => {
-        
         try {
-            const response = await axios.get('http://localhost:8080/api/dishes');
-            console.log(response);
-            setDishes(response.data)
+            axios.get('http://localhost:8080/api/dishes').then((response) => {
+                console.log(response.data);
+                console.log(response);
+                setDishes(response.data)
+              });
         } catch (error) {
-        console.error(error);
-        const dishesTest = [
-            {
-                title: "Pizza",
-                image: 'https://images.ctfassets.net/nw5k25xfqsik/64VwvKFqxMWQORE10Tn8pY/200c0538099dc4d1cf62fd07ce59c2af/20220211142754-margherita-9920.jpg?w=1024',
-                description: "c'est une pizza lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                allergenes: "tomates, fruit, légumes",
-                price: 10
-            }
-        ]
-        setDishes(dishesTest)
+            console.log('ERREUR')
+            console.error(error);
         }
-        
     }
 
     useEffect(() => {
         loadDishes();
     }, []);
-        
+
+    const productContainerStyle = screenWidth < 600 ? styles.smallScreenContainer : styles.largeScreenContainer;
+    const titleStyle = screenWidth < 600 ? styles.smallScreentitle : styles.largeScreentitle;
+
+
     return (
-        <View>
-            <Text>Carte</Text>
+        <ScrollView>
+            <Text style={[styles.title, titleStyle]}>
+                La Carte
+            </Text>
             <Button
                 title="Panier"
                 onPress={() =>
@@ -50,20 +49,48 @@ export default function Carte({ navigation, route, token }) {
                     }
                 }
             />
+            <View style={[styles.productContainer, productContainerStyle]}>
             {dishes.map(dish => {
                 return(
-                    <Product navigation={navigation} 
-                        title={dish.title}
-                        image={dish.image}
-                        description={dish.description}
-                        allergenes={dish.allergenes}
-                        price={dish.price}
-                        setSelectedDishes={setSelectedDishes}
-                    >
-                    </Product>
-        
+                    <Product 
+                    key={dish.name}
+                    navigation={navigation}
+                    name={dish.name}
+                    image={dish.image}
+                    description={dish.description}
+                    allergenes={dish.allergenes}
+                    price={dish.price}
+                    setSelectedDishes={setSelectedDishes}
+                    />        
                 )
             })}
-        </View>
+            </View>
+        </ScrollView>
     );
 }
+
+const styles = StyleSheet.create({
+    productContainer: {
+        flexDirection: 'row', 
+        flexWrap: 'wrap',    
+        paddingHorizontal: RFValue(10), 
+        rowGap: 0, 
+    },
+    smallScreenContainer: {
+        justifyContent: 'space-between', 
+    },
+    largeScreenContainer: {
+        justifyContent: 'flex-start', 
+        columnGap: RFValue(20),  
+    },
+    title:{
+        fontWeight: 'bold',
+        fontSize: RFValue(30),
+    },
+    smallScreentitle:{
+        marginBottom: RFPercentage(2),
+    },
+    largeScreentitle:{
+        marginBottom: RFPercentage(0),
+    }
+});
