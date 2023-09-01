@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, Button, FlatList, Image, CheckBox } from 'react-native';
+import {View, Text, Button, FlatList, Image, CheckBox, StyleSheet} from 'react-native';
+import BottomNavigationBar from "../components/BottomNavigationBar";
+import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
 
 export default function Panier({ navigation, route }) {
     const dishes = route.params.dishes;
     console.log(dishes)
     return (
-        <View>
+        <View  style={styles.pageView}>
         <Text>Panier</Text>
         <Button
             title="Retourner au menu"
@@ -36,6 +38,22 @@ export default function Panier({ navigation, route }) {
             </View>
             )}
         />
+            <View style={styles.bottomNavContainer}>
+                <BottomNavigationBar navigation={navigation} articleNumber={dishes.length} selectedDishes={dishes}/>
+            </View>
         </View>
     );
 }
+
+
+const styles = StyleSheet.create({
+    bottomNavContainer: {
+        position: 'sticky',
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
+    pageView: {
+        height: '100%'
+    }
+});
