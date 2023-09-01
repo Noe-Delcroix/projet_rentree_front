@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
 
 
-export default function Product({title, image, price, description, allergenes, navigation}) {
+export default function Product({title, image, price, description, allergenes, navigation, setSelectedDishes}) {
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
     {
@@ -57,9 +57,25 @@ export default function Product({title, image, price, description, allergenes, n
     });
   };
 
+  const dish = {
+    title: title,
+    image: image,
+    description: description,
+    allergenes: allergenes,
+    price: price
+  }
+
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [isSelected, setSelection] = useState(false);
+
+  const select = () => {
+    setSelection(!isSelected)
+    if(!isSelected){
+      console.log(dish)
+      setSelectedDishes(arr => [...arr, dish])
+    }
+  }
 if(windowHeight>windowWidth){
   return (
     <View style={styles.containerVer}>
@@ -76,7 +92,7 @@ if(windowHeight>windowWidth){
           <View style={styles.checkboxContainer}>
           <CheckBox
           value={isSelected}
-          onValueChange={setSelection}
+          onValueChange={select}
           style={styles.checkbox}
         />
         </View>
@@ -99,7 +115,7 @@ if(windowHeight>windowWidth){
           <View style={styles.checkboxContainer}>
           <CheckBox
           value={isSelected}
-          onValueChange={setSelection}
+          onValueChange={select}
           style={styles.checkbox}
         />
         </View>

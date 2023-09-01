@@ -1,23 +1,67 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, TextInput, Button } from 'react-native';
 import axios from 'axios';
+import { toaster } from 'evergreen-ui'
 
-export default function LogIn({ navigation }) {
+export default function LogIwn({ navigation, setToken }) {
     const [login, setLogin] = useState(true);
+    const [email, setEmail] = useState("")
+    const [firstname, setFirstname] = useState("")
+    const [lastname, setLastname] = useState("")
+    const [password, setPassword] = useState("")
+
+    const tryLogIn = () => {
+        console.log(email)
+        console.log(password)
+        axios.post('http://localhost:8080/api/users/login', {
+            email:email,
+            password:password
+        }).then((response) => {
+            console.log(response);
+            setToken(response.data)
+            navigation.navigate('Carte')
+        }, (error) => {
+            toaster.warning(error.response.data)
+        });
+    }
+
+    const trySignIn = () => {
+        console.log(firstname)
+        console.log(lastname)
+        console.log(email)
+        console.log(password)
+        
+        axios.post('http://localhost:8080/api/users/register', {
+            firstname:firstname,
+            lastname:lastname,
+            email:email,
+            password:password
+        }).then((response) => {
+            toaster.success('Votre compte a bien été crée!')
+            setLogin(!login)
+        }, (error) => {
+            console.log(error)
+            toaster.warning(error.response.data)
+        });
+    }
+
 
     return (
         <View style={styles.container}>
         <Text style={styles.title}>{login ? 'Log In' : 'Sign In'}</Text>
         <View style={styles.formContainer}>
-            <TextInput style={styles.input} placeholder="Email" />
+            {login ? <></> : <TextInput style={styles.input} placeholder="firstname" onChangeText={setFirstname}/>}
+            {login ? <></> : <TextInput style={styles.input} placeholder="lastname" onChangeText={setLastname}/>}
+            <TextInput style={styles.input} placeholder="Email" onChangeText={setEmail}/>
             <TextInput
-            style={styles.input}
-            secureTextEntry={true}
-            placeholder="Password"
+                style={styles.input}
+                secureTextEntry={true}
+                placeholder="Password"
+                onChangeText={setPassword}
             />
             <Button
             title={login ? 'Log In' : 'Sign In'}
-            onPress={() => navigation.navigate('Carte')}
+            onPress={login ? () => tryLogIn() : () => trySignIn()}
             />
             <Text style={styles.toggleText} onPress={() => setLogin(!login)}>
             {login ? "I don't have an account already" : 'I already have an account'}
