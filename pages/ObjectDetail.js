@@ -6,7 +6,7 @@ import { CheckBox } from '@rneui/base';
 import {Select} from "evergreen-ui";
 import React, {useState} from "react";
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useSelectedDishes} from "../components/selectedDishesContext";
+import {useApplicationContext} from "../components/ApplicationContext";
 
 const styles = StyleSheet.create({
     container: {
@@ -65,7 +65,7 @@ export default function ObjectDetail({ route, navigation }) {
     // Ajoutez un state pour gérer la quantité de plats
     const [quantity, setQuantity] = useState(1);
 
-    const { dishes, numberOfDishes, addDishes, removeDishes } = useSelectedDishes();
+    const { dishes, numberOfDishes, addDishes, removeDishes } = useApplicationContext();
 
 
     return (
@@ -88,10 +88,12 @@ export default function ObjectDetail({ route, navigation }) {
                     <Picker.Item label="1" value={1} />
                     <Picker.Item label="2" value={2} />
                     <Picker.Item label="3" value={3} />
-                    {/* Ajoutez plus d'options au besoin */}
+                    <Picker.Item label="4" value={4} />
+                    <Picker.Item label="5" value={5} />
+                    <Picker.Item label="6" value={6} />
+                    <Picker.Item label="7" value={7} />
                 </Picker>
-                <Button title={'Ajouter au panier'} onPress={() => addDishes(id, price, quantity)} />
-                <Button title={'Retirer du panier'} onPress={() => removeDishes(id)} />
+                <Button title={'ajouter au panier'} onPress={() => addDishes(id, price, quantity)} />
             </View>
 
             <View style={styles.columnContainer}>
@@ -102,7 +104,7 @@ export default function ObjectDetail({ route, navigation }) {
                 <View style={styles.divider}></View>
                 <View style={styles.halfContainer}>
                     <Text style={styles.title}>Allergènes</Text>
-                    <Text style={styles.allergenes}>{allergenes}</Text>
+                    <Text style={styles.allergenes}>{alergens}</Text>
                 </View>
             </View>
             <View style={styles.bottomNavContainer}>

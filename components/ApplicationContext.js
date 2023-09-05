@@ -1,26 +1,34 @@
 // SelectedDishesContext.js
 import React, { createContext, useContext, useState } from 'react';
 
-const SelectedDishesContext = createContext();
+const ApplicationContext = createContext();
 
-export const useSelectedDishes = () => useContext(SelectedDishesContext);
+export const useApplicationContext = () => useContext(ApplicationContext);
 
-export const SelectedDishesProvider = ({ children }) => {
+export const ApplicationContextProvider = ({ children }) => {
     const [dishes, setDishes] = useState([]);
     const [numberOfDishes, setNumberOfDishes] = useState(0);
-    const removeDishes = (dishId) => {
+    const [token, setToken] = useState("")
+    const removeDishes = (dishId, number=0) => {
         // Utilisez la méthode setSelectedDishes pour mettre à jour le state et supprimer l'élément avec l'ID spécifié et mettre à jour le nombre de plats
 
         setDishes((prevDishes) => {
             return prevDishes.map((dish) => {
                 if (dish.id === dishId) {
                     // Si l'ID correspond, ajoutez la quantité à cet objet
-                    setNumberOfDishes(numberOfDishes - parseInt(dish.quantity));
-
-                    return {
-                        ...dish,
-                        quantity: 0,
-                    };
+                    if (number > 0) {
+                        setNumberOfDishes(numberOfDishes - parseInt(number));
+                        return {
+                            ...dish,
+                            quantity: dish.quantity - parseInt(number),
+                        };
+                    }else{
+                        setNumberOfDishes(numberOfDishes - parseInt(dish.quantity));
+                        return {
+                            ...dish,
+                            quantity: 0,
+                        };
+                    }
                 }
                 return dish; // Si l'ID ne correspond pas, retournez l'objet tel quel
             });
@@ -48,8 +56,8 @@ export const SelectedDishesProvider = ({ children }) => {
         setNumberOfDishes(numberOfDishes + parseInt(quantity));
     }
     return (
-        <SelectedDishesContext.Provider value={{ dishes, setDishes, numberOfDishes, addDishes, removeDishes }}>
+        <ApplicationContext.Provider value={{ dishes, setDishes, numberOfDishes, addDishes, removeDishes, token, setToken }}>
             {children}
-        </SelectedDishesContext.Provider>
+        </ApplicationContext.Provider>
     );
 };

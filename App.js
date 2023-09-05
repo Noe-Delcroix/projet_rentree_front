@@ -12,31 +12,29 @@ import LogIn from './pages/LogIn';
 import Header from './components/Header';
 import {useState} from "react";
 import WalletScreen from "./pages/WalletScreen";
-import {SelectedDishesProvider} from "./components/selectedDishesContext";
+import {ApplicationContextProvider} from "./components/ApplicationContext";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
-    const [token, setToken] = useState("")
-
 
   return (
-      <SelectedDishesProvider>
+      <ApplicationContextProvider>
           <NavigationContainer>
               <Stack.Navigator
                   screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
-                  <Stack.Screen name="LogIn" component={props => <LogIn setToken={setToken} {...props}/>} options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Carte" component={props => <Carte token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="ObjectDetail" component={props => <ObjectDetail token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Order" component={props => <Order token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Panier" component={props => <Panier token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Carte" component={Carte}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Order" component={Order}  options={{ headerTitle: (props) => <Header {...props} /> }} />
 
-                  <Stack.Screen name="Profil"  component={props => <ProfileScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Wallet"  component={props => <WalletScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Profil"  component={ProfileScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Wallet"  component={WalletScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
               </Stack.Navigator>
           </NavigationContainer>
-      </SelectedDishesProvider>
+      </ApplicationContextProvider>
 
   );
 };

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, Picker } from 'react-native';
 import axios from "axios";
 import BottomNavigationBar from "../components/BottomNavigationBar";
+import {useApplicationContext} from "../components/ApplicationContext";
 
-const WalletScreen = ({ navigation, route, token, articleNumber }) => {
+const WalletScreen = ({ navigation }) => {
     const [balance, setBalance] = useState(100); // Solde initial, vous pouvez ajuster selon vos besoins
     const [selectedAmount, setSelectedAmount] = useState(10); // Montant sélectionné par défaut
-    const dishes = route.params.dishes;
     const [user, setUser] = useState({})
+    const { token } = useApplicationContext();
 
     const config = {
         headers: {

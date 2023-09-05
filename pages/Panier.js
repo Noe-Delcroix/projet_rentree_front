@@ -2,11 +2,11 @@ import React from 'react';
 import {View, Text, Button, FlatList, Image, CheckBox, StyleSheet} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
-import {useSelectedDishes} from "../components/selectedDishesContext";
+import {useApplicationContext} from "../components/ApplicationContext";
 
 export default function Panier({ navigation, route }) {
 
-    const { dishes ,removeDishes } = useSelectedDishes();
+    const { dishes,  addDishes, removeDishes } = useApplicationContext();
 
     console.log(dishes);
 
@@ -35,7 +35,8 @@ export default function Panier({ navigation, route }) {
                     <Text>{item.title}</Text>
                     <Text>{item.price}</Text>
                     <Text>{item.description}</Text>
-                    <Text onPress={() => removeDishes(item.id)}>X</Text>
+                    <Button title={"-"} onPress={() => removeDishes(item.id, 1)}/><Text>quantity :{item.quantity}</Text><Button onPress={() => addDishes(item.id, item.price, 1)} title={"+"}/>
+                    <Text onPress={() => removeDishes(item.id)}>❌</Text>
                 </View>
             </View>
             )}
