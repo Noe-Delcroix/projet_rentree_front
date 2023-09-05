@@ -48,7 +48,7 @@ const ProfileScreen = ({ navigation, route, token }) => {
                 }}
             />
             <View style={styles.bottomNavContainer}>
-                <BottomNavigationBar navigation={navigation} articleNumber={dishes.length} selectedDishes={dishes}/>
+                <BottomNavigationBar navigation={navigation}/>
             </View>
         </View>
     );

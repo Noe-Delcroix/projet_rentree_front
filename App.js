@@ -12,6 +12,7 @@ import LogIn from './pages/LogIn';
 import Header from './components/Header';
 import {useState} from "react";
 import WalletScreen from "./pages/WalletScreen";
+import {SelectedDishesProvider} from "./components/selectedDishesContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,20 +22,22 @@ const App = () => {
 
 
   return (
-    <NavigationContainer>
-        <Stack.Navigator
-        screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
-            <Stack.Screen name="LogIn" component={props => <LogIn setToken={setToken} {...props}/>} options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="Carte" component={props => <Carte token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="ObjectDetail" component={props => <ObjectDetail token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="Order" component={props => <Order token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="Panier" component={props => <Panier token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+      <SelectedDishesProvider>
+          <NavigationContainer>
+              <Stack.Navigator
+                  screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
+                  <Stack.Screen name="LogIn" component={props => <LogIn setToken={setToken} {...props}/>} options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Carte" component={props => <Carte token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="ObjectDetail" component={props => <ObjectDetail token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Order" component={props => <Order token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Panier" component={props => <Panier token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
 
-            <Stack.Screen name="Profil"  component={props => <ProfileScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-            <Stack.Screen name="Wallet"  component={props => <WalletScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Profil"  component={props => <ProfileScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                  <Stack.Screen name="Wallet"  component={props => <WalletScreen token={token} {...props}/>}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+              </Stack.Navigator>
+          </NavigationContainer>
+      </SelectedDishesProvider>
 
-        </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

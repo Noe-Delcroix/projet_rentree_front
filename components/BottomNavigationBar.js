@@ -1,29 +1,32 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import wallet from '../assets/wallet.png';
+import {useSelectedDishes} from "./selectedDishesContext";
 
-const BottomNavigationBar = ({ navigation, activeScreen, articleNumber, selectedDishes }) => {
+const BottomNavigationBar = ({ navigation, activeScreen }) => {
+    const { numberOfDishes } = useSelectedDishes();
+
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Panier', { dishes: selectedDishes })}
+                onPress={() => navigation.navigate('Panier')}
                 style={[styles.tab, activeScreen === 'Screen1' && styles.activeTab]}
             >
                 <Image source={{ uri: "https://cdn.icon-icons.com/icons2/2645/PNG/512/cart_icon_160298.png" }} style={styles.tabImage} />
-                {articleNumber > 0 && (
+                {numberOfDishes > 0 && (
                     <View style={styles.badge}>
-                        <Text style={styles.badgeText}>{articleNumber}</Text>
+                        <Text style={styles.badgeText}>{numberOfDishes}</Text>
                     </View>
                 )}
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Profil', { dishes: selectedDishes })}
+                onPress={() => navigation.navigate('Profil')}
                 style={[styles.tab, activeScreen === 'Screen2' && styles.activeTab]}
             >
                 <Image source={{ uri: "https://icons.veryicon.com/png/o/miscellaneous/8atour/people-23.png" }} style={styles.tabImage} />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Wallet', { dishes: selectedDishes })}
+                onPress={() => navigation.navigate('Wallet')}
                 style={[styles.tab, activeScreen === 'Screen2' && styles.activeTab]}
             >
                 <Image source={wallet} style={styles.tabImage} />

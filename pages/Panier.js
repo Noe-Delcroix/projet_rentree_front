@@ -2,10 +2,14 @@ import React from 'react';
 import {View, Text, Button, FlatList, Image, CheckBox, StyleSheet} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
+import {useSelectedDishes} from "../components/selectedDishesContext";
 
 export default function Panier({ navigation, route }) {
-    const dishes = route.params.dishes;
-    console.log(dishes)
+
+    const { dishes ,removeDishes } = useSelectedDishes();
+
+    console.log(dishes);
+
     return (
         <View  style={styles.pageView}>
         <Text>Panier</Text>
@@ -19,7 +23,7 @@ export default function Panier({ navigation, route }) {
         />
 
         <FlatList
-            data={dishes}
+            data={dishes.filter(item => item.quantity > 0)}
             keyExtractor={(item) => item.title}
             renderItem={({ item }) => (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
@@ -28,18 +32,16 @@ export default function Panier({ navigation, route }) {
                 style={{ width: 100, height: 100, marginRight: 10 }}
                 />
                 <View style={{ flex: 1 }}>
-                <Text>{item.title}</Text>
-                <Text>{item.price}</Text>
-                <Text>{item.description}</Text>
-                </View>
-                <View>
-                <CheckBox checked={true} /> {/* Vous pouvez gérer la valeur checked en fonction de l'état du panier */}
+                    <Text>{item.title}</Text>
+                    <Text>{item.price}</Text>
+                    <Text>{item.description}</Text>
+                    <Text onPress={() => removeDishes(item.id)}>X</Text>
                 </View>
             </View>
             )}
         />
             <View style={styles.bottomNavContainer}>
-                <BottomNavigationBar navigation={navigation} articleNumber={dishes.length} selectedDishes={dishes}/>
+                <BottomNavigationBar navigation={navigation}/>
             </View>
         </View>
     );

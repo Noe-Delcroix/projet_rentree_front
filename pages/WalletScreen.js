@@ -29,7 +29,7 @@ const WalletScreen = ({ navigation, route, token, articleNumber }) => {
 
     const handleAddMoney = () => {
         // Vous pouvez ajouter ici la logique pour ajouter le montant sélectionné au solde du portefeuille
-        setBalance(balance + selectedAmount);
+        setBalance(balance + parseInt(selectedAmount));
     };
 
     return (
@@ -55,7 +55,7 @@ const WalletScreen = ({ navigation, route, token, articleNumber }) => {
                     onPress={handleAddMoney}
                 />
                 <View style={styles.bottomNavContainer}>
-                    <BottomNavigationBar navigation={navigation} articleNumber={dishes.length} selectedDishes={dishes}/>
+                    <BottomNavigationBar navigation={navigation}/>
                 </View>
             </View>
         </View>

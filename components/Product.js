@@ -43,20 +43,22 @@ const styles = StyleSheet.create({
   checkbox: {
     alignSelf: 'flex-end',
   },
+
 });
 
 
 
-export default function Product({name, image, price, description, allergenes, navigation, addDishes, removeDishes}) {
+export default function Product({id, name, image, price, description, allergenes, navigation}) {
 
   const onPressCard = () => {
     navigation.navigate('ObjectDetail',
         {
+          id: id,
           name: name,
           image: image,
           description: description,
           allergenes: allergenes,
-          price: price
+          price: price,
         });
   };
 
@@ -98,13 +100,6 @@ export default function Product({name, image, price, description, allergenes, na
             </TouchableOpacity>
             <Text style={{textAlign: 'right', alignItems: "flex-start", fontSize: 13}}>{price}€</Text>
             <Text numberOfLines={3} style={{width: 100, fontSize: 13}}>{description}</Text>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                  value={isSelected}
-                  onValueChange={select}
-                  style={styles.checkbox}
-              />
-            </View>
           </Card>
           <Text>{windowHeight} * {windowWidth}</Text>
         </View>
