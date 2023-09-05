@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 });
 
 export default function ObjectDetail({ route, navigation }) {
-    const { id, title, image, description, allergenes, price } = route.params;
+    const { id, title, image, description, alergens, price } = route.params;
 
     // Ajoutez un state pour gérer la quantité de plats
     const [quantity, setQuantity] = useState(1);

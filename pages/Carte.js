@@ -56,7 +56,7 @@ export default function Carte({ navigation, route }) {
                                 name={dish.name}
                                 image={dish.image}
                                 description={dish.description}
-                                allergenes={dish.allergenes}
+                                alergens={dish.alergens}
                                 price={dish.price}
                             />
                         );
