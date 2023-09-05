@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import axios from "axios";
 import BottomNavigationBar from "../components/BottomNavigationBar";
+import {useApplicationContext} from "../components/ApplicationContext";
 
-const ProfileScreen = ({ navigation, route, token }) => {
+const ProfileScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
-    const dishes = route.params.dishes;
+    const { token } = useApplicationContext();
+
     const config = {
         headers: {
             token: token,

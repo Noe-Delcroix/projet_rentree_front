@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, View, TextInput, Button } from 'react-native';
 import axios from 'axios';
 import { toaster } from 'evergreen-ui'
+import {useApplicationContext} from "../components/ApplicationContext";
 
-export default function LogIwn({ navigation, setToken }) {
+export default function LogIwn({ navigation }) {
     const [login, setLogin] = useState(true);
     const [email, setEmail] = useState("")
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [password, setPassword] = useState("")
+    const { setToken } = useApplicationContext();
 
     const tryLogIn = () => {
         console.log(email)

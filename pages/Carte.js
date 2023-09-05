@@ -4,12 +4,12 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
-import {useSelectedDishes} from "../components/selectedDishesContext";
+import {useApplicationContext} from "../components/ApplicationContext";
 
-export default function Carte({ navigation, route, token }) {
+export default function Carte({ navigation, route }) {
     const screenWidth = Dimensions.get('window').width;
 
-    const { dishes, setDishes } = useSelectedDishes();
+    const { dishes, setDishes, token } = useApplicationContext();
 
     const config = {
         headers: {
