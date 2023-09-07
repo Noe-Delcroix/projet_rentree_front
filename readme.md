@@ -4,7 +4,6 @@ Voici la partie visuel d'une application mobile réalisé en react-native d'une 
 
 ## Table des Matières
 
-- [Introduction](#introduction)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Installation avec docker](#installation)
@@ -12,9 +11,6 @@ Voici la partie visuel d'une application mobile réalisé en react-native d'une 
 - [Contribuer](#contribuer)
 - [Licence](#licence)
 
-## Introduction
-
-Décrivez brièvement ce que fait votre application et son objectif.
 
 ## Prérequis
 
@@ -24,8 +20,6 @@ la version recommandé pour la plupart des utilisateurs est à l'heure où j'éd
 Pour vérifier que l’installation s’est bien passée, vous pouvez ouvrir votre Terminal ou Invite de commande et taper node -v qui devrait vous renvoyer la version de Node.js installée et npm -v qui devrait vous renvoyer la version de npm installée.
 
 ## Installation
-
-Expliquez comment installer votre application localement. Assurez-vous d'inclure toutes les étapes nécessaires, y compris l'installation de dépendances, la configuration de bases de données, etc. Voici un exemple :
 
 ```bash
 # Clonez le référentiel
@@ -65,8 +59,6 @@ git clone https://github.com/theoernould/projet-rentree-front.git
 cd projet-rentree-front
 
 ```
-
-
 
 ### créer l'image docker
 
