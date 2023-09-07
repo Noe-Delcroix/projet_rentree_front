@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionText: {
-    fontSize: RFPercentage(1.75),
+    fontSize: RFPercentage(1.8),
   },
   descriptionContainer:{
     flex: 1, 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
 export default function Product({id, name, image, price, description, allergenes, navigation}) {
 
-  const onPressCard = () => {
+  const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
         {
           id: id,
@@ -65,7 +65,7 @@ export default function Product({id, name, image, price, description, allergenes
   };
 
   const dish = {
-    title: name,
+    name: name,
     image: image,
     description: description,
     allergenes: allergenes,
@@ -79,13 +79,10 @@ export default function Product({id, name, image, price, description, allergenes
 
 
   const select = () => {
-    setSelection(!isSelected);
-    console.log(dish)
-    if (isSelected) {
-      removeDishes(dish.title);
-    } else {
-      // Supprimez "dish" du tableau "selectedDishes"
-      addDishes(dish);
+    setSelection(!isSelected)
+    if (!isSelected) {
+      console.log(dish)
+      setSelectedDishes(arr => [...arr, dish])
     }
   };
 

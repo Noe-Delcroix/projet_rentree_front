@@ -6,7 +6,9 @@ import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
 import {useApplicationContext} from "../components/ApplicationContext";
 
+
 export default function Carte({ navigation, route }) {
+
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
 
@@ -21,6 +23,7 @@ export default function Carte({ navigation, route }) {
     const loadDishes = async () => {
         try {
             axios.get('http://localhost:8080/api/dishes', config).then((response) => {
+
                 console.log(response.data);
                 console.log(response);
                 // ajouter un attribut quantity égale à 0 à chaque plat
@@ -34,6 +37,7 @@ export default function Carte({ navigation, route }) {
             console.error(error);
         }
     };
+
 
     useEffect(() => {
         loadDishes();
