@@ -5,6 +5,7 @@ import Product from '../components/Product';
 import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
 import {useApplicationContext} from "../components/ApplicationContext";
+import FilterForm from "../components/FilterForm";
 
 
 export default function Carte({ navigation, route }) {
@@ -14,14 +15,20 @@ export default function Carte({ navigation, route }) {
 
     const { dishes, setDishes, token } = useApplicationContext();
 
-    const config = {
-        headers: {
-            token: token,
-        },
-    };
 
-    const loadDishes = async () => {
+
+    const loadDishes = async (searchTerm) => {
+        const config = {
+            headers: {
+                token: token,
+            },
+            body: {
+                searchTerm: searchTerm,
+            },
+        };
+
         try {
+
             axios.get('http://localhost:8080/api/dishes', config).then((response) => {
 
                 console.log(response.data);
@@ -46,10 +53,16 @@ export default function Carte({ navigation, route }) {
     const productContainerStyle = screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500 ? styles.smallScreenContainer : styles.largeScreenContainer;
     const titleStyle = screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500 ? styles.smallScreentitle : styles.largeScreentitle;
 
+
+    const handleSearchQueryChange = (query) => {
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <ScrollView>
+
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
+                <FilterForm onSearchQueryChange={handleSearchQueryChange} />
                 <View style={[styles.productContainer, productContainerStyle]}>
                     {dishes.map((dish) => {
                         return (
