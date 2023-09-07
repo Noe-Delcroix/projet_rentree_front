@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   containerVer: {
     //overflow: 'hidden',
     width: '50%',
+    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
   containerHor: {
     //overflow: 'hidden',
     width: 300,
+    height: '45%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -73,7 +75,7 @@ export default function Product({id, name, image, price, description, allergenes
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [isSelected, setSelection] = useState(false);
-  const isPortrait = windowHeight > windowWidth;
+  const isPortrait = windowHeight > windowWidth && windowWidth < 600 && windowHeight < 1500;
 
 
   const select = () => {
@@ -93,7 +95,10 @@ export default function Product({id, name, image, price, description, allergenes
           <Card>
             <TouchableOpacity onPress={onPressCard}>
               <Card.Image
-                  style={{padding: 0, width: '100%', height: 70}}
+                  style={{
+                    width: isPortrait ? 200 : 300,
+                    height: isPortrait ? 200 : 300,
+                  }}
                   source={{uri: image}}
               />
               <Card.Title style={styles.titleText}>{name}</Card.Title>
@@ -112,8 +117,8 @@ export default function Product({id, name, image, price, description, allergenes
               <View style={styles.imageContainer}>
                 <Card.Image
                     style={{
-                      width: isPortrait ? windowWidth / 3 : windowWidth / 4,
-                      height: isPortrait ? windowHeight / 6 : windowHeight / 6,
+                      width: isPortrait ? 200 : 300,
+                      height: isPortrait ? 200 : 300,
                     }}
                     source={{uri: image}}
                 />
@@ -123,7 +128,7 @@ export default function Product({id, name, image, price, description, allergenes
             <Text style={{textAlign: 'right', fontSize: 13}}>{price}€</Text>
             <View style={{flexDirection: 'row'}}>
               <View style={[styles.descriptionContainer, {width: isPortrait ? '70%' : '100%'}]}>
-                <Text numberOfLines={isPortrait ? 3 : 4} style={styles.descriptionText}>
+                <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
                   {description}
                 </Text>
               </View>

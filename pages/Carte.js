@@ -8,6 +8,7 @@ import {useApplicationContext} from "../components/ApplicationContext";
 
 export default function Carte({ navigation, route }) {
     const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
 
     const { dishes, setDishes, token } = useApplicationContext();
 
@@ -38,9 +39,8 @@ export default function Carte({ navigation, route }) {
         loadDishes();
     }, []);
 
-    const productContainerStyle =
-        screenWidth < 600 ? styles.smallScreenContainer : styles.largeScreenContainer;
-    const titleStyle = screenWidth < 600 ? styles.smallScreentitle : styles.largeScreentitle;
+    const productContainerStyle = screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500 ? styles.smallScreenContainer : styles.largeScreenContainer;
+    const titleStyle = screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500 ? styles.smallScreentitle : styles.largeScreentitle;
 
     return (
         <View style={{ flex: 1 }}>
