@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: '50%',
+    width: 300,
     height: 200,
     alignItems: 'center',
     justifyContent: 'center',
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   containerHor: {
     //overflow: 'hidden',
     width: 300,
-    height: '45%',
+    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
 
 
-export default function Product({id, name, image, price, description, allergenes, navigation}) {
+export default function Product({id, name, image, price, description, alergens, navigation}) {
 
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
@@ -59,7 +59,7 @@ export default function Product({id, name, image, price, description, allergenes
           name: name,
           image: image,
           description: description,
-          allergenes: allergenes,
+          alergens: alergens,
           price: price,
         });
   };
@@ -68,7 +68,7 @@ export default function Product({id, name, image, price, description, allergenes
     name: name,
     image: image,
     description: description,
-    allergenes: allergenes,
+    alergens: alergens,
     price: price
   }
 
@@ -86,59 +86,30 @@ export default function Product({id, name, image, price, description, allergenes
     }
   };
 
-  if (windowHeight > windowWidth) {
-    return (
-        <View style={styles.containerVer}>
-          <Card>
-            <TouchableOpacity onPress={onPressCard}>
-              <Card.Image
-                  style={{
-                    width: isPortrait ? 200 : 300,
-                    height: isPortrait ? 200 : 300,
-                  }}
-                  source={{uri: image}}
-              />
-              <Card.Title style={styles.titleText}>{name}</Card.Title>
-            </TouchableOpacity>
-            <Text style={{textAlign: 'right', alignItems: "flex-start", fontSize: 13}}>{price}€</Text>
-            <Text numberOfLines={3} style={{width: 100, fontSize: 13}}>{description}</Text>
-          </Card>
-          <Text>{windowHeight} * {windowWidth}</Text>
-        </View>
-    );
-  } else {
-    return (
-        <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
-          <Card>
-            <TouchableOpacity onPress={onPressCard}>
-              <View style={styles.imageContainer}>
-                <Card.Image
-                    style={{
-                      width: isPortrait ? 200 : 300,
-                      height: isPortrait ? 200 : 300,
-                    }}
-                    source={{uri: image}}
-                />
-              </View>
-              <Card.Title style={styles.titleText}>{name}</Card.Title>
-            </TouchableOpacity>
-            <Text style={{textAlign: 'right', fontSize: 13}}>{price}€</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={[styles.descriptionContainer, {width: isPortrait ? '70%' : '100%'}]}>
-                <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
-                  {description}
-                </Text>
-              </View>
-              <View style={styles.checkboxContainer}>
-                <CheckBox
-                    value={isSelected}
-                    onValueChange={select}
-                    style={styles.checkbox}
-                />
-              </View>
-            </View>
-          </Card>
-        </View>
+  return (
+    <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
+      <Card>
+        <TouchableOpacity onPress={onPressCard}>
+          <View style={styles.imageContainer}>
+          <Card.Image
+            style={{ 
+              width: isPortrait ? 200 : 300, 
+              height: isPortrait ? 200 : 300, 
+            }}
+            source={{ uri: image }}
+          />
+          </View>
+          <Card.Title style={styles.titleText}>{name}</Card.Title>
+        </TouchableOpacity>
+        <Text  style={[styles.descriptionText, {textAlign: 'right'}]}>{price}€</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
+            <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
+              {description}
+            </Text>
+          </View>
+          </View>
+      </Card>
+    </View>
     );
   }
-}
