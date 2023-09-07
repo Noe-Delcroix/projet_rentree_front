@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
-import { CheckBox, View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { CheckBox, View, StyleSheet, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
+import {useApplicationContext} from "../components/ApplicationContext";
 
 
 const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: 300,
-    height: 200,
+    width: 200,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    padding: 4,
     height:'auto',
   },
   containerHor: {
     //overflow: 'hidden',
     width: 300,
-    height: 200,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -33,24 +32,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionText: {
-    fontSize: RFPercentage(1.8),
+    fontSize: RFPercentage(1.75),
   },
   descriptionContainer:{
     flex: 1, 
     justifyContent: 'center', 
   },
-  checkboxContainer: {
-    justifyContent: 'center',
-  },
-  checkbox: {
-    alignSelf: 'flex-end',
-  },
+  Button:{
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: 10,
+    justifyContent: 'flex-end',
+  }
 
 });
 
 
 
-export default function Product({id, name, image, price, description, alergens, navigation}) {
+export default function Product({id, name, image, price, description, alergens, route, navigation}) {
+
+  const [quantity, setQuantity] = useState(1);
+  const { dishes, numberOfDishes, addDishes, removeDishes } = useApplicationContext();
 
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
@@ -93,8 +95,8 @@ export default function Product({id, name, image, price, description, alergens, 
           <View style={styles.imageContainer}>
           <Card.Image
             style={{ 
-              width: isPortrait ? 200 : 300, 
-              height: isPortrait ? 200 : 300, 
+              width: isPortrait ? 150 : 300, 
+              height: isPortrait ? 150 : 300, 
             }}
             source={{ uri: image }}
           />
@@ -107,6 +109,11 @@ export default function Product({id, name, image, price, description, alergens, 
             <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
               {description}
             </Text>
+          </View>
+          <View style={styles.Button}>
+          <Button title={'Add'} 
+          onPress={() => addDishes(id, price, quantity)}  
+          />
           </View>
           </View>
       </Card>

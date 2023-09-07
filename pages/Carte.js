@@ -43,8 +43,8 @@ export default function Carte({ navigation, route }) {
         loadDishes();
     }, []);
 
-    const productContainerStyle = screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500 ? styles.smallScreenContainer : styles.largeScreenContainer;
-    const titleStyle = screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500 ? styles.smallScreentitle : styles.largeScreentitle;
+    const productContainerStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight) < 1500 ? styles.smallScreenContainer : styles.largeScreenContainer;
+    const titleStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500) ? styles.smallScreentitle : styles.largeScreentitle;
 
     return (
         <View style={{ flex: 1 }}>
@@ -78,15 +78,16 @@ const styles = StyleSheet.create({
     productContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingHorizontal: RFValue(10),
         rowGap: 0,
     },
     smallScreenContainer: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-between',    
+        paddingHorizontal: RFValue(0),
     },
     largeScreenContainer: {
         justifyContent: 'flex-start',
         columnGap: RFValue(20),
+        paddingHorizontal: RFValue(10),
     },
     title: {
         fontWeight: 'bold',
