@@ -94,7 +94,10 @@ const styles = StyleSheet.create({
         rowGap: 0,
     },
     smallScreenContainer: {
-        justifyContent: 'space-between',    
+        justifyContent: 'space-between',  
+        paddingHorizontal: 0,  
+        columnGap: 0,
+        marginHorizontal:0,
     },
     largeScreenContainer: {
         justifyContent: 'flex-start',

@@ -9,10 +9,11 @@ const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: '40%',
+    width: '48%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
+    margin: 0,
     height:'auto',
   },
   containerHor: {
