@@ -10,8 +10,8 @@ import FilterForm from "../components/FilterForm";
 
 export default function Carte({ navigation, route }) {
 
-    const screenWidth = Dimensions.get('window').width;
-    const screenHeight = Dimensions.get('window').height;
+    const screenWidth = Dimensions.get('screen').width;
+    const screenHeight = Dimensions.get('screen').height;
 
     const { dishes, setDishes, token } = useApplicationContext();
 
@@ -48,8 +48,8 @@ export default function Carte({ navigation, route }) {
         loadDishes();
     }, []);
 
-    const productContainerStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight) < 1500 ? styles.smallScreenContainer : styles.largeScreenContainer;
-    const titleStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500) ? styles.smallScreentitle : styles.largeScreentitle;
+    const productContainerStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1300) ? styles.smallScreenContainer : styles.largeScreenContainer;
+    const titleStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1300) ? styles.smallScreentitle : styles.largeScreentitle;
 
 
     const handleSearchQueryChange = (query) => {
@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
     largeScreenContainer: {
         justifyContent: 'flex-start',
         columnGap: RFValue(20),
-        paddingHorizontal: RFValue(10),
+        paddingHorizontal: RFValue(10),        
+        marginHorizontal:20,
     },
     title: {
         fontWeight: 'bold',
