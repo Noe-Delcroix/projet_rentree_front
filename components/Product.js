@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { CheckBox, View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
+import {useApplicationContext} from "../components/ApplicationContext";
 
 
 const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: '50%',
+    width: '48%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    padding: 2,
+    margin: 0,
     height:'auto',
   },
   containerHor: {
@@ -37,106 +39,104 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center', 
   },
-  checkboxContainer: {
-    justifyContent: 'center',
+  button:{
+    backgroundColor: '#00B4EC', 
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: 10,
+    justifyContent: 'flex-end',
+    borderRadius: 5,
   },
-  checkbox: {
-    alignSelf: 'flex-end',
+  smallcustomButton: {
+    paddingHorizontal: 10, 
+    paddingVertical: 5,  
+  },
+  largecustomButton: {
+    paddingHorizontal: 20, 
+    paddingVertical: 10, 
+  },
+
+  customButtonText: {
+    color: 'white', 
+    fontSize: RFPercentage(1.75), 
+    fontWeight: 'bold',
   },
 
 });
 
 
 
-export default function Product({id, name, image, price, description, allergenes, navigation}) {
+export default function Product({id, name, image, price, description, alergens, route, navigation}) {
 
-  const onPressCard = () => {
+  const [quantity, setQuantity] = useState(1);
+  const { dishes, numberOfDishes, addDishes, removeDishes } = useApplicationContext();
+
+  const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
         {
           id: id,
           name: name,
           image: image,
           description: description,
-          allergenes: allergenes,
+          alergens: alergens,
           price: price,
         });
   };
 
   const dish = {
-    title: name,
+    name: name,
     image: image,
     description: description,
-    allergenes: allergenes,
+    alergens: alergens,
     price: price
   }
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [isSelected, setSelection] = useState(false);
-  const isPortrait = windowHeight > windowWidth;
+  const isPortrait = windowHeight > windowWidth && windowWidth < 600 && windowHeight < 1500;
 
 
   const select = () => {
-    setSelection(!isSelected);
-    console.log(dish)
-    if (isSelected) {
-      removeDishes(dish.title);
-    } else {
-      // Supprimez "dish" du tableau "selectedDishes"
-      addDishes(dish);
+    setSelection(!isSelected)
+    if (!isSelected) {
+      console.log(dish)
+      setSelectedDishes(arr => [...arr, dish])
     }
   };
 
-  if (windowHeight > windowWidth) {
-    return (
-        <View style={styles.containerVer}>
-          <Card>
-            <TouchableOpacity onPress={onPressCard}>
-              <Card.Image
-                  style={{padding: 0, width: '100%', height: 70}}
-                  source={{uri: image}}
-              />
-              <Card.Title style={styles.titleText}>{name}</Card.Title>
+  return (
+    <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
+      <Card>
+        <TouchableOpacity onPress={onPressCard}>
+          <View style={styles.imageContainer}>
+          <Card.Image
+            style={{ 
+              width: isPortrait ? 150 : 300, 
+              height: isPortrait ? 150 : 300, 
+            }}
+            source={{ uri: image }}
+          />
+          </View>
+          <Card.Title style={styles.titleText}>{name}</Card.Title>
+        </TouchableOpacity>
+        <Text  style={[styles.descriptionText, {textAlign: 'right'}]}>{price}€</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
+            <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
+              {description}
+            </Text>
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity
+              onPress={() => addDishes(id, price, quantity)}
+              style={[isPortrait ? styles.smallcustomButton : styles.largecustomButton]}
+            >
+              <Text style={styles.customButtonText}>ADD</Text>
             </TouchableOpacity>
-            <Text style={{textAlign: 'right', alignItems: "flex-start", fontSize: 13}}>{price}€</Text>
-            <Text numberOfLines={3} style={{width: 100, fontSize: 13}}>{description}</Text>
-          </Card>
-          <Text>{windowHeight} * {windowWidth}</Text>
-        </View>
-    );
-  } else {
-    return (
-        <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
-          <Card>
-            <TouchableOpacity onPress={onPressCard}>
-              <View style={styles.imageContainer}>
-                <Card.Image
-                    style={{
-                      width: isPortrait ? windowWidth / 3 : windowWidth / 4,
-                      height: isPortrait ? windowHeight / 6 : windowHeight / 6,
-                    }}
-                    source={{uri: image}}
-                />
-              </View>
-              <Card.Title style={styles.titleText}>{name}</Card.Title>
-            </TouchableOpacity>
-            <Text style={{textAlign: 'right', fontSize: 13}}>{price}€</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={[styles.descriptionContainer, {width: isPortrait ? '70%' : '100%'}]}>
-                <Text numberOfLines={isPortrait ? 3 : 4} style={styles.descriptionText}>
-                  {description}
-                </Text>
-              </View>
-              <View style={styles.checkboxContainer}>
-                <CheckBox
-                    value={isSelected}
-                    onValueChange={select}
-                    style={styles.checkbox}
-                />
-              </View>
-            </View>
-          </Card>
-        </View>
+          </View>
+          </View>
+      </Card>
+    </View>
     );
   }
-}

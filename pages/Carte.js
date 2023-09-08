@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
 import {useApplicationContext} from "../components/ApplicationContext";
+import FilterForm from "../components/FilterForm";
+
 
 export default function Carte({ navigation, route }) {
+
     const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
 
     const { dishes, setDishes, token } = useApplicationContext();
 
-    const [platsAffiche, setPa] = useState(dishes)
-    const config = {
-        headers: {
-            token: token,
-        },
-    };
 
-    const loadDishes = async () => {
+    const loadDishes = async (searchTerm) => {
+        const config = {
+            headers: {
+                token: token,
+            },
+            body: {
+                searchTerm: searchTerm,
+            },
+        };
+
         try {
-            axios.get('http://localhost:8080/api/dishes').then((response) => {
+
+            axios.get('http://localhost:8080/api/dishes', config).then((response) => {
                 console.log(response.data);
                 console.log(response);
                 // ajouter un attribut quantity égale à 0 à chaque plat
@@ -35,18 +43,24 @@ export default function Carte({ navigation, route }) {
         }
     };
 
+
     useEffect(() => {
         loadDishes();
     }, []);
 
-    const productContainerStyle =
-        screenWidth < 600 ? styles.smallScreenContainer : styles.largeScreenContainer;
-    const titleStyle = screenWidth < 600 ? styles.smallScreentitle : styles.largeScreentitle;
+    const productContainerStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight) < 1500 ? styles.smallScreenContainer : styles.largeScreenContainer;
+    const titleStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1500) ? styles.smallScreentitle : styles.largeScreentitle;
+
+
+    const handleSearchQueryChange = (query) => {
+    };
 
     return (
         <View style={{ flex: 1 }}>
             <ScrollView>
+
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
+                <FilterForm onSearchQueryChange={handleSearchQueryChange} />
                 <View style={[styles.productContainer, productContainerStyle]}>
                     {platsAffiche.map((dish) => {
                         return (
@@ -74,16 +88,19 @@ export default function Carte({ navigation, route }) {
 const styles = StyleSheet.create({
     productContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
-        paddingHorizontal: RFValue(10),
+        flexWrap: 'wrap',        
         rowGap: 0,
     },
     smallScreenContainer: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-between',  
+        paddingHorizontal: 0,  
+        columnGap: 0,
+        marginHorizontal:0,
     },
     largeScreenContainer: {
         justifyContent: 'flex-start',
         columnGap: RFValue(20),
+        paddingHorizontal: RFValue(10),
     },
     title: {
         fontWeight: 'bold',
