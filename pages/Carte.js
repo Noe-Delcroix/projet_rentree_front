@@ -11,6 +11,7 @@ export default function Carte({ navigation, route }) {
 
     const { dishes, setDishes, token } = useApplicationContext();
 
+    const [platsAffiche, setPa] = useState(dishes)
     const config = {
         headers: {
             token: token,
@@ -19,7 +20,7 @@ export default function Carte({ navigation, route }) {
 
     const loadDishes = async () => {
         try {
-            axios.get('http://localhost:8080/api/dishes', config).then((response) => {
+            axios.get('http://localhost:8080/api/dishes').then((response) => {
                 console.log(response.data);
                 console.log(response);
                 // ajouter un attribut quantity égale à 0 à chaque plat
@@ -47,7 +48,7 @@ export default function Carte({ navigation, route }) {
             <ScrollView>
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
                 <View style={[styles.productContainer, productContainerStyle]}>
-                    {dishes.map((dish) => {
+                    {platsAffiche.map((dish) => {
                         return (
                             <Product
                                 id={dish.id}
