@@ -62,7 +62,7 @@ export default function Carte({ navigation, route }) {
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
                 <FilterForm onSearchQueryChange={handleSearchQueryChange} />
                 <View style={[styles.productContainer, productContainerStyle]}>
-                    {platsAffiche.map((dish) => {
+                    {dishes.map((dish) => {
                         return (
                             <Product
                                 id={dish.id}
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     smallScreenContainer: {
         justifyContent: 'space-between',  
         paddingHorizontal: 0,  
-        columnGap: 0,
+        columnGap: 10,
         marginHorizontal:0,
     },
     largeScreenContainer: {

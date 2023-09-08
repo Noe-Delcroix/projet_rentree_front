@@ -21,9 +21,6 @@ export default function Panier({ navigation, route }) {
 
         try {
             axios.post('http://localhost:8080/api/orders', { orderContent: d }, {
-                headers: {
-                    'token': token,
-                }
             }).then((response) => {
                 console.log(response.data);
                 navigation.navigate('Order')
@@ -48,7 +45,7 @@ export default function Panier({ navigation, route }) {
 
         <FlatList
             data={dishes.filter(item => item.quantity > 0)}
-            keyExtractor={(item) => item.title}
+            keyExtractor={(item) => item.name}
             renderItem={({ item }) => (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                 <Image
@@ -56,11 +53,12 @@ export default function Panier({ navigation, route }) {
                 style={{ width: 100, height: 100, marginRight: 10 }}
                 />
                 <View style={{ flex: 1 }}>
-                    <Text>{item.title}</Text>
-                    <Text>{item.price}</Text>
+                    <Text style={styles.title}>{item.name}</Text>
+                    <Text>{item.price}€</Text>
                     <Text>{item.description}</Text>
-                    <Button title={"-"} onPress={() => removeDishes(item.id, 1)}/><Text>quantity :{item.quantity}</Text><Button onPress={() => addDishes(item.id, item.price, 1)} title={"+"}/>
-                    <Text onPress={() => removeDishes(item.id)}>❌</Text>
+                    <Button onPress={() => addDishes(item.id, item.price, 1)} title={"+"}/><Button title={"-"} onPress={() => removeDishes(item.id, 1)}/><Text onPress={() => removeDishes(item.id)}>❌</Text>
+                    <Text>quantity :{item.quantity}</Text>
+                    
                 </View>
             </View>
             )}
@@ -82,5 +80,8 @@ const styles = StyleSheet.create({
     },
     pageView: {
         height: '100%'
-    }
+    },
+    title: {
+        fontWeight: 'bold',
+    },
 });

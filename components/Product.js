@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: '48%',
+    width: '46%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
@@ -25,15 +25,11 @@ const styles = StyleSheet.create({
     height:'auto',
   },
   titleText: {
-    fontSize: RFPercentage(2),
     fontWeight: 'bold',
     marginBottom: 0,
   },
   imageContainer: {
     alignItems: 'center',
-  },
-  descriptionText: {
-    fontSize: RFPercentage(1.75),
   },
   descriptionContainer:{
     flex: 1, 
@@ -58,7 +54,6 @@ const styles = StyleSheet.create({
 
   customButtonText: {
     color: 'white', 
-    fontSize: RFPercentage(1.75), 
     fontWeight: 'bold',
   },
 
@@ -118,12 +113,12 @@ export default function Product({id, name, image, price, description, alergens, 
             source={{ uri: image }}
           />
           </View>
-          <Card.Title style={styles.titleText}>{name}</Card.Title>
+          <Card.Title style={[styles.titleText, {fontSize: isPortrait? RFPercentage(2) : 25,}]}>{name}</Card.Title>
         </TouchableOpacity>
-        <Text  style={[styles.descriptionText, {textAlign: 'right'}]}>{price}€</Text>
+        <Text  style={[{fontSize: isPortrait? RFPercentage(1.75) : 20,}, {textAlign: 'right'}]}>{price}€</Text>
         <View style={{ flexDirection: 'row' }}>
           <View style={[styles.descriptionContainer, { width: isPortrait ? '70%' : '100%' }]}>
-            <Text numberOfLines={isPortrait ? 3 : 2} style={styles.descriptionText}>
+            <Text numberOfLines={isPortrait ? 3 : 2} style={{fontSize: isPortrait? RFPercentage(1.75) : 20,}}>
               {description}
             </Text>
           </View>
@@ -132,7 +127,7 @@ export default function Product({id, name, image, price, description, alergens, 
               onPress={() => addDishes(id, price, quantity)}
               style={[isPortrait ? styles.smallcustomButton : styles.largecustomButton]}
             >
-              <Text style={styles.customButtonText}>ADD</Text>
+              <Text style={[styles.customButtonText,{fontSize: isPortrait? RFPercentage(1.75) : 20,}]}>ADD</Text>
             </TouchableOpacity>
           </View>
           </View>

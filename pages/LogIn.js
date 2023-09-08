@@ -12,6 +12,11 @@ export default function LogIwn({ navigation }) {
     const [password, setPassword] = useState("")
     const { setToken } = useApplicationContext();
 
+    const api = axios.create({
+        baseURL: 'http://localhost:8888/',
+        withCredentials: true,
+    });
+    
     const tryLogIn = () => {
         console.log(email)
         console.log(password)
