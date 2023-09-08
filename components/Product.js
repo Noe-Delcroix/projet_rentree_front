@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckBox, View, StyleSheet, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
 import {useApplicationContext} from "../components/ApplicationContext";
@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
 
   containerVer: {
     //overflow: 'hidden',
-    width: 200,
+    width: '40%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 4,
+    padding: 2,
     height:'auto',
   },
   containerHor: {
@@ -38,12 +38,28 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center', 
   },
-  Button:{
+  button:{
+    backgroundColor: '#00B4EC', 
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginBottom: 10,
     justifyContent: 'flex-end',
-  }
+    borderRadius: 5,
+  },
+  smallcustomButton: {
+    paddingHorizontal: 10, 
+    paddingVertical: 5,  
+  },
+  largecustomButton: {
+    paddingHorizontal: 20, 
+    paddingVertical: 10, 
+  },
+
+  customButtonText: {
+    color: 'white', 
+    fontSize: RFPercentage(1.75), 
+    fontWeight: 'bold',
+  },
 
 });
 
@@ -110,10 +126,13 @@ export default function Product({id, name, image, price, description, alergens, 
               {description}
             </Text>
           </View>
-          <View style={styles.Button}>
-          <Button title={'Add'} 
-          onPress={() => addDishes(id, price, quantity)}  
-          />
+          <View style={styles.button}>
+            <TouchableOpacity
+              onPress={() => addDishes(id, price, quantity)}
+              style={[isPortrait ? styles.smallcustomButton : styles.largecustomButton]}
+            >
+              <Text style={styles.customButtonText}>ADD</Text>
+            </TouchableOpacity>
           </View>
           </View>
       </Card>

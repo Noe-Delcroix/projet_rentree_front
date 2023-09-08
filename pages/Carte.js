@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
@@ -90,12 +90,11 @@ export default function Carte({ navigation, route }) {
 const styles = StyleSheet.create({
     productContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexWrap: 'wrap',        
         rowGap: 0,
     },
     smallScreenContainer: {
         justifyContent: 'space-between',    
-        paddingHorizontal: RFValue(0),
     },
     largeScreenContainer: {
         justifyContent: 'flex-start',
