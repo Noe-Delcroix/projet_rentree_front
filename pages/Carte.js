@@ -16,7 +16,6 @@ export default function Carte({ navigation, route }) {
     const { dishes, setDishes, token } = useApplicationContext();
 
 
-
     const loadDishes = async (searchTerm) => {
         const config = {
             headers: {
@@ -30,7 +29,6 @@ export default function Carte({ navigation, route }) {
         try {
 
             axios.get('http://localhost:8080/api/dishes', config).then((response) => {
-
                 console.log(response.data);
                 console.log(response);
                 // ajouter un attribut quantity égale à 0 à chaque plat
@@ -64,7 +62,7 @@ export default function Carte({ navigation, route }) {
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
                 <FilterForm onSearchQueryChange={handleSearchQueryChange} />
                 <View style={[styles.productContainer, productContainerStyle]}>
-                    {dishes.map((dish) => {
+                    {platsAffiche.map((dish) => {
                         return (
                             <Product
                                 id={dish.id}

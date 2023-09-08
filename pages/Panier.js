@@ -3,12 +3,36 @@ import {View, Text, Button, FlatList, Image, CheckBox, StyleSheet} from 'react-n
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
 import {useApplicationContext} from "../components/ApplicationContext";
+import axios from "axios";
 
 export default function Panier({ navigation, route }) {
 
-    const { dishes,  addDishes, removeDishes } = useApplicationContext();
+    const { dishes,  addDishes, removeDishes, token } = useApplicationContext();
 
     console.log(dishes);
+
+    const launchOrder = async () => {
+        const d = {}
+        dishes.forEach(e => {
+            if(e.quantity>0){
+                d[e.id]=e.quantity
+            }
+        })
+
+        try {
+            axios.post('http://localhost:8080/api/orders', { orderContent: d }, {
+                headers: {
+                    'token': token,
+                }
+            }).then((response) => {
+                console.log(response.data);
+                navigation.navigate('Order')
+            });
+        } catch (error) {
+            console.log('ERREUR');
+            console.error(error);
+        }
+    }
 
     return (
         <View  style={styles.pageView}>
@@ -19,7 +43,7 @@ export default function Panier({ navigation, route }) {
         />
         <Button
             title="Payer"
-            onPress={() => navigation.navigate('Order')}
+            onPress={() => launchOrder()}
         />
 
         <FlatList
