@@ -15,17 +15,18 @@ export default function Carte({ navigation, route }) {
 
     const { dishes, setDishes } = useApplicationContext();
 
+    const [tags, setTags] = useState({});
+    const [diets, setDiets] = useState({});
 
-    const loadDishes = async (searchTerm) => {
-        const config = {
-            body: {
-                searchTerm: searchTerm,
-            },
-        };
+
+    const loadDishes = async (query) => {
+        console.log("Loading dishes with query :");
+        console.log(query);
 
         try {
 
-            axios.get('http://localhost:8080/api/dishes', config).then((response) => {
+            axios.get('http://localhost:8080/api/dishes',{ data: query} ).then((response) => {
+                console.log(response.data)
                 setDishes(response.data);
             });
         } catch (error) {
@@ -36,14 +37,21 @@ export default function Carte({ navigation, route }) {
 
 
     useEffect(() => {
-        loadDishes();
+        axios.get('http://localhost:8080/api/dishes/tags').then((response) => {
+            setTags(response.data);
+        })
+        axios.get('http://localhost:8080/api/dishes/diets').then((response) => {
+            setDiets(response.data);
+        })
+
     }, []);
 
     const productContainerStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1300) ? styles.smallScreenContainer : styles.largeScreenContainer;
     const titleStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1300) ? styles.smallScreentitle : styles.largeScreentitle;
 
 
-    const handleSearchQueryChange = (query) => {
+    const handleQueryChange = (query) => {
+        loadDishes(query);
     };
 
     return (
@@ -51,7 +59,7 @@ export default function Carte({ navigation, route }) {
             <ScrollView>
 
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
-                <FilterForm onSearchQueryChange={handleSearchQueryChange} />
+                <FilterForm onQueryChange={handleQueryChange} tags={tags} diets={diets}/>
                 <View style={[styles.productContainer, productContainerStyle]}>
                     {dishes.map((dish) => {
                         return (
