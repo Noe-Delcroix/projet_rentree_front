@@ -13,13 +13,15 @@ import Header from './components/Header';
 import {useState} from "react";
 import WalletScreen from "./pages/WalletScreen";
 import {ApplicationContextProvider} from "./components/ApplicationContext";
+import axios from 'axios';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
+    axios.defaults.withCredentials = true;
 
-  return (
+    return (
       <ApplicationContextProvider>
           <NavigationContainer>
               <Stack.Navigator
