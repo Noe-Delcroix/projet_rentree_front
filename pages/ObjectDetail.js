@@ -65,7 +65,7 @@ export default function ObjectDetail({ route, navigation }) {
     // Ajoutez un state pour gérer la quantité de plats
     const [quantity, setQuantity] = useState(1);
 
-    const { dishes, numberOfDishes, addDishes, removeDishes } = useApplicationContext();
+    const { addDishesToBasket } = useApplicationContext();
 
 
     return (
@@ -93,7 +93,7 @@ export default function ObjectDetail({ route, navigation }) {
                     <Picker.Item label="6" value={6} />
                     <Picker.Item label="7" value={7} />
                 </Picker>
-                <Button title={'ajouter au panier'} onPress={() => addDishes(id, price, quantity)} />
+                <Button title={'ajouter au panier'} onPress={() => addDishesToBasket(id, quantity)} />
             </View>
 
             <View style={styles.columnContainer}>

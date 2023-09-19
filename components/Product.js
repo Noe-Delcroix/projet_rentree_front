@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
 
 export default function Product({id, name, image, price, description, alergens, route, navigation}) {
 
-  const [quantity, setQuantity] = useState(1);
-  const { dishes, numberOfDishes, addDishes, removeDishes } = useApplicationContext();
+  const [quantity] = useState(1);
+  const { addDishesToBasket } = useApplicationContext();
 
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
@@ -124,7 +124,7 @@ export default function Product({id, name, image, price, description, alergens, 
           </View>
           <View style={styles.button}>
             <TouchableOpacity
-              onPress={() => addDishes(id, price, quantity)}
+              onPress={() => addDishesToBasket(id, quantity)}
               style={[isPortrait ? styles.smallcustomButton : styles.largecustomButton]}
             >
               <Text style={[styles.customButtonText,{fontSize: isPortrait? RFPercentage(1.75) : 20,}]}>ADD</Text>
