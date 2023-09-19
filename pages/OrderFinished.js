@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import axios from "axios";
 import {useApplicationContext} from "../components/ApplicationContext";
 
-export default function Order({ route, navigation }) {
+export default function OrderFinished({ route, navigation }) {
     const [solde, setSolde] = useState(0);
 
     const { token, dishes } = useApplicationContext();

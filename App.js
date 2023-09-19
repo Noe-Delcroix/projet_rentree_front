@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Carte from './pages/Carte';
 import ObjectDetail from './pages/ObjectDetail';
-import Order from './pages/Order';
+import Order from './pages/OrderFinished';
 import Panier from './pages/Panier';
 import ProfileScreen from './pages/ProfilScreen';
 
@@ -13,6 +13,7 @@ import Header from './components/Header';
 import {useState} from "react";
 import {ApplicationContextProvider} from "./components/ApplicationContext";
 import axios from 'axios';
+import SeeOrder from "./pages/SeeOrder";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ const App = () => {
                   <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                   <Stack.Screen name="Order" component={Order}  options={{ headerTitle: (props) => <Header {...props} /> }} />
 
+                  <Stack.Screen name="SeeOrder" component={SeeOrder}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                   <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                   <Stack.Screen name="Profil"  component={ProfileScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
               </Stack.Navigator>

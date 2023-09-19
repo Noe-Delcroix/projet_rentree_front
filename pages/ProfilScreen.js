@@ -28,6 +28,17 @@ const ProfileScreen = ({ navigation, route }) => {
         }
     };
 
+    const handleLogOut = () => {
+        try {
+            axios.post('http://localhost:8080/api/users/logout').then((response) => {
+                console.log(response.data)
+                navigation.navigate('LogIn')
+            })} catch (error) {
+            console.log('ERREUR');
+
+        }
+    }
+
     useEffect(() => {
         loadUserInfo();
     }, []);
@@ -54,6 +65,12 @@ const ProfileScreen = ({ navigation, route }) => {
                     // TODO : modif mdp
                 }}
             />
+            <Button title={"Déconnexion"} onPress={() => {
+                handleLogOut()
+            }}/>
+            <Button title={"voir ancienne commande"} onPress={() => {
+                navigation.navigate('SeeOrder')
+            }}/>
             <View style={styles.bottomNavContainer}>
                 <BottomNavigationBar navigation={navigation}/>
             </View>
