@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Text, StyleSheet, View, TextInput, Button } from 'react-native';
 import axios from 'axios';
 import { toaster } from 'evergreen-ui'
@@ -11,7 +11,15 @@ export default function LogIwn({ navigation }) {
     const [lastname, setLastname] = useState("")
     const [password, setPassword] = useState("")
     const { setToken } = useApplicationContext();
-    
+
+    useEffect(() => {
+        try {
+            axios.get('http://localhost:8080/api/users/info', ).then((response) => {
+                navigation.navigate('Carte')
+            });
+        } catch (error) {
+        }
+    }, []);
     const tryLogIn = () => {
         console.log(email)
         console.log(password)
