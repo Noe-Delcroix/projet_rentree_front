@@ -4,13 +4,15 @@ import BottomNavigationBar from "../components/BottomNavigationBar";
 import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
 import {useApplicationContext} from "../components/ApplicationContext";
 import axios from "axios";
+import {TextInputField, toaster} from 'evergreen-ui';
 
 export default function Panier({ navigation, route }) {
 
     const { basket,  addDishesToBasket, removeDishesFromBasket, token } = useApplicationContext();
 
-    const [detailledBasket, setDetailledBasket] = useState([])
+    const [address, setAddress] = useState("")
 
+    const [detailledBasket, setDetailledBasket] = useState([])
 
     React.useEffect(() => {
         getDetailledBasket();
@@ -37,11 +39,7 @@ export default function Panier({ navigation, route }) {
         // Créer un tableau de promesses pour les requêtes axios
         const axiosPromises = basket.map(async (e) => {
             try {
-                const response = await axios.get('http://localhost:8080/api/dishes/' + e.id, {
-                    headers: {
-                        token: token,
-                    },
-                });
+                const response = await axios.get('http://localhost:8080/api/dishes/' + e.id );
                 console.log(response.data);
                 return response.data;
             } catch (error) {
@@ -62,31 +60,41 @@ export default function Panier({ navigation, route }) {
     }
 
     const launchOrder = async () => {
-        const d = {}
-        dishes.forEach(e => {
+        const d = {
+            orderContent: {},
+            address: address
+        }
+        console.log("address" + address)
+
+        basket.forEach(e => {
             if(e.quantity>0){
-                d[e.id]=e.quantity
+                d.orderContent[e.id]=e.quantity
             }
         })
 
+
         try {
-            axios.post('http://localhost:8080/api/orders', { orderContent: d }, {
-            }).then((response) => {
+            axios.post('http://localhost:8080/api/orders', d, ).then((response) => {
                 console.log(response.data);
+                toaster.success('Votre commande a bien été envoyé')
                 navigation.navigate('Order')
             });
         } catch (error) {
             console.log('ERREUR');
             console.error(error);
+            toaster.warning('Une erreur est survenue')
         }
     }
 
     return (
         <View  style={styles.pageView}>
         <Text>Panier</Text>
-        <Button
-            title="Retourner au menu"
-            onPress={() => navigation.navigate('Carte')}
+        <TextInputField
+            id="address"
+            label="A required text input field"
+            required
+            onChange={e => setAddress(e.target.value)}
+            placeholder="Your address"
         />
         <Button
             title="Payer"

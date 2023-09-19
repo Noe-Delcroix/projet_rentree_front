@@ -18,9 +18,6 @@ export default function Carte({ navigation, route }) {
 
     const loadDishes = async (searchTerm) => {
         const config = {
-            headers: {
-                token: token,
-            },
             body: {
                 searchTerm: searchTerm,
             },
