@@ -1,113 +1,91 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, TextInput, ScrollView, Button } from 'react-native';
 
-import Slider from '@react-native-community/slider';
-import CheckBox from '@react-native-community/checkbox';
+import RangeSlider from 'react-range-slider-input';
+import 'react-range-slider-input/dist/style.css';
+import axios from "axios";
+import {Checkbox} from "evergreen-ui";
 
-const FilterForm = ({ onSearchQueryChange }) => {
+const FilterForm = ({ onQueryChange, tags, diets }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(100);
-    const [diets, setDiets] = useState({
-        vegetarian: false,
-        vegan: false,
-        glutenFree: false,
-    });
-    const [tags, setTags] = useState({
-        healthy: false,
-        quick: false,
-        italian: false,
-        mexican: false,
-    });
+    const [prices, setPrices] = useState([0, 100])
+    const [selectedTags, setSelectedTags] = useState({});
+    const [selectedDiets, setSelectedDiets] = useState({});
 
-
-    const handleDietChange = (diet) => {
-        setDiets((prevDiets) => ({
-            ...prevDiets,
-            [diet]: !prevDiets[diet],
-        }));
-    };
-
-    const handleTagChange = (tag) => {
-        setTags((prevTags) => ({
-            ...prevTags,
-            [tag]: !prevTags[tag],
-        }));
-    };
-
-    const handleToggleAllDiets = () => {
-        const allChecked = Object.values(diets).every((value) => value);
-        const newDietsState = {};
-        for (const diet in diets) {
-            newDietsState[diet] = !allChecked;
+    const handleCheckboxChange = (type, key, checked) => {
+        if (type === "tags") {
+            setSelectedTags(prev => ({ ...prev, [key]: checked }));
+        } else {
+            setSelectedDiets(prev => ({ ...prev, [key]: checked }));
         }
-        setDiets(newDietsState);
     };
 
-    const handleToggleAllTags = () => {
-        const allChecked = Object.values(tags).every((value) => value);
-        const newTagsState = {};
-        for (const tag in tags) {
-            newTagsState[tag] = !allChecked;
-        }
-        setTags(newTagsState);
+    useEffect(() => {
+        handleQueryChange();
+    }, [searchQuery, selectedTags, selectedDiets]);
+
+    const handleQueryChange = () => {
+        const query = {
+            searchText: searchQuery,
+            // lowerPrice: prices[0],
+            // upperPrice: prices[1],
+            // tags: Object.keys(selectedTags).filter(tag => selectedTags[tag]),
+            // diets: Object.keys(selectedDiets).filter(diet => selectedDiets[diet])
+        };
+        onQueryChange(query);
     };
 
-    const handleSearchQueryChange = (query) => {
-        setSearchQuery(query);
-        onSearchQueryChange(query); // Invoke the callback with the new query
-    };
 
     return (
-        <ScrollView>
-            <Text>Search</Text>
+        <div>
+            <Text>Rechercher un plat</Text>
             <TextInput
-                placeholder="Search..."
+                placeholder="Nom du plat..."
                 value={searchQuery}
-                onChangeText={handleSearchQueryChange}
+                onChangeText={setSearchQuery}
             />
 
-            {/*<Text>Price Range</Text>*/}
 
-            {/*<Slider*/}
-            {/*    minimumValue={0}*/}
-            {/*    maximumValue={200}*/}
-            {/*    value={minPrice}*/}
-            {/*    onValueChange={(value) => setMinPrice(value)}*/}
-            {/*/>*/}
-            {/*<Slider*/}
-            {/*    minimumValue={0}*/}
-            {/*    maximumValue={200}*/}
-            {/*    value={maxPrice}*/}
-            {/*    onValueChange={(value) => setMaxPrice(value)}*/}
-            {/*/>*/}
-            {/*<Text>Min Price: ${minPrice}</Text>*/}
-            {/*<Text>Max Price: ${maxPrice}</Text>*/}
+            <Text>Prix Minimum: {prices[0].toFixed(2)} €</Text>
+            <Text>Prix Maximum: {prices[1].toFixed(2)} €</Text>
 
-            {/*<Text>Diets</Text>*/}
-            {/*{Object.entries(diets).map(([diet, checked]) => (*/}
-            {/*    <View key={diet}>*/}
-            {/*        <CheckBox*/}
-            {/*            value={checked}*/}
-            {/*            onValueChange={() => handleDietChange(diet)}*/}
-            {/*        />*/}
-            {/*        <Text>{diet}</Text>*/}
-            {/*    </View>*/}
-            {/*))}*/}
-            {/*<Button title="Toggle All Diets" onPress={handleToggleAllDiets} />*/}
+            <RangeSlider
+                min={0}
+                max={100}
+                step={1}
+                value={prices}
+                onInput={setPrices}
+                onThumbDragEnd={handleQueryChange}
 
-            {/*<Text>Tags</Text>*/}
-            {/*{Object.entries(tags).map(([tag, checked]) => (*/}
-            {/*    <View key={tag}>*/}
-            {/*        <CheckBox*/}
-            {/*            value={checked}*/}
-            {/*            onValueChange={() => handleTagChange(tag)}*/}
-            {/*        />*/}
-            {/*        <Text>{tag}</Text>*/}
-            {/*    </View>*/}
-            {/*))}*/}
-            {/*<Button title="Toggle All Tags" onPress={handleToggleAllTags} />*/}
-        </ScrollView>
+            />
+
+            <Text>Tags</Text>
+            <ScrollView>
+                {Object.entries(tags).map((tag) => (
+                    <Checkbox
+                        key={tag[0]}
+                        label={tag[1]}
+                        checked={selectedTags[tag[0]] || false}
+                        onChange={(e) => handleCheckboxChange("tags", tag[0], e.target.checked)}
+                    />
+                ))}
+            </ScrollView>
+
+            <Text>Diets</Text>
+            <ScrollView>
+
+                {Object.entries(diets).map((diet) => (
+                    <Checkbox
+                        key={diet[0]}
+                        label={diet[1]}
+                        checked={selectedDiets[diet[0]] || false}
+                        onChange={(e) => handleCheckboxChange("diets", diet[0], e.target.checked)}
+                    />
+                ))}
+            </ScrollView>
+
+
+        </div>
     );
 };
 
