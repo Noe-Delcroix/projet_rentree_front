@@ -15,7 +15,7 @@ export default function LogIwn({ navigation }) {
     useEffect(() => {
         try {
             axios.get('http://localhost:8080/api/users/info', ).then((response) => {
-                navigation.navigate('Carte')
+                navigation.replace('Carte')
             });
         } catch (error) {
         }
@@ -29,7 +29,7 @@ export default function LogIwn({ navigation }) {
         }).then((response) => {
             console.log(response);
             setToken(response.data)
-            navigation.navigate('Carte')
+            navigation.replace('Carte')
         }, (error) => {
             toaster.warning(error.response.data)
         });

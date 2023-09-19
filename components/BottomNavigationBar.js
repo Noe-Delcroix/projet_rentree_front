@@ -9,6 +9,13 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity
+                onPress={() => navigation.navigate('Carte')}
+                style={[styles.tab, activeScreen === 'Screen1' && styles.activeTab]}
+            >
+                <Image source={{ uri: "https://icons.veryicon.com/png/o/miscellaneous/chi-mai-network/list-182.png" }} style={styles.tabImage} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
                 onPress={() => navigation.navigate('Panier')}
                 style={[styles.tab, activeScreen === 'Screen1' && styles.activeTab]}
             >
@@ -21,17 +28,10 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => navigation.navigate('Profil')}
-                style={[styles.tab, activeScreen === 'Screen2' && styles.activeTab]}
+                style={[styles.tab, activeScreen === 'Screen1' && styles.activeTab]}
             >
                 <Image source={{ uri: "https://icons.veryicon.com/png/o/miscellaneous/8atour/people-23.png" }} style={styles.tabImage} />
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => navigation.navigate('Wallet')}
-                style={[styles.tab, activeScreen === 'Screen2' && styles.activeTab]}
-            >
-                <Image source={wallet} style={styles.tabImage} />
-            </TouchableOpacity>
-            {/* Ajoutez d'autres onglets selon vos besoins */}
         </View>
     );
 };

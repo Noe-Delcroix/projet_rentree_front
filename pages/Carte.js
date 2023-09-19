@@ -13,7 +13,7 @@ export default function Carte({ navigation, route }) {
     const screenWidth = Dimensions.get('screen').width;
     const screenHeight = Dimensions.get('screen').height;
 
-    const { dishes, setDishes, token } = useApplicationContext();
+    const { dishes, setDishes } = useApplicationContext();
 
 
     const loadDishes = async (searchTerm) => {
@@ -26,12 +26,6 @@ export default function Carte({ navigation, route }) {
         try {
 
             axios.get('http://localhost:8080/api/dishes', config).then((response) => {
-                console.log(response.data);
-                console.log(response);
-                // ajouter un attribut quantity égale à 0 à chaque plat
-                response.data.forEach((dish) => {
-                    dish.quantity = 0;
-                });
                 setDishes(response.data);
             });
         } catch (error) {
