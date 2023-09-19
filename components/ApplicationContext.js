@@ -9,54 +9,44 @@ export const ApplicationContextProvider = ({ children }) => {
     const [dishes, setDishes] = useState([]);
     const [numberOfDishes, setNumberOfDishes] = useState(0);
     const [token, setToken] = useState("")
-    const removeDishes = (dishId, number=0) => {
-        // Utilisez la méthode setSelectedDishes pour mettre à jour le state et supprimer l'élément avec l'ID spécifié et mettre à jour le nombre de plats
+    const [basket, setBasket] = useState([]);
 
-        setDishes((prevDishes) => {
-            return prevDishes.map((dish) => {
-                if (dish.id === dishId) {
-                    // Si l'ID correspond, ajoutez la quantité à cet objet
-                    if (number > 0) {
-                        setNumberOfDishes(numberOfDishes - parseInt(number));
-                        return {
-                            ...dish,
-                            quantity: dish.quantity - parseInt(number),
-                        };
-                    }else{
-                        setNumberOfDishes(numberOfDishes - parseInt(dish.quantity));
-                        return {
-                            ...dish,
-                            quantity: 0,
-                        };
-                    }
+    const removeDishesFromBasket = (dishId, number = 0) => {
+        const existingDishIndex = basket.findIndex(item => item.id === dishId);
+        console.log("dans removeDishesFromBasket" + basket)
+        if (existingDishIndex !== -1) {
+            const updatedBasket = [...basket];
+            if (number === 0) {
+                setNumberOfDishes(numberOfDishes - updatedBasket.find(e => e.id === dishId).quantity)
+                updatedBasket.splice(existingDishIndex, 1); // Retirer le plat du panier
+            } else {
+                updatedBasket[existingDishIndex].quantity -= number; // Mettre à jour la quantité
+                setNumberOfDishes(numberOfDishes - number)
+                if (updatedBasket[existingDishIndex].quantity <= 0) {
+                    setNumberOfDishes(numberOfDishes - updatedBasket[existingDishIndex].quantity)
+                    updatedBasket.splice(existingDishIndex, 1); // Retirer le plat si la quantité devient nulle
                 }
-                return dish; // Si l'ID ne correspond pas, retournez l'objet tel quel
-            });
-        });
+            }
+            console.log("updated basket" + updatedBasket)
+            setBasket(updatedBasket);
+        }
+    };
 
-    }
+    const addDishesToBasket = (dishId, quantity) => {
+        const existingDishIndex = basket.findIndex(item => item.id === dishId);
 
-
-    const addDishes = (dishId, price, quantity) => {
-        console.log(dishId);
-        console.log(price);
-        console.log(quantity);
-        setDishes((prevDishes) => {
-            return prevDishes.map((dish) => {
-                if (dish.id === dishId) {
-                    // Si l'ID correspond, ajoutez la quantité à cet objet
-                    return {
-                        ...dish,
-                        quantity: dish.quantity + parseInt(quantity),
-                    };
-                }
-                return dish; // Si l'ID ne correspond pas, retournez l'objet tel quel
-            });
-        });
-        setNumberOfDishes(numberOfDishes + parseInt(quantity));
-    }
+        if (existingDishIndex !== -1) {
+            const updatedBasket = [...basket];
+            updatedBasket[existingDishIndex].quantity += quantity;
+            setBasket(updatedBasket);
+        } else {
+            const newBasketItem = { id: dishId, quantity: quantity };
+            setBasket([...basket, newBasketItem]);
+        }
+        setNumberOfDishes(numberOfDishes + quantity)
+    };
     return (
-        <ApplicationContext.Provider value={{ dishes, setDishes, numberOfDishes, addDishes, removeDishes, token, setToken }}>
+        <ApplicationContext.Provider value={{ dishes, setDishes, numberOfDishes, addDishesToBasket, removeDishesFromBasket, token, setToken, basket }}>
             {children}
         </ApplicationContext.Provider>
     );

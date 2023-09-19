@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Button, FlatList, Image, CheckBox, StyleSheet} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
@@ -7,9 +7,59 @@ import axios from "axios";
 
 export default function Panier({ navigation, route }) {
 
-    const { dishes,  addDishes, removeDishes, token } = useApplicationContext();
+    const { basket,  addDishesToBasket, removeDishesFromBasket, token } = useApplicationContext();
 
-    console.log(dishes);
+    const [detailledBasket, setDetailledBasket] = useState([])
+
+
+    React.useEffect(() => {
+        getDetailledBasket();
+    }
+    , [])
+
+    const getQuantity = (id) => {
+        const dish = basket.find((e) => e.id === id);
+        if (dish) {
+            return dish.quantity;
+        }
+        return 0;
+    }
+
+    const removeDishe = async (id, quantity = 0) => {
+        console.log(quantity);
+        await removeDishesFromBasket(id, quantity);
+        await getDetailledBasket(); // Attendre que getDetailledBasket() soit terminée
+    };
+
+    const getDetailledBasket = async () => {
+        console.log(basket);
+        await setDetailledBasket([])
+        // Créer un tableau de promesses pour les requêtes axios
+        const axiosPromises = basket.map(async (e) => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/dishes/' + e.id, {
+                    headers: {
+                        token: token,
+                    },
+                });
+                console.log(response.data);
+                return response.data;
+            } catch (error) {
+                console.error("Erreur lors de la requête axios :", error);
+                return null;
+            }
+        });
+
+        // Attendre que toutes les requêtes soient terminées avant de mettre à jour detailledBasket
+        try {
+            const detailledBasketData = await Promise.all(axiosPromises);
+            const updatedDetailledBasket = [...detailledBasketData.filter(Boolean)]; // Filtrer les réponses nulles
+            setDetailledBasket(updatedDetailledBasket);
+            console.log(updatedDetailledBasket);
+        } catch (error) {
+            console.error("Une erreur s'est produite lors de l'exécution des requêtes axios :", error);
+        }
+    }
 
     const launchOrder = async () => {
         const d = {}
@@ -44,7 +94,7 @@ export default function Panier({ navigation, route }) {
         />
 
         <FlatList
-            data={dishes.filter(item => item.quantity > 0)}
+            data={detailledBasket.filter(e => getQuantity(e.id)>0)}
             keyExtractor={(item) => item.name}
             renderItem={({ item }) => (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
@@ -56,8 +106,8 @@ export default function Panier({ navigation, route }) {
                     <Text style={styles.title}>{item.name}</Text>
                     <Text>{item.price}€</Text>
                     <Text>{item.description}</Text>
-                    <Button onPress={() => addDishes(item.id, item.price, 1)} title={"+"}/><Button title={"-"} onPress={() => removeDishes(item.id, 1)}/><Text onPress={() => removeDishes(item.id)}>❌</Text>
-                    <Text>quantity :{item.quantity}</Text>
+                    <Button onPress={() => addDishesToBasket(item.id, 1)} title={"+"}/><Button title={"-"} onPress={() => removeDishe(item.id, 1)}/><Text onPress={() => removeDishe(item.id)}>❌</Text>
+                    <Text>quantity :{getQuantity(item.id)}</Text>
                     
                 </View>
             </View>
