@@ -4,7 +4,7 @@ import axios from "axios";
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useApplicationContext} from "../components/ApplicationContext";
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ navigation, route }) => {
     const [user, setUser] = useState({})
     const { token } = useApplicationContext();
 
