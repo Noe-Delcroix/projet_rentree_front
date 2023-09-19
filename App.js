@@ -11,7 +11,6 @@ import Product from './components/Product';
 import LogIn from './pages/LogIn';
 import Header from './components/Header';
 import {useState} from "react";
-import WalletScreen from "./pages/WalletScreen";
 import {ApplicationContextProvider} from "./components/ApplicationContext";
 import axios from 'axios';
 
@@ -33,7 +32,6 @@ const App = () => {
 
                   <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                   <Stack.Screen name="Profil"  component={ProfileScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Wallet"  component={WalletScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
               </Stack.Navigator>
           </NavigationContainer>
       </ApplicationContextProvider>

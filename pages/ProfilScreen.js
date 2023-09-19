@@ -42,11 +42,16 @@ const ProfileScreen = ({ navigation, route }) => {
             <Text style={styles.label}>Courriel :</Text>
             <Text style={styles.text}>{user.email}</Text>
 
-            {/* Bouton pour modifier le mot de passe (non fonctionnel dans ce cas) */}
+            <Text style={styles.label}>Adresse :</Text>
+            <Text style={styles.text}>{user.address}</Text>
+
+            <Text style={styles.label}>Solde :</Text>
+            <Text style={styles.text}>{user.balance +' €'}</Text>
+
             <Button
                 title="Modifier le mot de passe"
                 onPress={() => {
-                    // Vous pouvez ajouter ici la logique pour la modification du mot de passe
+                    // TODO : modif mdp
                 }}
             />
             <View style={styles.bottomNavContainer}>
