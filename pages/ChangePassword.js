@@ -1,27 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-const ChangePassword = ({ route }) => {
-
+import { toaster } from 'evergreen-ui'
+import {Button} from "react-native";
+const ChangePassword = ({ navigation }) => {
     const queryParameters = new URLSearchParams(window.location.search)
-    const token =queryParameters.get('token');
-    console.log(token);
+    const token = queryParameters.get('token');
+
 
     const changePassword = async (password, confirmpassword) => {
         if (password !== confirmpassword) {
-        }else{
-            try {
-                axios.get(`http://localhost:8080/api/users/resetPassword?token=${token}&password=${password}`)
-                    .then((response) => {
-                        console.log(response.data);
-                        console.log(response);
-                    });
-            } catch (error) {
-                console.log('ERREUR');
-                console.error(error);
-            }
-        }
+            toaster.warning('Les mots de passe ne correspondent pas');
+        }else {
 
+            axios.get(`http://localhost:8080/api/users/resetPassword?token=${token}&password=${password}`)
+                .then((response) => {
+                    console.log(response.data);
+                    console.log(response);
+                    navigation.replace('LogIn');
+                }, (error) => {
+                    toaster.warning("Erreur lors du changement de mot de passe");
+                });
+
+        }
     }
+
 
     return (
         <div>
