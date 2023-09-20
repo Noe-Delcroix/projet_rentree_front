@@ -5,12 +5,17 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import axios from "axios";
 import {Checkbox} from "evergreen-ui";
+import SortingForm from "./SortingForm";
 
-const FilterForm = ({ onQueryChange, tags, diets }) => {
-    const [searchQuery, setSearchQuery] = useState('');
+const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: defaultSortOrder }) => {
+    const [search, setSearch] = useState('');
     const [prices, setPrices] = useState([0, 100])
     const [selectedTags, setSelectedTags] = useState({});
     const [selectedDiets, setSelectedDiets] = useState({});
+    const [selectAllTags, setSelectAllTags] = useState(false);
+    const [selectAllDiets, setSelectAllDiets] = useState(false);
+    const [sortType, setSortType] = useState(Object.keys(sortingMethods)[0]);  // Default to the first sorting type
+    const [sortingOrders, setSortingOrders] = useState(defaultSortOrder || 'asc'); // Default to ascending
 
     const handleCheckboxChange = (type, key, checked) => {
         if (type === "tags") {
@@ -20,17 +25,42 @@ const FilterForm = ({ onQueryChange, tags, diets }) => {
         }
     };
 
+    const handleSelectAll = (type, checked) => {
+        if (type === "tags") {
+            const newSelectedTags = {};
+            Object.keys(tags).forEach(tag => {
+                newSelectedTags[tag] = checked;
+            });
+            setSelectedTags(newSelectedTags);
+            setSelectAllTags(checked);
+        } else {
+            const newSelectedDiets = {};
+            Object.keys(diets).forEach(diet => {
+                newSelectedDiets[diet] = checked;
+            });
+            setSelectedDiets(newSelectedDiets);
+            setSelectAllDiets(checked);
+        }
+    };
+
+    const handleSortingChange = ({ sortType, sortOrder }) => {
+        setSortType(sortType);
+        setSortingOrders(sortOrder);
+    };
+
     useEffect(() => {
         handleQueryChange();
-    }, [searchQuery, selectedTags, selectedDiets]);
+    }, [search, selectedTags, selectedDiets, sortType, sortingOrders]);
 
     const handleQueryChange = () => {
         const query = {
-            searchText: searchQuery,
-            // lowerPrice: prices[0],
-            // upperPrice: prices[1],
-            // tags: Object.keys(selectedTags).filter(tag => selectedTags[tag]),
-            // diets: Object.keys(selectedDiets).filter(diet => selectedDiets[diet])
+            search: search,
+            lowerPrice: prices[0],
+            upperPrice: prices[1],
+            tags: Object.keys(selectedTags).filter(tag => selectedTags[tag]).join(','),
+            diets: Object.keys(selectedDiets).filter(diet => selectedDiets[diet]).join(','),
+            sortBy: sortType,
+            sortOrder: sortingOrders
         };
         onQueryChange(query);
     };
@@ -41,8 +71,8 @@ const FilterForm = ({ onQueryChange, tags, diets }) => {
             <Text>Rechercher un plat</Text>
             <TextInput
                 placeholder="Nom du plat..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
+                value={search}
+                onChangeText={setSearch}
             />
 
 
@@ -59,21 +89,13 @@ const FilterForm = ({ onQueryChange, tags, diets }) => {
 
             />
 
-            <Text>Tags</Text>
-            <ScrollView>
-                {Object.entries(tags).map((tag) => (
-                    <Checkbox
-                        key={tag[0]}
-                        label={tag[1]}
-                        checked={selectedTags[tag[0]] || false}
-                        onChange={(e) => handleCheckboxChange("tags", tag[0], e.target.checked)}
-                    />
-                ))}
-            </ScrollView>
-
             <Text>Diets</Text>
-            <ScrollView>
-
+            <div>
+                <Checkbox
+                    label="Select All Diets"
+                    checked={selectAllDiets}
+                    onChange={(e) => handleSelectAll("diets", e.target.checked)}
+                />
                 {Object.entries(diets).map((diet) => (
                     <Checkbox
                         key={diet[0]}
@@ -82,8 +104,33 @@ const FilterForm = ({ onQueryChange, tags, diets }) => {
                         onChange={(e) => handleCheckboxChange("diets", diet[0], e.target.checked)}
                     />
                 ))}
-            </ScrollView>
+            </div>
 
+            <Text>Tags</Text>
+
+            <div>
+                <Checkbox
+                    label="Select All Tags"
+                    checked={selectAllTags}
+                    onChange={(e) => handleSelectAll("tags", e.target.checked)}
+                />
+                {Object.entries(tags).map((tag) => (
+                    <Checkbox
+                        key={tag[0]}
+                        label={tag[1]}
+                        checked={selectedTags[tag[0]] || false}
+                        onChange={(e) => handleCheckboxChange("tags", tag[0], e.target.checked)}
+                    />
+                ))}
+            </div>
+
+
+            <SortingForm
+                sortingMethods={sortingMethods}
+                sortType={sortType}
+                sortOrder={sortingOrders}
+                onSortingChange={handleSortingChange}
+            />
 
         </div>
     );

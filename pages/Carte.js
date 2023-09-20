@@ -25,8 +25,8 @@ export default function Carte({ navigation, route }) {
 
         try {
 
-            axios.get('http://localhost:8080/api/dishes',{ data: query} ).then((response) => {
-                console.log(response.data)
+            axios.get('http://localhost:8080/api/dishes',{ params : query} ).then((response) => {
+                console.log(response.data);
                 setDishes(response.data);
             });
         } catch (error) {
@@ -59,7 +59,13 @@ export default function Carte({ navigation, route }) {
             <ScrollView>
 
                 <Text style={[styles.title, titleStyle]}>La Carte</Text>
-                <FilterForm onQueryChange={handleQueryChange} tags={tags} diets={diets}/>
+                <FilterForm
+                    onQueryChange={handleQueryChange}
+                    tags={tags}
+                    diets={diets}
+                    sortingMethods={{PRICE: "Prix",NAME: "Nom"}}
+                    sortOrder='asc'
+                />
                 <View style={[styles.productContainer, productContainerStyle]}>
                     {dishes.map((dish) => {
                         return (
