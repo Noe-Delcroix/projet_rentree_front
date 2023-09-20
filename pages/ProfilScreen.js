@@ -3,10 +3,12 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import axios from "axios";
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useApplicationContext} from "../components/ApplicationContext";
+import {toaster} from "evergreen-ui";
+import {Input} from "@rneui/base";
 
 const ProfileScreen = ({ navigation, route }) => {
     const [user, setUser] = useState({})
-    const { token } = useApplicationContext();
+    const { token, password } = useApplicationContext();
 
     const config = {
         headers: {
@@ -35,10 +37,28 @@ const ProfileScreen = ({ navigation, route }) => {
                 navigation.navigate('LogIn')
             })} catch (error) {
             console.log('ERREUR');
-
         }
     }
-
+    const sendPasswordResetEmail = () => {
+        const mdp = document.getElementById("motDePasseActuel").value;
+        const nouveauMdp = document.getElementById("nouveauMotDePasse").value;
+        if (mdp !== password) {
+            toaster.warning("Mot de passe incorrect")
+        }else if (nouveauMdp.length < 6){
+            toaster.warning("Mot de passe trop court")
+        }
+        else{
+            axios.get(`http://localhost:8080/api/users/resetPasswordAuthentificated?oldPassword=${mdp}&password=${nouveauMdp}`, {
+                email:user.email,
+            }).then((response) => {
+                console.log(response);
+                toaster.success('Un email vous a été envoyé!')
+            }, (error) => {
+                console.log(error)
+                toaster.warning(error.response.data)
+            });
+        }
+    }
     useEffect(() => {
         loadUserInfo();
     }, []);
@@ -59,10 +79,15 @@ const ProfileScreen = ({ navigation, route }) => {
             <Text style={styles.label}>Solde :</Text>
             <Text style={styles.text}>{user.balance +' €'}</Text>
 
+
+            <Text style={styles.label}>Mot de passe actuel</Text>
+            <input id={"motDePasseActuel"}></input>
+            <Text style={styles.label}>Nouveau mot de passe</Text>
+            <input id={"nouveauMotDePasse"}></input>
             <Button
                 title="Modifier le mot de passe"
                 onPress={() => {
-                    // TODO : modif mdp
+                    sendPasswordResetEmail()
                 }}
             />
             <Button title={"Déconnexion"} onPress={() => {

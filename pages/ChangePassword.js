@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import {toaster} from "evergreen-ui";
 const ChangePassword = ({ route }) => {
 
     const queryParameters = new URLSearchParams(window.location.search)
@@ -12,8 +13,10 @@ const ChangePassword = ({ route }) => {
             try {
                 axios.get(`http://localhost:8080/api/users/resetPassword?token=${token}&password=${password}`)
                     .then((response) => {
-                        console.log(response.data);
-                        console.log(response);
+                        toaster.success('votre mdp a été modifié!')
+                    }, (error) => {
+                        console.log(error)
+                        toaster.warning(error.response.data)
                     });
             } catch (error) {
                 console.log('ERREUR');

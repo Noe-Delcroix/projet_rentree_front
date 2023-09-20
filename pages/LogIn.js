@@ -9,8 +9,8 @@ export default function LogIn({ navigation }) {
     const [email, setEmail] = useState("")
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
-    const [password, setPassword] = useState("")
-    const { setToken } = useApplicationContext();
+    const [password, setPassword1] = useState("")
+    const { setToken, setPassword } = useApplicationContext();
 
     useEffect(() => {
         try {
@@ -27,6 +27,7 @@ export default function LogIn({ navigation }) {
             email:email,
             password:password
         }).then((response) => {
+            setPassword(password)
             console.log(response);
             setToken(response.data)
             navigation.replace('Carte')
@@ -57,11 +58,9 @@ export default function LogIn({ navigation }) {
 
     const sendPasswordResetEmail = () => {
         console.log(email)
-        axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`, {
-            email:email,
-        }).then((response) => {
+        axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`).then((response) => {
             console.log(response);
-            toaster.success('Un email vous a été envoyé!')
+            toaster.success('Votre mdp a été changé, un email vous a été envoyé!')
         }, (error) => {
             console.log(error)
             toaster.warning(error.response.data)
@@ -79,7 +78,7 @@ export default function LogIn({ navigation }) {
                 style={styles.input}
                 secureTextEntry={true}
                 placeholder="Password"
-                onChangeText={setPassword}
+                onChangeText={setPassword1}
             />
             <Button
             title={login ? 'Log In' : 'Sign In'}
