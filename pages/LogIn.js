@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toaster } from 'evergreen-ui'
 import {useApplicationContext} from "../components/ApplicationContext";
 
-export default function LogIwn({ navigation }) {
+export default function LogIn({ navigation }) {
     const [login, setLogin] = useState(true);
     const [email, setEmail] = useState("")
     const [firstname, setFirstname] = useState("")
@@ -55,6 +55,18 @@ export default function LogIwn({ navigation }) {
         });
     }
 
+    const sendPasswordResetEmail = () => {
+        console.log(email)
+        axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`, {
+            email:email,
+        }).then((response) => {
+            console.log(response);
+            toaster.success('Un email vous a été envoyé!')
+        }, (error) => {
+            console.log(error)
+            toaster.warning(error.response.data)
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -76,7 +88,7 @@ export default function LogIwn({ navigation }) {
             <Text style={styles.toggleText} onPress={() => setLogin(!login)}>
             {login ? "I don't have an account already" : 'I already have an account'}
             </Text>
-            <Text style={styles.forgotPassword}>
+            <Text style={styles.forgotPassword} onPress={sendPasswordResetEmail}>
             {login ? 'Password forgotten ?' : ''}
             </Text>
         </View>

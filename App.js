@@ -15,18 +15,38 @@ import WalletScreen from "./pages/WalletScreen";
 import {ApplicationContextProvider} from "./components/ApplicationContext";
 import axios from 'axios';
 import SeeOrder from "./pages/SeeOrder";
+import ChangePassword from "./pages/ChangePassword";
+import { enableScreens } from 'react-native-screens';
 
 const Stack = createNativeStackNavigator();
-
+const linking = {
+    prefixes: ['https://localhost:19006'],
+    config: {
+        screens: {
+            LogIn: '',
+            Carte: 'Carte',
+            ObjectDetail: 'ObjectDetail',
+            Order: 'Order',
+            SeeOrder: 'SeeOrder',
+            Panier: 'Panier',
+            Profil: 'Profil',
+            Wallet: 'Wallet',
+            ChangePassword: 'ChangePassword?token=:token',
+        },
+    },
+};
 const App = () => {
+    enableScreens();
 
     axios.defaults.withCredentials = true;
 
     return (
       <ApplicationContextProvider>
-          <NavigationContainer>
+          <NavigationContainer linking={linking}>
               <Stack.Navigator
                   screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
+                  <Stack.Screen name="ChangePassword" component={ChangePassword}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+
                   <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
                   <Stack.Screen name="Carte" component={Carte}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                   <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
