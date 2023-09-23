@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Button, FlatList, Image, CheckBox} from 'react-native';
+import {View, Text, Button, FlatList, Image, CheckBox, ScrollView} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useApplicationContext} from "../components/ApplicationContext";
 import axios from "axios";
@@ -86,42 +86,42 @@ export default function Panier({ navigation, route }) {
     }
 
     return (
-        <View>
-        <Text>Panier</Text>
-        <TextInputField
-            id="address"
-            label="A required text input field"
-            required
-            onChange={e => setAddress(e.target.value)}
-            placeholder="Your address"
-        />
-        <Button
-            title="Payer"
-            onPress={() => launchOrder()}
-        />
-
-        <FlatList
-            data={detailledBasket.filter(e => getQuantity(e.id)>0)}
-            keyExtractor={(item) => item.name}
-            renderItem={({ item }) => (
-            <View>
-                <Image
-                source={{ uri: item.image }} // Assurez-vous que item.image contient l'URL de l'image
+        <View className="flex-1">
+            <ScrollView>
+                <Text>Panier</Text>
+                <TextInputField
+                    id="address"
+                    label="A required text input field"
+                    required
+                    onChange={e => setAddress(e.target.value)}
+                    placeholder="Your address"
                 />
-                <View>
-                    <Text>{item.name}</Text>
-                    <Text>{item.price}€</Text>
-                    <Text>{item.description}</Text>
-                    <Button onPress={() => addDishesToBasket(item.id, 1)} title={"+"}/><Button title={"-"} onPress={() => removeDishe(item.id, 1)}/><Text onPress={() => removeDishe(item.id)}>❌</Text>
-                    <Text>quantity :{getQuantity(item.id)}</Text>
-                    
-                </View>
-            </View>
-            )}
-        />
-            <View>
-                <BottomNavigationBar navigation={navigation}/>
-            </View>
+                <Button
+                    title="Payer"
+                    onPress={() => launchOrder()}
+                />
+
+                <FlatList
+                    data={detailledBasket.filter(e => getQuantity(e.id)>0)}
+                    keyExtractor={(item) => item.name}
+                    renderItem={({ item }) => (
+                        <View>
+                            <Image
+                                source={{ uri: item.image }} // Assurez-vous que item.image contient l'URL de l'image
+                            />
+                            <View>
+                                <Text>{item.name}</Text>
+                                <Text>{item.price}€</Text>
+                                <Text>{item.description}</Text>
+                                <Button onPress={() => addDishesToBasket(item.id, 1)} title={"+"}/><Button title={"-"} onPress={() => removeDishe(item.id, 1)}/><Text onPress={() => removeDishe(item.id)}>❌</Text>
+                                <Text>quantity :{getQuantity(item.id)}</Text>
+
+                            </View>
+                        </View>
+                    )}
+                />
+            </ScrollView>
+            <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
         </View>
     );
 }

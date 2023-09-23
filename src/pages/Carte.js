@@ -50,9 +50,8 @@ export default function Carte({ navigation, route }) {
     };
 
     return (
-        <View>
+        <View className="flex-1">
             <ScrollView>
-
                 <Text>La Carte</Text>
                 <FilterForm
                     onQueryChange={handleQueryChange}
@@ -77,10 +76,8 @@ export default function Carte({ navigation, route }) {
                         );
                     })}
                 </View>
-                <View>
-                    <BottomNavigationBar navigation={navigation}/>
-                </View>
             </ScrollView>
+            <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
         </View>
     );
 }
