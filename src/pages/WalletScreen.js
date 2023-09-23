@@ -34,15 +34,14 @@ const WalletScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.pageView}>
-            <View style={styles.container}>
-                <Text style={styles.label}>Portefeuille de {user.firstName} :</Text>
-                <Text style={styles.balance}>€{balance}</Text>
+        <View>
+            <View>
+                <Text>Portefeuille de {user.firstName} :</Text>
+                <Text>€{balance}</Text>
 
-                <Text style={styles.label}>Ajouter de l'argent :</Text>
+                <Text>Ajouter de l'argent :</Text>
                 <Picker
                     selectedValue={selectedAmount}
-                    style={styles.picker}
                     onValueChange={(itemValue) => setSelectedAmount(itemValue)}
                 >
                     <Picker.Item label="€10" value={10} />
@@ -55,7 +54,7 @@ const WalletScreen = ({ navigation }) => {
                     title="Ajouter de l'argent"
                     onPress={handleAddMoney}
                 />
-                <View style={styles.bottomNavContainer}>
+                <View>
                     <BottomNavigationBar navigation={navigation}/>
                 </View>
             </View>
@@ -63,35 +62,5 @@ const WalletScreen = ({ navigation }) => {
 
     );
 };
-
-const styles = StyleSheet.create({
-    pageView: {
-        height: '100%'
-    },
-    bottomNavContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    container: {
-        flex: 1,
-        padding: 16,
-        height: '100%'
-    },
-    label: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    balance: {
-        fontSize: 20,
-        marginBottom: 16,
-    },
-    picker: {
-        height: 40,
-        marginBottom: 16,
-    },
-});
 
 export default WalletScreen;

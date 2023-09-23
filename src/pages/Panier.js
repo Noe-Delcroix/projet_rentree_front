@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, Button, FlatList, Image, CheckBox, StyleSheet} from 'react-native';
+import {View, Text, Button, FlatList, Image, CheckBox} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {RFPercentage, RFValue} from "react-native-responsive-fontsize";
 import {useApplicationContext} from "../components/ApplicationContext";
 import axios from "axios";
 import {TextInputField, toaster} from 'evergreen-ui';
@@ -87,7 +86,7 @@ export default function Panier({ navigation, route }) {
     }
 
     return (
-        <View  style={styles.pageView}>
+        <View>
         <Text>Panier</Text>
         <TextInputField
             id="address"
@@ -105,13 +104,12 @@ export default function Panier({ navigation, route }) {
             data={detailledBasket.filter(e => getQuantity(e.id)>0)}
             keyExtractor={(item) => item.name}
             renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+            <View>
                 <Image
                 source={{ uri: item.image }} // Assurez-vous que item.image contient l'URL de l'image
-                style={{ width: 100, height: 100, marginRight: 10 }}
                 />
-                <View style={{ flex: 1 }}>
-                    <Text style={styles.title}>{item.name}</Text>
+                <View>
+                    <Text>{item.name}</Text>
                     <Text>{item.price}€</Text>
                     <Text>{item.description}</Text>
                     <Button onPress={() => addDishesToBasket(item.id, 1)} title={"+"}/><Button title={"-"} onPress={() => removeDishe(item.id, 1)}/><Text onPress={() => removeDishe(item.id)}>❌</Text>
@@ -121,25 +119,9 @@ export default function Panier({ navigation, route }) {
             </View>
             )}
         />
-            <View style={styles.bottomNavContainer}>
+            <View>
                 <BottomNavigationBar navigation={navigation}/>
             </View>
         </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-    bottomNavContainer: {
-        position: 'sticky',
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    pageView: {
-        height: '100%'
-    },
-    title: {
-        fontWeight: 'bold',
-    },
-});
