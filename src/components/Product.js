@@ -32,7 +32,7 @@ export default function Product({id, name, image, price, description, alergens, 
                         <Text className="text-3xl">{name}</Text>
                         <Text className="text-2xl text-[#713235] font-bold">{price.toFixed(2)}€</Text>
                     </View>
-                    <Text className="my-5">{description} </Text>
+                    <Text className="my-5 text-xl">{description} </Text>
 
                     <View className="w-full shadow">
                         <Button

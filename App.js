@@ -48,7 +48,9 @@ const App = () => {
       <ApplicationContextProvider>
           <NavigationContainer linking={linking}>
               <Stack.Navigator
-                  screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }} >
+                  screenOptions={{
+                      headerStyle: { backgroundColor: '#FFFFFF'},
+                    }} >
                   <Stack.Screen name="ChangePassword" component={ChangePassword}  options={{ headerTitle: (props) => <Header {...props} /> }} />
 
                   <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />

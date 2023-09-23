@@ -70,7 +70,7 @@ export default function LogIn({ navigation }) {
 
     return (
         <View className="flex-1 justify-center items-center">
-            <View className="w-full md:w-1/3 p-10 flex flex-col items-center justify-center bg-[#FDF7EF] shadow-xl">
+            <View className="w-full md:w-1/3 p-10 flex flex-col items-center justify-center bg-white shadow-xl">
                 <Text className="text-5xl font-bold mb-10">{login ? 'Log In' : 'Sign Up'}</Text>
                 <View className="w-full">
                     {login ? null : <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="First Name" onChangeText={setFirstname}/>}

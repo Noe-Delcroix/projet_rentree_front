@@ -78,7 +78,7 @@ const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: def
 
 
     return (
-        <View className="bg-[#FDF7EF] mt-10 mb-5 p-5">
+        <View className="bg-white mt-10 mb-5 p-5 shadow-xl">
 
             <View className="sm:w-1/4 w-full">
                 <RangeSlider
