@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TextInput, ScrollView, Button } from 'react-native';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import axios from "axios";
-import {Checkbox} from "evergreen-ui";
 import SortingForm from "./SortingForm";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: defaultSortOrder }) => {
     const [search, setSearch] = useState('');
-    const [prices, setPrices] = useState([0, 100])
+    const [prices, setPrices] = useState([0, 50])
     const [selectedTags, setSelectedTags] = useState({});
     const [selectedDiets, setSelectedDiets] = useState({});
     const [selectAllTags, setSelectAllTags] = useState(false);
@@ -65,64 +64,86 @@ const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: def
         onQueryChange(query);
     };
 
+    const DietSelection = ({ label, selectAll, isSelected, onPress }) => (
+        <TouchableOpacity onPress={onPress} className={`mr-3 shadow p-2 rounded my-1 ${isSelected ? 'bg-[#713235]' : 'bg-white'}`}>
+            <Text className={ `text-xl ${isSelected ? 'text-white' : 'text-black'}`}>{label}</Text>
+        </TouchableOpacity>
+    );
+
+    const TagSelection = ({ label, selectAll, isSelected, onPress }) => (
+        <TouchableOpacity onPress={onPress} className={`mr-3 shadow p-2 rounded my-1 ${isSelected ? 'bg-[#713235]' : 'bg-white'}`}>
+            <Text className={ `text-xl ${isSelected ? 'text-white' : 'text-black'}`}>{label}</Text>
+        </TouchableOpacity>
+    );
+
 
     return (
-        <div>
-            <Text>Rechercher un plat</Text>
-            <TextInput
-                placeholder="Nom du plat..."
-                value={search}
-                onChangeText={setSearch}
-            />
+        <View className="bg-[#FDF7EF] mt-10 mb-5 p-5">
 
-
-            <Text>Prix Minimum: {prices[0].toFixed(2)} €</Text>
-            <Text>Prix Maximum: {prices[1].toFixed(2)} €</Text>
-
-            <RangeSlider
-                min={0}
-                max={100}
-                step={1}
-                value={prices}
-                onInput={setPrices}
-                onThumbDragEnd={handleQueryChange}
-
-            />
-
-            <Text>Diets</Text>
-            <div>
-                <Checkbox
-                    label="Select All Diets"
-                    checked={selectAllDiets}
-                    onChange={(e) => handleSelectAll("diets", e.target.checked)}
+            <View className="sm:w-1/4 w-full">
+                <RangeSlider
+                    min={0}
+                    max={50}
+                    step={1}
+                    value={prices}
+                    onInput={setPrices}
+                    onThumbDragEnd={handleQueryChange}
                 />
-                {Object.entries(diets).map((diet) => (
-                    <Checkbox
-                        key={diet[0]}
-                        label={diet[1]}
-                        checked={selectedDiets[diet[0]] || false}
-                        onChange={(e) => handleCheckboxChange("diets", diet[0], e.target.checked)}
-                    />
-                ))}
-            </div>
 
-            <Text>Tags</Text>
+                <View className="flex flex-row mt-3 mb-5">
+                    <Text className="text-2xl">Prix : {prices[0]} à {prices[1]} €</Text>
+                </View>
 
-            <div>
-                <Checkbox
-                    label="Select All Tags"
-                    checked={selectAllTags}
-                    onChange={(e) => handleSelectAll("tags", e.target.checked)}
-                />
-                {Object.entries(tags).map((tag) => (
-                    <Checkbox
-                        key={tag[0]}
-                        label={tag[1]}
-                        checked={selectedTags[tag[0]] || false}
-                        onChange={(e) => handleCheckboxChange("tags", tag[0], e.target.checked)}
-                    />
-                ))}
-            </div>
+
+            </View>
+
+
+            <View className="flex flex-col sm:flex-row mb-5">
+                <View className="w-full sm:w-1/2">
+                    <Text className="text-2xl">Diets</Text>
+                    <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
+                    <View className="flex flex-row flex-wrap">
+                        <DietSelection
+                            label="Select All"
+                            selectAll={true}
+                            isSelected={selectAllDiets}
+                            onPress={() => handleSelectAll("diets", !selectAllDiets)}
+                        />
+                        {Object.entries(diets).map((diet) => (
+                            <DietSelection
+                                key={diet[0]}
+                                label={diet[1]}
+                                selectAll={true}
+                                isSelected={selectedDiets[diet[0]] || false}
+                                onPress={() => handleCheckboxChange("diets", diet[0], !selectedDiets[diet[0]])}
+                            />
+                        ))}
+                    </View>
+                </View>
+
+                <View className="w-full sm:w-1/2">
+                    <Text className="text-2xl">Tags</Text>
+                    <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
+                    <View className="flex flex-row flex-wrap">
+                        <TagSelection
+                            label="Select All"
+                            isSelected={selectAllTags}
+                            selectAll={true}
+                            onPress={() => handleSelectAll("tags", !selectAllTags)}
+                        />
+                        {Object.entries(tags).map((tag) => (
+                            <TagSelection
+                                key={tag[0]}
+                                label={tag[1]}
+                                selectAll={false}
+                                isSelected={selectedTags[tag[0]] || false}
+                                onPress={() => handleCheckboxChange("tags", tag[0], !selectedTags[tag[0]])}
+                            />
+                        ))}
+                    </View>
+                </View>
+            </View>
+
 
 
             <SortingForm
@@ -132,9 +153,24 @@ const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: def
                 onSortingChange={handleSortingChange}
             />
 
-        </div>
+            <View className="flex-row items-center bg-white p-2 shadow border border-[#713235] rounded my-5">
+                <Icon name="search" size={20} color="#000" className="ml-5 mr-4" />
+                <TextInput
+                    placeholder="Que souhaitez-vous manger ?"
+                    value={search}
+                    onChangeText={setSearch}
+                    placeholderTextColor={"#808080"}
+                    className="flex-1 ml-5 text-2xl"
+                />
+            </View>
+
+
+
+        </View>
     );
 };
+
+
 
 export default FilterForm;
 

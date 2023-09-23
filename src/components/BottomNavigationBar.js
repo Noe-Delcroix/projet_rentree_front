@@ -6,7 +6,7 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
     const { numberOfDishes } = useApplicationContext();
 
     return (
-        <View className="flex flex-row justify-around items-center h-[60px] bg-gray-200">
+        <View className="flex flex-row justify-around items-center h-[60px] bg-[#FDF7EF]">
             <TouchableOpacity
                 onPress={() => navigation.navigate('Carte')}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Carte' ? 'text-white' : 'text-gray-400'}`}

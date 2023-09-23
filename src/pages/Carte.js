@@ -52,29 +52,30 @@ export default function Carte({ navigation, route }) {
     return (
         <View className="flex-1">
             <ScrollView>
-                <Text>La Carte</Text>
-                <FilterForm
-                    onQueryChange={handleQueryChange}
-                    tags={tags}
-                    diets={diets}
-                    sortingMethods={{PRICE: "Prix",NAME: "Nom"}}
-                    sortOrder='asc'
-                />
-                <View>
-                    {dishes.map((dish) => {
-                        return (
-                            <Product
-                                id={dish.id}
-                                key={dish.id}
-                                navigation={navigation}
-                                name={dish.name}
-                                image={dish.image}
-                                description={dish.description}
-                                alergens={dish.alergens}
-                                price={dish.price}
-                            />
-                        );
-                    })}
+                <View className="mx-5 xl:mx-20">
+                    <FilterForm
+                        onQueryChange={handleQueryChange}
+                        tags={tags}
+                        diets={diets}
+                        sortingMethods={{PRICE: "Prix",NAME: "Nom"}}
+                        sortOrder='asc'
+                    />
+                    <View className="flex flex-row flex-wrap w-full items-stretch">
+                        {dishes.map((dish) => {
+                            return (
+                                <Product
+                                    id={dish.id}
+                                    key={dish.id}
+                                    navigation={navigation}
+                                    name={dish.name}
+                                    image={dish.image}
+                                    description={dish.description}
+                                    alergens={dish.alergens}
+                                    price={dish.price}
+                                />
+                            );
+                        })}
+                    </View>
                 </View>
             </ScrollView>
             <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>

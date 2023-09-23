@@ -101,9 +101,6 @@ export default function LogIn({ navigation }) {
                     )}
                 </View>
             </View>
-
-
-
         </View>
     );
 }
