@@ -9,7 +9,7 @@ export const ApplicationContextProvider = ({ children }) => {
     const [dishes, setDishes] = useState([]);
     const [numberOfDishes, setNumberOfDishes] = useState(0);
     const [token, setToken] = useState("")
-    const [basket, setBasket] = useState([]);
+    const [basket, setBasket] = useState([{id:10,quantity: 2},{id:5,quantity: 5},{id:4,quantity: 1},{id:1,quantity: 2},{id:8,quantity: 10}]);
 
     const removeDishesFromBasket = (dishId, number = 0) => {
         const existingDishIndex = basket.findIndex(item => item.id === dishId);
@@ -44,6 +44,7 @@ export const ApplicationContextProvider = ({ children }) => {
             setBasket([...basket, newBasketItem]);
         }
         setNumberOfDishes(numberOfDishes + quantity)
+        console.log(basket)
     };
     return (
         <ApplicationContext.Provider value={{ dishes, setDishes, numberOfDishes, addDishesToBasket, removeDishesFromBasket, token, setToken, basket }}>
