@@ -34,9 +34,9 @@ export default function Panier({ navigation, route }) {
     const launchOrder = async () => {
         if (!IsAnyUserLogedIn()) {
             navigation.navigate('LogIn');
+        }else{
+            dispatch(addOrder({ address, basket }))
         }
-
-        dispatch(addOrder({ address, basket }))
     }
 
     return (

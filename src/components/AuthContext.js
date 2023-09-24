@@ -73,7 +73,6 @@ export const AuthContextProvider = ({ children, navigation}) => {
             ret = false
             toaster.warning(error.response.data)
         });
-        console.log("====================================",ret)
         return ret
     }
 

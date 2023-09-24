@@ -31,7 +31,7 @@ export default function LogIn({ navigation }) {
                     />
                     <Pressable
                         className="my-5"
-                        onPress={login ? () => tryLogIn(email, password, firstname, lastname,address, navigation) : async () => {
+                        onPress={login ? () => tryLogIn(email, password, navigation) : async () => {
                             const res = await trySignIn(email, password, firstname, lastname, address)
                             setLogin(res);
                         }}

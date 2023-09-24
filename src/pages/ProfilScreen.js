@@ -6,12 +6,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
 
 const ProfileScreen = ({ navigation, route }) => {
-    const { resetPassword, handleLogOut } = useApplicationContext();
+    const { resetPassword, handleLogOut, IsAnyUserLogedIn } = useApplicationContext();
 
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.value);
 
     useEffect(() => {
+        if (!IsAnyUserLogedIn()) {
+            navigation.replace('Carte');
+        }
         dispatch(loadUserInfo());
     }, []);
 
