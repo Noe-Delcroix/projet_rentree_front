@@ -16,6 +16,8 @@ export default function Panier({ navigation, route }) {
     const detailledBasket = useSelector(state => state.dishes.value)
     const dispatch = useDispatch();
 
+    const { IsAnyUserLogedIn } = useApplicationContext();
+
     console.log("le panier :"+basket)
     const [address, setAddress] = useState("")
 
@@ -36,6 +38,10 @@ export default function Panier({ navigation, route }) {
     }
 
     const launchOrder = async () => {
+        if (!IsAnyUserLogedIn()) {
+            navigation.navigate('LogIn');
+        }
+
         const d = {
             orderContent: {},
             address: address
