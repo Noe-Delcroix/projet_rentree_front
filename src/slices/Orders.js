@@ -51,7 +51,6 @@ import {toaster} from "evergreen-ui";
 export const loadOrders = createAsyncThunk(
     'orders/load',
     async ({ sortType = 'DATE', sortOrder = 'DESC' }, thunkAPI) => {
-        // les valeurs par défaut sont définies directement dans la signature de la fonction
         try {
             const response = await axios.get(`http://localhost:8080/api/orders?sortBy=${sortType}&sortOrder=${sortOrder}`);
             console.log(response)

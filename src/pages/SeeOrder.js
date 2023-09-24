@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { Text, View} from 'react-native';
-import axios from 'axios';
-
-import { toaster } from 'evergreen-ui'
+import {ScrollView, Text, View} from 'react-native';
 import {useApplicationContext} from "../components/AuthContext";
 import Order from "../components/Order";
 import {useDispatch, useSelector} from "react-redux";
 import {loadOrders} from "../slices/Orders";
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import FilterForm from "../components/FilterForm";
 import SortingForm from "../components/SortingForm";
 
 export default function SeeOrder({ navigation }) {
+    const {IsAnyUserLogedIn} = useApplicationContext();
 
     const dispatch = useDispatch();
     const [sortType, setSortType] = useState("DATE");
@@ -20,28 +17,50 @@ export default function SeeOrder({ navigation }) {
     const orders = useSelector(state => state.orders.value)
 
     useEffect(() => {
+        // if (!IsAnyUserLogedIn()) {
+        //     navigation.replace('Carte');
+        // }else{
+        //
+        // }
         dispatch(loadOrders());
+
     }, []);
 
     const handleSortingChange = ({ sortType, sortOrder }) => {
         setSortType(sortType);
         setSortingOrders(sortOrder);
-        dispatch(loadOrders({ sortType, sortOrder }));  // Correction ici
+        dispatch(loadOrders({ sortType, sortOrder }));
     };
 
     return (
-        <View>
-            <SortingForm
-                sortingMethods={{PRICE: "Prix",DATE: "date"}}
-                sortType={sortType}
-                sortOrder={sortingOrders}
-                onSortingChange={handleSortingChange}
-            />
-            <Text>Commandes</Text>
-            {orders.map((order) => {
-                console.log(order)
-              return (<Order orderId={order.id} />)
-            })}
+        <View className="flex-1">
+            <ScrollView>
+                <View className="mx-5 xl:mx-48">
+
+                    <View className="bg-white mt-10 mb-5 p-5 shadow-xl">
+                        <SortingForm
+                            sortingMethods={{PRICE: "Prix",DATE: "date"}}
+                            sortType={sortType}
+                            sortOrder={sortingOrders}
+                            onSortingChange={handleSortingChange}
+                        />
+                    </View>
+
+                    <View className="mt-10 mb-5 p-5 w-full">
+                        <Text className="text-2xl ">Vos commandes</Text>
+                        <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
+
+
+                        {orders.map((order) => {
+                            console.log(order)
+                            return (<Order orderId={order.id} />)
+                        })}
+                    </View>
+
+
+
+                </View>
+            </ScrollView>
             <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
         </View>
     );

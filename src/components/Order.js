@@ -22,12 +22,12 @@ export default function Order({ orderId }) {
     const order = useSelector(state => state.orders.orderDetails);
 
     return (
-        <View>
-            <Text>Détail de la commande</Text>
-            <Text>Numéro de commande : {orderId}</Text>
-            <Text>Date : {order?.date}</Text>
-            <Text>Prix total : {order?.totalPrice}€</Text>
-            <Text>Adresse de livraison : {order?.address}</Text>
+        <View className="my-3 shadow-xl p-5 bg-white">
+            <Text className="text-2xl font-bold">Commande n°{orderId}</Text>
+            <Text className="text-xl">Passée le { new Date(order?.date).toLocaleDateString() }</Text>
+            <Text className="text-xl">Adresse de livraison : {order?.address}</Text>
+            <Text className="text-xl text-[#713235] font-bold">Prix total : {order?.totalPrice}€</Text>
+
             {order?.orderContent && Object.entries(order?.orderContent).map(([key, quantity]) =>  {
                 const dish = dishes.find((e) => e.id === parseInt(key));
                 console.log(dishes)
@@ -37,9 +37,8 @@ export default function Order({ orderId }) {
                            source={{ uri: dish?.image }}
                        />
                        <View>
-                           <Text>{dish.name}</Text>
-                           <Text>{dish.price}€</Text>
-                           <Text>{dish.description}</Text>
+                           <Text>{dish?.name}</Text>
+                           <Text>{dish?.price}€</Text>
                            <Text>quantity :{quantity}</Text>
                        </View>
                    </View>

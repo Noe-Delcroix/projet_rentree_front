@@ -14,8 +14,9 @@ const ProfileScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (!IsAnyUserLogedIn()) {
             navigation.replace('Carte');
+        }else{
+            dispatch(loadUserInfo());
         }
-        dispatch(loadUserInfo());
     }, []);
 
     return (
@@ -42,17 +43,16 @@ const ProfileScreen = ({ navigation, route }) => {
                                     <Pressable
                                         className="mr-5 mb-5"
                                         onPress={() => {
-                                            handleLogOut(navigation)
-                                        }}>
-                                        <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Se déconnecter</Text>
-                                    </Pressable>
-
-                                    <Pressable
-                                        className="mr-5 mb-5"
-                                        onPress={() => {
                                             navigation.navigate('SeeOrder')
                                         }}>
                                         <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Historique de commandes</Text>
+                                    </Pressable>
+                                    <Pressable
+                                        className="mr-5 mb-5"
+                                        onPress={() => {
+                                            handleLogOut(navigation)
+                                        }}>
+                                        <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Se déconnecter</Text>
                                     </Pressable>
                                 </View>
                             </View>

@@ -62,7 +62,6 @@ export default function Panier({ navigation, route }) {
 
                                     <TextInput
                                         className="mb-2 p-2 border border-[#713235] rounded"
-                                        secureTextEntry={true}
                                         placeholder="Adresse de livraison"
                                         onChangeText={setAddress}
                                     />
