@@ -7,33 +7,27 @@ import {TextInputField, toaster} from 'evergreen-ui';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from "react-redux";
 import {loadDishes} from "../slices/Dishes";
-import {loadDetailledBasket} from "../slices/DetailledBasket";
-import {addDishesToBasket, removeDishesFromBasket} from "../slices/Basket";
+import {addDishesToBasket, removeDishesFromBasket, selectTotalPrice, loadDetailledBasket} from "../slices/Basket";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function Panier({ navigation, route }) {
 
-    const basket = useSelector(state => state.basket.value)
-    const detailledBasket = useSelector(state => state.dishes.value)
-    const dispatch = useDispatch();
+    const basket = useSelector(state => state.basket.basket)
+    const detailledBasket = useSelector(state => state.basket.detailledBasket)
 
-    console.log("le panier :"+basket)
+    const dispatch = useDispatch();
     const [address, setAddress] = useState("")
 
 
-    const [totalPrice, setTotalPrice] = useState(0)
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch(loadDetailledBasket());
+            console.log("basket :"+basket)
+            // Retournez une fonction de nettoyage si nécessaire
+            return () => {};
+        }, [dispatch])  // spécifiez les dépendances pour éviter des appels excessifs
+    );
 
-    useEffect(() => {
-        dispatch(loadDetailledBasket(basket));
-
-    }, []);
-
-    const getQuantity = (id) => {
-        const dish = basket.find((e) => e.id === id);
-        if (dish) {
-            return dish.quantity;
-        }
-        return 0;
-    }
 
     const launchOrder = async () => {
         const d = {
@@ -79,7 +73,7 @@ export default function Panier({ navigation, route }) {
                                     <View className="w-full h-1 bg-[#713235] mb-5"></View>
 
                                     <Text className="text-2xl text-[#713235] font-bold mb-5">
-                                        Prix total : {totalPrice.toFixed(2)}€
+                                        Prix total : {useSelector(selectTotalPrice).toFixed(2)}€
                                     </Text>
 
 
@@ -120,13 +114,13 @@ export default function Panier({ navigation, route }) {
                                                 <View className="flex flex-row items-center mb-5">
                                                     <View className="flex flex-row items-center">
                                                         <Button title={"-"} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
-                                                        <Text className="text-2xl mx-5">{getQuantity(item.id)}</Text>
+                                                        <Text className="text-2xl mx-5">{basket.find((element) => element.id === item.id).quantity}</Text>
                                                         <Button title={"+"} color="#713235"  onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
                                                     </View>
                                                 </View>
 
                                                 <View className="flex flex-row items-center justify-between w-full mb-5">
-                                                    <Text className="text-xl">Total : { (item.price*getQuantity(item.id)).toFixed(2) }€</Text>
+                                                    <Text className="text-xl">Total : { (item.price*basket.find((element) => element.id === item.id).quantity).toFixed(2) }€</Text>
                                                     <Icon name="trash" size={30} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 0 }))}/>
                                                 </View>
                                             </View>
