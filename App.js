@@ -31,6 +31,7 @@ const linking = {
     config: {
         screens: {
             LogIn: 'LogIn',
+            ChangePassword: 'ChangePassword?token=:token',
             Error: 'Error',
             Carte: '',
             ObjectDetail: 'ObjectDetail',
@@ -39,7 +40,7 @@ const linking = {
             Panier: 'Panier',
             Profil: 'Profil',
             Wallet: 'Wallet',
-            ChangePassword: 'ChangePassword?token=:token',
+
         },
     },
 };
@@ -58,7 +59,7 @@ const App = () => {
                           headerStyle: { backgroundColor: '#FFFFFF'},
                         }} >
                             <Stack.Screen name="Error" component={Error} options={{ headerTitle: (props) => <Header {...props} /> }} />
-
+                            <Stack.Screen name="ChangePassword" component={ChangePassword}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                             <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
                             <Stack.Screen name="Carte" component={Carte}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                             <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
@@ -66,7 +67,6 @@ const App = () => {
                             <Stack.Screen name="SeeOrder" component={SeeOrder}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                             <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                             <Stack.Screen name="Profil"  component={ProfileScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                            <Stack.Screen name="ChangePassword" component={ChangePassword}  options={{ headerTitle: (props) => <Header {...props} /> }} />
                         </Stack.Navigator>
                 </NavigationContainer>
             </AuthContextProvider>
