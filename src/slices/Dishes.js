@@ -38,7 +38,6 @@ export const loadDishes = createAsyncThunk(
     async (query, thunkAPI) => {
         try {
             const response = await axios.get('http://localhost:8080/api/dishes', { params: query });
-            console.log(response)
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);

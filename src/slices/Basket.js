@@ -44,6 +44,10 @@ export const basketSlice = createSlice({
                 console.log("updated basket" , updatedBasket)
             }
         },
+        viderPanier: (state) => {
+            state.basket = [];
+            state.detailledBasket = [];
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -113,6 +117,6 @@ export const selectTotalPrice = (state) => {
 
 
 // Action creators are generated for each case reducer function
-export const { addDishesToBasket, removeDishesFromBasket, getBasketSize, load } = basketSlice.actions
+export const { addDishesToBasket, removeDishesFromBasket, viderPanier, load } = basketSlice.actions
 
 export default basketSlice.reducer
