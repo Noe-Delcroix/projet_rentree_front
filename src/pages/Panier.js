@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addDishesToBasket, removeDishesFromBasket, selectTotalPrice, loadDetailledBasket} from "../slices/Basket";
 import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
+import {useApplicationContext} from "../components/AuthContext";
 
 export default function Panier({ navigation, route }) {
 
