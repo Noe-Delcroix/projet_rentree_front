@@ -83,6 +83,10 @@ export const fetchOrderById = createAsyncThunk(
 export const addOrder = createAsyncThunk(
     'orders/add',
     async ({ address, basket }, thunkAPI) => {  // Utilisez une déstructuration pour extraire address et basket des arguments
+        if (address === null || address === undefined || address === '') {
+            toaster.warning('Veuillez renseigner une adresse');
+            return thunkAPI.rejectWithValue("L'adresse est vide");
+        }
         const d = {
             orderContent: {},
             address: address
