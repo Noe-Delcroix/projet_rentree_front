@@ -27,7 +27,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
                     .then((response) => {
                         setToken(response.headers['token']);  // Récupérez le cookie de l'en-tête Set-Cookie
                         setUserPassword(password);
-                        navigation.replace('Carte');
+                        if (navigation !== undefined) navigation.replace('Carte');
                     })
                     .catch((error) => {
                         console.error(error);

@@ -1,9 +1,13 @@
 
 import {useApplicationContext} from "../components/AuthContext";
+import {useEffect} from "react";
 const ChangePassword = () => {
 
     const { changePassword } = useApplicationContext();
 
+    useEffect(() => {
+        console.log("ChangePassword");
+    });
 
     return (
         <div>
