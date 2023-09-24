@@ -1,71 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {View, Text, Button, FlatList, Image, CheckBox, ScrollView, TextInput} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/AuthContext";
-import axios from "axios";
-import {TextInputField, toaster} from 'evergreen-ui';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from "react-redux";
-import {loadDishes} from "../slices/Dishes";
-import {loadDetailledBasket} from "../slices/DetailledBasket";
-import {addDishesToBasket, removeDishesFromBasket} from "../slices/Basket";
+import {addDishesToBasket, removeDishesFromBasket, selectTotalPrice, loadDetailledBasket} from "../slices/Basket";
+import {useFocusEffect} from "@react-navigation/native";
+import {addOrder} from "../slices/Orders";
 
 export default function Panier({ navigation, route }) {
 
-    const basket = useSelector(state => state.basket.value)
-    const detailledBasket = useSelector(state => state.dishes.value)
+    const basket = useSelector(state => state.basket.basket)
+    const detailledBasket = useSelector(state => state.basket.detailledBasket)
+
     const dispatch = useDispatch();
-
-    const { IsAnyUserLogedIn } = useApplicationContext();
-
-    console.log("le panier :"+basket)
     const [address, setAddress] = useState("")
 
 
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch(loadDetailledBasket());
+            console.log("basket :"+basket)
+            // Retournez une fonction de nettoyage si nécessaire
+            return () => {};
+        }, [dispatch])  // spécifiez les dépendances pour éviter des appels excessifs
+    );
+  
+    const { IsAnyUserLogedIn } = useApplicationContext();
+
+
     const [totalPrice, setTotalPrice] = useState(0)
-
-    useEffect(() => {
-        dispatch(loadDetailledBasket(basket));
-
-    }, []);
-
-    const getQuantity = (id) => {
-        const dish = basket.find((e) => e.id === id);
-        if (dish) {
-            return dish.quantity;
-        }
-        return 0;
-    }
 
     const launchOrder = async () => {
         if (!IsAnyUserLogedIn()) {
             navigation.navigate('LogIn');
         }
 
-        const d = {
-            orderContent: {},
-            address: address
-        }
-        console.log("address" + address)
-
-        basket.forEach(e => {
-            if(e.quantity>0){
-                d.orderContent[e.id]=e.quantity
-            }
-        })
-
-
-        try {
-            axios.post('http://localhost:8080/api/orders', d, ).then((response) => {
-                console.log(response.data);
-                toaster.success('Votre commande a bien été envoyé')
-                navigation.navigate('Order')
-            });
-        } catch (error) {
-            console.log('ERREUR');
-            console.error(error);
-            toaster.warning('Une erreur est survenue')
-        }
+        dispatch(addOrder({ address, basket }))
     }
 
     return (
@@ -85,7 +55,7 @@ export default function Panier({ navigation, route }) {
                                     <View className="w-full h-1 bg-[#713235] mb-5"></View>
 
                                     <Text className="text-2xl text-[#713235] font-bold mb-5">
-                                        Prix total : {totalPrice.toFixed(2)}€
+                                        Prix total : {useSelector(selectTotalPrice).toFixed(2)}€
                                     </Text>
 
 
@@ -101,7 +71,7 @@ export default function Panier({ navigation, route }) {
 
                                             className="text-white p-2 rounded"
                                             title="Payer"
-                                            onPress={() => launchOrder()}
+                                            onPress={launchOrder}
                                         />
                                     </View>
                                 </View>
@@ -126,13 +96,13 @@ export default function Panier({ navigation, route }) {
                                                 <View className="flex flex-row items-center mb-5">
                                                     <View className="flex flex-row items-center">
                                                         <Button title={"-"} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
-                                                        <Text className="text-2xl mx-5">{getQuantity(item.id)}</Text>
+                                                        <Text className="text-2xl mx-5">{basket.find((element) => element.id === item.id).quantity}</Text>
                                                         <Button title={"+"} color="#713235"  onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
                                                     </View>
                                                 </View>
 
                                                 <View className="flex flex-row items-center justify-between w-full mb-5">
-                                                    <Text className="text-xl">Total : { (item.price*getQuantity(item.id)).toFixed(2) }€</Text>
+                                                    <Text className="text-xl">Total : { (item.price*basket.find((element) => element.id === item.id).quantity).toFixed(2) }€</Text>
                                                     <Icon name="trash" size={30} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 0 }))}/>
                                                 </View>
                                             </View>

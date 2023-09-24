@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 export const basketSlice = createSlice({
     name: 'basket',
     initialState: {
-        value: []
+        basket: [],
+        detailledBasket: []
     },
     reducers: {
         addDishesToBasket: (state, action) => {
@@ -13,24 +14,24 @@ export const basketSlice = createSlice({
             // immutable state based off those changes
             const { dishId, quantity } = action.payload;
 
-            const existingDishIndex = state.value.findIndex(item => item.id === dishId);
+            const existingDishIndex = state.basket.findIndex(item => item.id === dishId);
 
             if (existingDishIndex !== -1) {
-                const updatedBasket = state.value;
+                const updatedBasket = state.basket;
                 updatedBasket[existingDishIndex].quantity += quantity;
-                state.value = updatedBasket;
+                state.basket = updatedBasket;
             } else {
                 const newBasketItem = { id: dishId, quantity: quantity };
-                state.value = [...state.value, newBasketItem];
+                state.basket = [...state.basket, newBasketItem];
             }
-            console.log(state.value)
+            console.log("state basket" + state.basket)
         },
         removeDishesFromBasket: (state, action) => {
             const { dishId, quantity } = action.payload;
-            const existingDishIndex = state.value.findIndex(item => item.id === dishId);
+            const existingDishIndex = state.basket.findIndex(item => item.id === dishId);
 
             if (existingDishIndex !== -1) {
-                const updatedBasket = [...state.value];
+                const updatedBasket = [...state.basket];
                 if (quantity === 0) {
                     //setNumberOfDishes(numberOfDishes - updatedBasket.find(e => e.id === dishId).quantity)
                     updatedBasket.splice(existingDishIndex, 1); // Retirer le plat du panier
@@ -43,14 +44,76 @@ export const basketSlice = createSlice({
                     }
                 }
                 console.log("updated basket" + updatedBasket)
-                state.value = updatedBasket;
+                state.basket = updatedBasket;
+                console.log("state basket" + state.basket)
             }
         },
-
-    }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loadDetailledBasket.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(loadDetailledBasket.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.detailledBasket = action.payload;
+                console.log("c'est fini" + action.payload)
+            })
+            .addCase(loadDetailledBasket.rejected, (state, action) => {
+                state.status = 'failed';
+            });
+    },
 })
 
+export const selectBasketSize = (state) => {
+    return state.basket.basket.reduce((total, item) => total + item.quantity, 0);
+}
+
+export const getQuantities = (state) => {
+    const quantities = {};
+    state.basket.basket.forEach(item => {
+        quantities[item.id] = item.quantity;
+    });
+    return quantities;
+}
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from "axios";
+
+// Définissez une fonction asynchrone pour charger les données
+export const loadDetailledBasket = createAsyncThunk(
+    'basket/load',
+    async (_, thunkAPI) => {
+        const state = thunkAPI.getState();
+        console.log("state" + state)
+        const axiosPromises = state.basket.basket.map(async (e) => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/dishes/' + e.id );
+                return response.data;
+            } catch (error) {
+                console.error("Erreur lors de la requête axios :", error);
+                return null;
+            }
+        });
+
+        // Attendre que toutes les requêtes soient terminées avant de mettre à jour detailledBasket
+        try {
+            return await Promise.all(axiosPromises);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
+export const selectTotalPrice = (state) => {
+    if (state === undefined) {
+        return 0;
+    }
+    console.log("dans select total price" + state.basket)
+    return state.basket.detailledBasket.reduce((total, item) => total + item.price*state.basket.basket.find((element) => element.id === item.id).quantity, 0);
+}
+
+
 // Action creators are generated for each case reducer function
-export const { addDishesToBasket, removeDishesFromBasket } = basketSlice.actions
+export const { addDishesToBasket, removeDishesFromBasket, getBasketSize, load } = basketSlice.actions
 
 export default basketSlice.reducer

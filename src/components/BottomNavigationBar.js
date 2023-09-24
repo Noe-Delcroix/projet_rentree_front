@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
+import {useDispatch, useSelector} from "react-redux";
+import { selectBasketSize } from "../slices/Basket";
 import {useApplicationContext} from "./AuthContext";
-import {useSelector} from "react-redux";
 
 const BottomNavigationBar = ({ navigation, activeScreen }) => {
-    const basket = useSelector(state => state.basket.value)
+    const basketSize = useSelector(selectBasketSize);
 
     const { IsAnyUserLogedIn } = useApplicationContext();
 
@@ -27,9 +28,9 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
                     <Image
                         className="w-8 h-8"
                         source={{ uri: "https://cdn.icon-icons.com/icons2/2645/PNG/512/cart_icon_160298.png" }} />
-                    {basket.length > 0 && (
+                    {basketSize > 0 && (
                         <View className="absolute top-[-10px] right-[-10px] bg-red-600 px-[5px] rounded-full">
-                            <Text className="text-white font-extrabold">{basket.length}</Text>
+                            <Text className="text-white font-extrabold">{basketSize}</Text>
                         </View>
                     )}
                 </View>
