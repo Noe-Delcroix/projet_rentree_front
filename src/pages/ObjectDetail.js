@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addDishesToBasket} from "../slices/Basket";
 import {loadDish} from "../slices/Dish";
 import Product from "../components/Product";
+import {loadTags} from "../slices/Tags";
 
 export default function ObjectDetail({ route, navigation }) {
     const { id } = route.params;
@@ -14,11 +15,13 @@ export default function ObjectDetail({ route, navigation }) {
     const [quantity, setQuantity] = useState(1);
 
     const dish = useSelector(state => state.dish.value);
+    const tags = useSelector(state => state.tags.value)
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         console.log("useEffect")
+        dispatch(loadTags());
         dispatch(loadDish(id));
         console.log(dish)
     }  , []);
@@ -45,7 +48,7 @@ export default function ObjectDetail({ route, navigation }) {
                         <View className="flex flex-row flex-wrap justify-center items-center">
                             {dish?.tags?.map((tag) => {
                                 return (
-                                    <Text className="mr-3 shadow p-2 rounded my-1 bg-white text-xl">{tag}</Text>
+                                    <Text className="mr-3 shadow p-2 rounded my-1 bg-white text-xl">{tags[tag]}</Text>
                                 );
                             })}
                         </View>
