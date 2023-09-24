@@ -1,14 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {View, Text, Button, FlatList, Image, CheckBox, ScrollView, TextInput} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/AuthContext";
-import axios from "axios";
-import {TextInputField, toaster} from 'evergreen-ui';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from "react-redux";
-import {loadDishes} from "../slices/Dishes";
 import {addDishesToBasket, removeDishesFromBasket, selectTotalPrice, loadDetailledBasket} from "../slices/Basket";
 import {useFocusEffect} from "@react-navigation/native";
+import {addOrder} from "../slices/Orders";
 
 export default function Panier({ navigation, route }) {
 
@@ -27,34 +24,6 @@ export default function Panier({ navigation, route }) {
             return () => {};
         }, [dispatch])  // spécifiez les dépendances pour éviter des appels excessifs
     );
-
-
-    const launchOrder = async () => {
-        const d = {
-            orderContent: {},
-            address: address
-        }
-        console.log("address" + address)
-
-        basket.forEach(e => {
-            if(e.quantity>0){
-                d.orderContent[e.id]=e.quantity
-            }
-        })
-
-
-        try {
-            axios.post('http://localhost:8080/api/orders', d, ).then((response) => {
-                console.log(response.data);
-                toaster.success('Votre commande a bien été envoyé')
-                navigation.navigate('Order')
-            });
-        } catch (error) {
-            console.log('ERREUR');
-            console.error(error);
-            toaster.warning('Une erreur est survenue')
-        }
-    }
 
     return (
         <View className="flex-1">
@@ -89,7 +58,7 @@ export default function Panier({ navigation, route }) {
 
                                             className="text-white p-2 rounded"
                                             title="Payer"
-                                            onPress={() => launchOrder()}
+                                            onPress={() => dispatch(addOrder({ address, basket }))}
                                         />
                                     </View>
                                 </View>
