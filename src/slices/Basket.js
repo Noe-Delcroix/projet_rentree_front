@@ -8,23 +8,17 @@ export const basketSlice = createSlice({
     },
     reducers: {
         addDishesToBasket: (state, action) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
             const { dishId, quantity } = action.payload;
-
             const existingDishIndex = state.basket.findIndex(item => item.id === dishId);
-
             if (existingDishIndex !== -1) {
-                const updatedBasket = state.basket;
-                updatedBasket[existingDishIndex].quantity += quantity;
-                state.basket = updatedBasket;
+                state.basket = state.basket.map((item, index) =>
+                    index === existingDishIndex ? { ...item, quantity: item.quantity + quantity } : item
+                );
             } else {
                 const newBasketItem = { id: dishId, quantity: quantity };
                 state.basket = [...state.basket, newBasketItem];
             }
-            console.log("state basket" + state.basket)
+            console.log("state basket", state.basket);
         },
         removeDishesFromBasket: (state, action) => {
             const { dishId, quantity } = action.payload;
@@ -35,17 +29,18 @@ export const basketSlice = createSlice({
                 if (quantity === 0) {
                     //setNumberOfDishes(numberOfDishes - updatedBasket.find(e => e.id === dishId).quantity)
                     updatedBasket.splice(existingDishIndex, 1); // Retirer le plat du panier
+                    state.detailledBasket = state.detailledBasket.filter((item) => item.id !== dishId);
                 } else {
                     updatedBasket[existingDishIndex].quantity -= quantity; // Mettre à jour la quantité
                     // setNumberOfDishes(numberOfDishes - number)
                     if (updatedBasket[existingDishIndex].quantity <= 0) {
                         // setNumberOfDishes(numberOfDishes - updatedBasket[existingDishIndex].quantity)
                         updatedBasket.splice(existingDishIndex, 1); // Retirer le plat si la quantité devient nulle
+                        state.detailledBasket = state.detailledBasket.filter((item) => item.id !== dishId);
+
                     }
                 }
-                console.log("updated basket" + updatedBasket)
                 state.basket = updatedBasket;
-                console.log("state basket" + state.basket)
             }
         },
     },
@@ -109,7 +104,10 @@ export const selectTotalPrice = (state) => {
         return 0;
     }
     console.log("dans select total price" + state.basket)
-    return state.basket.detailledBasket.reduce((total, item) => total + item.price*state.basket.basket.find((element) => element.id === item.id).quantity, 0);
+    state.basket.basket.forEach(item => {
+        console.log("item" , item)
+    })
+    return state.basket.detailledBasket.reduce((total, item) => total + item.price*state.basket.basket.find((element) => element.id === item.id)?.quantity, 0);
 }
 
 
