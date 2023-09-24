@@ -41,6 +41,7 @@ export const basketSlice = createSlice({
                     }
                 }
                 state.basket = updatedBasket;
+                console.log("updated basket" , updatedBasket)
             }
         },
     },
@@ -100,7 +101,7 @@ export const loadDetailledBasket = createAsyncThunk(
 );
 
 export const selectTotalPrice = (state) => {
-    if (state === undefined) {
+    if (state === undefined || state.basket === undefined || state.basket.basket === undefined || state.basket.basket.length === 0) {
         return 0;
     }
     console.log("dans select total price" + state.basket)

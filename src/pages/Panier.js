@@ -15,7 +15,7 @@ export default function Panier({ navigation, route }) {
 
     const dispatch = useDispatch();
     const [address, setAddress] = useState("")
-
+    const totalPrice = useSelector(selectTotalPrice);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -28,9 +28,6 @@ export default function Panier({ navigation, route }) {
   
     const { IsAnyUserLogedIn } = useApplicationContext();
 
-
-    const [totalPrice, setTotalPrice] = useState(0)
-
     const launchOrder = async () => {
         if (!IsAnyUserLogedIn()) {
             navigation.navigate('LogIn');
@@ -39,13 +36,29 @@ export default function Panier({ navigation, route }) {
         }
     }
 
+    console.log("basket :",basket.length)
+
     return (
         <View className="flex-1">
             <ScrollView>
                 <View className="mx-5 xl:mx-20 mt-10">
                     <Text className="text-4xl text-center mb-2">Votre panier</Text>
                     <View className="w-full h-1 bg-[#713235] mb-5"></View>
+                    {basket.length === 0 ? (
+                        <View>
 
+                            <Text className="text-3xl text-center mb-2">Votre panier est vide</Text>
+                            <View className="mt-5">
+                                <Button
+                                    color={'#713235'}
+
+                                    className="text-white p-2 rounded"
+                                    title="Retour à la carte"
+                                    onPress={() => navigation.replace('Carte')}
+                                />
+                            </View>
+                        </View>
+                    ) : (
                     <View className="flex flex-col lg:flex-row-reverse">
 
 
@@ -56,7 +69,7 @@ export default function Panier({ navigation, route }) {
                                     <View className="w-full h-1 bg-[#713235] mb-5"></View>
 
                                     <Text className="text-2xl text-[#713235] font-bold mb-5">
-                                        Prix total : {useSelector(selectTotalPrice).toFixed(2)}€
+                                        Prix total : {totalPrice}€
                                     </Text>
 
 
@@ -115,7 +128,7 @@ export default function Panier({ navigation, route }) {
 
 
 
-                    </View>
+                    </View>)}
                 </View>
             </ScrollView>
             <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
