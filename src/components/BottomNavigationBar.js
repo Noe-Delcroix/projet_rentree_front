@@ -7,7 +7,7 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
     const basket = useSelector(state => state.basket.value)
 
     return (
-        <View className="flex flex-row justify-around items-center h-[60px] bg-[#FDF7EF]">
+        <View className="flex flex-row justify-around items-center h-[60px] bg-white">
             <TouchableOpacity
                 onPress={() => navigation.navigate('Carte')}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Carte' ? 'text-white' : 'text-gray-400'}`}
