@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {View, Text, TouchableOpacity, Dimensions, Image, Button} from 'react-native';
 import {useApplicationContext} from "./ApplicationContext";
-
+import {useDispatch} from "react-redux";
+import {addDishesToBasket} from "../slices/Basket";
 export default function Product({id, name, image, price, description, alergens, route, navigation}) {
 
     const [quantity] = useState(1);
-    const { addDishesToBasket } = useApplicationContext();
-
+    const dispatch = useDispatch();
     const onPressCard = ()=> {
         navigation.navigate('ObjectDetail',
             {
@@ -38,7 +38,7 @@ export default function Product({id, name, image, price, description, alergens, 
                         <Button
                             color={'#713235'}
                             title='Add to basket'
-                            onPress={() => addDishesToBasket(id, quantity)}
+                            onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))}
                         />
                     </View>
 

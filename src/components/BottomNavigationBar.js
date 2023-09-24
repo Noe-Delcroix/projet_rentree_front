@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import {useApplicationContext} from "./ApplicationContext";
+import {useSelector} from "react-redux";
 
 const BottomNavigationBar = ({ navigation, activeScreen }) => {
-    const { numberOfDishes } = useApplicationContext();
+    const basket = useSelector(state => state.basket.value)
 
     return (
         <View className="flex flex-row justify-around items-center h-[60px] bg-[#FDF7EF]">
@@ -24,9 +25,9 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
                     <Image
                         className="w-8 h-8"
                         source={{ uri: "https://cdn.icon-icons.com/icons2/2645/PNG/512/cart_icon_160298.png" }} />
-                    {numberOfDishes > 0 && (
+                    {basket.length > 0 && (
                         <View className="absolute top-[-10px] right-[-10px] bg-red-600 px-[5px] rounded-full">
-                            <Text className="text-white font-extrabold">{numberOfDishes}</Text>
+                            <Text className="text-white font-extrabold">{basket.length}</Text>
                         </View>
                     )}
                 </View>

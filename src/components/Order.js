@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
-import {useApplicationContext} from "./ApplicationContext";
+import {useApplicationContext} from "./AuthContext";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {loadDish} from "../slices/Dish";
+import {loadOrderInfo} from "../slices/Order";
 
 
 
@@ -14,9 +17,14 @@ export default function Order({ orderId }) {
     const [date, setDate] = useState("");
     const [adress, setAdress] = useState("");
 
+    const dispatch = useDispatch();
+
+    const order = useSelector(state => state.order.value);
+
     useEffect(() => {
-        getOrderDetails();
-    },[]);
+        console.log("useEffect")
+        dispatch(loadOrderInfo(orderId));
+    }  , []);
 
     const getOrderDetails = async () => {
         try {

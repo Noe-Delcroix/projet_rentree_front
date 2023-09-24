@@ -2,79 +2,62 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Button, StyleSheet, ScrollView} from 'react-native';
 import axios from "axios";
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
+import {toaster} from "evergreen-ui";
+import {useDispatch, useSelector} from "react-redux";
+import {loadUserInfo} from "../slices/User";
 
 const ProfileScreen = ({ navigation, route }) => {
-    const [user, setUser] = useState({})
-    const { token } = useApplicationContext();
+    const { resetPassword, handleLogOut } = useApplicationContext();
 
-    const config = {
-        headers: {
-            token: token,
-        },
-    };
-
-    console.log(route.params)
-
-    const loadUserInfo = async () => {
-        try {
-            axios.get('http://localhost:8080/api/users/info', config).then((response) => {
-                console.log(response.data)
-                setUser(response.data);
-            });
-        } catch (error) {
-            console.log('ERREUR');
-            console.error(error);
-        }
-    };
-
-    const handleLogOut = () => {
-        try {
-            axios.post('http://localhost:8080/api/users/logout').then((response) => {
-                console.log(response.data)
-                navigation.navigate('LogIn')
-            })} catch (error) {
-            console.log('ERREUR');
-
-        }
-    }
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user.value);
 
     useEffect(() => {
-        loadUserInfo();
+        dispatch(loadUserInfo());
     }, []);
+
     return (
-        <View className="flex-1">
-            <ScrollView>
-                <Text>Prénom :</Text>
-                <Text>{user.firstname}</Text>
+        <View >
+            <Text >Prénom :</Text>
+            <Text >{user?.firstname}</Text>
 
-                <Text>Nom :</Text>
-                <Text>{user.lastname}</Text>
+            <Text >Nom :</Text>
+            <Text >{user?.lastname}</Text>
 
-                <Text>Courriel :</Text>
-                <Text>{user.email}</Text>
+            <Text>Courriel :</Text>
+            <Text >{user?.email}</Text>
 
-                <Text>Adresse :</Text>
-                <Text>{user.address}</Text>
+            <Text >Adresse :</Text>
+            <Text >{user?.address}</Text>
 
-                <Text>Solde :</Text>
-                <Text>{user.balance +' €'}</Text>
+            <Text >Solde :</Text>
+            <Text >{user?.balance +' €'}</Text>
 
-                <Button
-                    title="Modifier le mot de passe"
-                    onPress={() => {
-                        // TODO : modif mdp
-                    }}
-                />
-                <Button title={"Déconnexion"} onPress={() => {
-                    handleLogOut()
-                }}/>
-                <Button title={"voir ancienne commande"} onPress={() => {
-                    navigation.navigate('SeeOrder')
-                }}/>
-            </ScrollView>
 
-            <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
+            <Text>Mot de passe actuel</Text>
+            <input id={"motDePasseActuel"}></input>
+            <Text >Nouveau mot de passe</Text>
+            <input id={"nouveauMotDePasse"}></input>
+            <Button
+                title="Modifier le mot de passe"
+                onPress={() => {
+                    resetPassword(
+                        document.getElementById("motDePasseActuel").value,
+                        document.getElementById("nouveauMotDePasse").value,
+                        user.email
+                    )
+                }}
+            />
+            <Button title={"Déconnexion"} onPress={() => {
+                handleLogOut(navigation)
+            }}/>
+            <Button title={"voir ancienne commande"} onPress={() => {
+                navigation.navigate('SeeOrder')
+            }}/>
+            <View>
+                <BottomNavigationBar navigation={navigation}/>
+            </View>
         </View>
     );
 };

@@ -1,16 +1,26 @@
 import {Button, Picker, StyleSheet, Text, View} from 'react-native';
 import { Image } from 'react-native-web';
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
+import {useDispatch, useSelector} from "react-redux";
+import {addDishesToBasket} from "../slices/Basket";
+import {loadDish} from "../slices/Dish";
 
 export default function ObjectDetail({ route, navigation }) {
-    const { id, title, image, description, alergens, price } = route.params;
+    const { id } = route.params;
 
     // Ajoutez un state pour gérer la quantité de plats
     const [quantity, setQuantity] = useState(1);
 
-    const { addDishesToBasket } = useApplicationContext();
+    const dish = useSelector(state => state.dish.value);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log("useEffect")
+        dispatch(loadDish(id));
+    }  , []);
 
 
     return (
@@ -18,13 +28,13 @@ export default function ObjectDetail({ route, navigation }) {
             <View>
                 <Image
                     source={{
-                        uri: image,
+                        uri: dish?.image,
                     }}
                 />
             </View>
             <View>
-                <Text>{title}</Text>
-                <Text>{price} €</Text>
+                <Text>{dish?.title}</Text>
+                <Text>{dish?.price} €</Text>
                 <Picker
                     selectedValue={quantity}
                     onValueChange={(itemValue, itemIndex) => setQuantity(itemValue)}
@@ -37,18 +47,18 @@ export default function ObjectDetail({ route, navigation }) {
                     <Picker.Item label="6" value={6} />
                     <Picker.Item label="7" value={7} />
                 </Picker>
-                <Button title={'ajouter au panier'} onPress={() => addDishesToBasket(id, quantity)} />
+                <Button title={'ajouter au panier'} onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))} />
             </View>
 
             <View>
                 <View>
                     <Text>Description</Text>
-                    <Text>{description}</Text>
+                    <Text>{dish?.description}</Text>
                 </View>
                 <View></View>
                 <View>
                     <Text>Allergènes</Text>
-                    <Text>{alergens}</Text>
+                    <Text>{dish?.alergens}</Text>
                 </View>
             </View>
             <View>

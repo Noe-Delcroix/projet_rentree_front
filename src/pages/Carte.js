@@ -5,34 +5,16 @@ import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
 import {useApplicationContext} from "../components/ApplicationContext";
 import FilterForm from "../components/FilterForm";
+import {useDispatch, useSelector} from 'react-redux';
+import { loadDishes} from '../slices/Dishes';
 
+export default function Carte({ navigation }) {
 
-export default function Carte({ navigation, route }) {
-
-    const screenWidth = Dimensions.get('screen').width;
-    const screenHeight = Dimensions.get('screen').height;
-
-    const { dishes, setDishes } = useApplicationContext();
-
+    const dispatch = useDispatch();
+    const dishes = useSelector(state => state.dishes.value)
     const [tags, setTags] = useState({});
     const [diets, setDiets] = useState({});
 
-
-    const loadDishes = async (query) => {
-        console.log("Loading dishes with query :");
-        console.log(query);
-
-        try {
-
-            axios.get('http://localhost:8080/api/dishes',{ params : query} ).then((response) => {
-                console.log(response.data);
-                setDishes(response.data);
-            });
-        } catch (error) {
-            console.log('ERREUR');
-            console.error(error);
-        }
-    };
 
 
     useEffect(() => {
@@ -46,7 +28,7 @@ export default function Carte({ navigation, route }) {
     }, []);
 
     const handleQueryChange = (query) => {
-        loadDishes(query);
+        dispatch(loadDishes(query));
     };
 
     return (

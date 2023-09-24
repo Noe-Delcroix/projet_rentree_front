@@ -1,25 +1,31 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Button, FlatList, Image, CheckBox, ScrollView, TextInput} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
 import axios from "axios";
 import {TextInputField, toaster} from 'evergreen-ui';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch, useSelector} from "react-redux";
+import {loadDishes} from "../slices/Dishes";
+import {loadDetailledBasket} from "../slices/DetailledBasket";
+import {addDishesToBasket, removeDishesFromBasket} from "../slices/Basket";
 
 export default function Panier({ navigation, route }) {
 
-    const { basket,  addDishesToBasket, removeDishesFromBasket, token } = useApplicationContext();
+    const basket = useSelector(state => state.basket.value)
+    const detailledBasket = useSelector(state => state.dishes.value)
+    const dispatch = useDispatch();
 
+    console.log("le panier :"+basket)
     const [address, setAddress] = useState("")
 
-    const [detailledBasket, setDetailledBasket] = useState([])
 
     const [totalPrice, setTotalPrice] = useState(0)
 
-    React.useEffect(() => {
-        getDetailledBasket();
-    }
-    , [])
+    useEffect(() => {
+        dispatch(loadDetailledBasket(basket));
+
+    }, []);
 
     const getQuantity = (id) => {
         const dish = basket.find((e) => e.id === id);
@@ -27,41 +33,6 @@ export default function Panier({ navigation, route }) {
             return dish.quantity;
         }
         return 0;
-    }
-
-    const removeDishe = async (id, quantity = 0) => {
-        console.log(quantity);
-        await removeDishesFromBasket(id, quantity);
-        await getDetailledBasket();
-    };
-
-    const getDetailledBasket = async () => {
-        console.log(basket);
-        await setDetailledBasket([])
-        const axiosPromises = basket.map(async (e) => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/dishes/' + e.id );
-                console.log(response.data);
-                return response.data;
-            } catch (error) {
-                console.error("Erreur lors de la requête axios :", error);
-                return null;
-            }
-        });
-
-        try {
-            const detailledBasketData = await Promise.all(axiosPromises);
-            const updatedDetailledBasket = [...detailledBasketData.filter(Boolean)];
-            let totalPrice = 0;
-            updatedDetailledBasket.forEach((e) => {
-                totalPrice+=e.price*getQuantity(e.id);
-            });
-            setTotalPrice(totalPrice);
-            setDetailledBasket(updatedDetailledBasket);
-            console.log(updatedDetailledBasket);
-        } catch (error) {
-            console.error("Une erreur s'est produite lors de l'exécution des requêtes axios :", error);
-        }
     }
 
     const launchOrder = async () => {
@@ -148,15 +119,15 @@ export default function Panier({ navigation, route }) {
 
                                                 <View className="flex flex-row items-center mb-5">
                                                     <View className="flex flex-row items-center">
-                                                        <Button title={"-"} color="#713235" onPress={() => removeDishesFromBasket(item.id, 1)}/>
+                                                        <Button title={"-"} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
                                                         <Text className="text-2xl mx-5">{getQuantity(item.id)}</Text>
-                                                        <Button title={"+"} color="#713235" onPress={() => addDishesToBasket(item.id, 1)}/>
+                                                        <Button title={"+"} color="#713235"  onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
                                                     </View>
                                                 </View>
 
                                                 <View className="flex flex-row items-center justify-between w-full mb-5">
                                                     <Text className="text-xl">Total : { (item.price*getQuantity(item.id)).toFixed(2) }€</Text>
-                                                    <Icon name="trash" size={30} color="#713235" onPress={() => removeDishe(item.id)}/>
+                                                    <Icon name="trash" size={30} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 0 }))}/>
                                                 </View>
                                             </View>
                                         </View>
