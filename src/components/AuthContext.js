@@ -1,5 +1,5 @@
 // SelectedDishesContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {toaster} from "evergreen-ui";
 import {useDispatch, useSelector} from "react-redux";
@@ -9,19 +9,24 @@ const AuthContext = createContext();
 
 export const useApplicationContext = () => useContext(AuthContext);
 
-export const AuthContextProvider = ({ children }) => {
+export const AuthContextProvider = ({ children, navigation}) => {
     const [userPassword, setUserPassword] = useState("")
     const [token, setToken] = useState("")
 
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.value);
 
-    const tryLogIn = (email, password, firstname, lastname, navigation) => {
-        if (email === undefined && password === undefined && firstname === undefined && lastname === undefined) {
+    useEffect(() => {
+        tryLogIn(undefined, undefined, navigation)
+    });
+
+    const tryLogIn = async (email, password, navigation) => {
+        if (email === undefined && password === undefined) {
             try {
-                axios.get('http://localhost:8080/api/users/info')
+                await axios.get('http://localhost:8080/api/users/info')
                     .then((response) => {
                         setToken(response.headers['token']);  // Récupérez le cookie de l'en-tête Set-Cookie
+                        setUserPassword(password);
                         navigation.replace('Carte');
                     })
                     .catch((error) => {
@@ -31,7 +36,7 @@ export const AuthContextProvider = ({ children }) => {
                 console.error(error);
             }
         } else {
-            axios.post('http://localhost:8080/api/users/login', {
+            await axios.post('http://localhost:8080/api/users/login', {
                 email: email,
                 password: password
             })
@@ -46,29 +51,36 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const IsAnyUserLogedIn = () => {
+        return userPassword !== "";
+    }
 
-    const trySignIn = async (email, password, firstname, lastname) => {
-        let response = false;
+
+    const trySignIn = async (email, password, firstname, lastname, address) => {
+        let ret = false;
         await axios.post('http://localhost:8080/api/users/register', {
             firstname: firstname,
             lastname: lastname,
             email: email,
-            password: password
+            password: password,
+            address: address
         }).then((response) => {
+            ret = true
             toaster.success('Votre compte a bien été crée!')
-            response = true
+
         }, (error) => {
             console.log(error)
+            ret = false
             toaster.warning(error.response.data)
-            response = false
         });
-        return response
+        console.log("====================================",ret)
+        return ret
     }
 
     const sendPasswordResetEmail = (email) => {
         axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`).then((response) => {
             console.log(response);
-            toaster.success('Votre mdp a été changé, un email vous a été envoyé!')
+            toaster.success('Votre mot de passe a été changé, un email vous a été envoyé!')
         }, (error) => {
             console.log(error)
             toaster.warning(error.response.data)
@@ -99,10 +111,14 @@ export const AuthContextProvider = ({ children }) => {
         try {
             axios.post('http://localhost:8080/api/users/logout').then((response) => {
                 dispatch(loadUserInfo());
+                setUserPassword("");
                 console.log(response.data)
-                navigation.navigate('LogIn')
-            })} catch (error) {
-            console.log('ERREUR');
+                toaster.success('Vous avez été déconnecté!')
+                navigation.navigate('Carte')
+
+            })
+        } catch (error) {
+            toaster.danger(error.response.data)
         }
     }
 
@@ -126,7 +142,7 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ userPassword, tryLogIn, trySignIn, sendPasswordResetEmail, resetPassword, handleLogOut, changePassword }}>
+        <AuthContext.Provider value={{ userPassword, tryLogIn, trySignIn, IsAnyUserLogedIn, sendPasswordResetEmail, resetPassword, handleLogOut, changePassword }}>
             {children}
         </AuthContext.Provider>
     );

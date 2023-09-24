@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image, Button} from 'react-native';
+import {View, Text, TouchableOpacity, Dimensions, Image, Button, Pressable} from 'react-native';
 import {useApplicationContext} from "./ApplicationContext";
 import {useDispatch} from "react-redux";
 import {addDishesToBasket} from "../slices/Basket";
-export default function Product({id, name, image, price, description, alergens, route, navigation}) {
+export default function Product({id, name, image, price, description, navigation}) {
 
     const [quantity] = useState(1);
     const dispatch = useDispatch();
@@ -11,11 +11,6 @@ export default function Product({id, name, image, price, description, alergens, 
         navigation.navigate('ObjectDetail',
             {
                 id: id,
-                name: name,
-                image: image,
-                description: description,
-                alergens: alergens,
-                price: price,
             });
     };
 
@@ -34,13 +29,12 @@ export default function Product({id, name, image, price, description, alergens, 
                     </View>
                     <Text className="my-5 text-xl">{description} </Text>
 
-                    <View className="w-full shadow">
-                        <Button
-                            color={'#713235'}
-                            title='Add to basket'
-                            onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))}
-                        />
-                    </View>
+
+                    <Pressable
+                        className="w-full"
+                        onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))}>
+                        <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Ajouter au panier</Text>
+                    </Pressable>
 
                 </View>
             </View>

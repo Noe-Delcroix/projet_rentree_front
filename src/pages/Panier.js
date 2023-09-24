@@ -24,6 +24,19 @@ export default function Panier({ navigation, route }) {
             return () => {};
         }, [dispatch])  // spécifiez les dépendances pour éviter des appels excessifs
     );
+  
+    const { IsAnyUserLogedIn } = useApplicationContext();
+
+
+    const [totalPrice, setTotalPrice] = useState(0)
+
+    const launchOrder = async () => {
+        if (!IsAnyUserLogedIn()) {
+            navigation.navigate('LogIn');
+        }
+
+        dispatch(addOrder({ address, basket }))
+    }
 
     return (
         <View className="flex-1">
@@ -58,7 +71,7 @@ export default function Panier({ navigation, route }) {
 
                                             className="text-white p-2 rounded"
                                             title="Payer"
-                                            onPress={() => dispatch(addOrder({ address, basket }))}
+                                            onPress={launchOrder}
                                         />
                                     </View>
                                 </View>

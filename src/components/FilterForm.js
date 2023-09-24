@@ -66,107 +66,112 @@ const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: def
 
     const DietSelection = ({ label, selectAll, isSelected, onPress }) => (
         <TouchableOpacity onPress={onPress} className={`mr-3 shadow p-2 rounded my-1 ${isSelected ? 'bg-[#713235]' : 'bg-white'}`}>
-            <Text className={ `text-xl ${isSelected ? 'text-white' : 'text-black'}`}>{label}</Text>
+            <Text className={ `text-xl ${selectAll ? 'font-bold' : ''} ${isSelected ? 'text-white' : 'text-black'}`}>{label}</Text>
         </TouchableOpacity>
     );
 
     const TagSelection = ({ label, selectAll, isSelected, onPress }) => (
         <TouchableOpacity onPress={onPress} className={`mr-3 shadow p-2 rounded my-1 ${isSelected ? 'bg-[#713235]' : 'bg-white'}`}>
-            <Text className={ `text-xl ${isSelected ? 'text-white' : 'text-black'}`}>{label}</Text>
+            <Text className={ `text-xl ${selectAll ? 'font-bold' : ''} ${isSelected ? 'text-white' : 'text-black'}`}>{label}</Text>
         </TouchableOpacity>
     );
 
 
     return (
-        <View className="bg-white mt-10 mb-5 p-5 shadow-xl">
 
-            <View className="sm:w-1/4 w-full">
-                <RangeSlider
-                    min={0}
-                    max={50}
-                    step={1}
-                    value={prices}
-                    onInput={setPrices}
-                    onThumbDragEnd={handleQueryChange}
-                />
+        <View className="flex flex-col">
+            <View className="bg-white mt-10 mb-5 p-5 shadow-xl">
 
-                <View className="flex flex-row mt-3 mb-5">
-                    <Text className="text-2xl">Prix : {prices[0]} à {prices[1]} €</Text>
+                <View className="sm:w-1/4 w-full">
+                    <RangeSlider
+                        min={0}
+                        max={50}
+                        step={1}
+                        value={prices}
+                        onInput={setPrices}
+                        onThumbDragEnd={handleQueryChange}
+                    />
+
+                    <View className="flex flex-row mt-3 mb-5">
+                        <Text className="text-2xl">Prix : {prices[0]} à {prices[1]} €</Text>
+                    </View>
+
+
                 </View>
 
 
-            </View>
-
-
-            <View className="flex flex-col sm:flex-row mb-5">
-                <View className="w-full sm:w-1/2">
-                    <Text className="text-2xl">Diets</Text>
-                    <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
-                    <View className="flex flex-row flex-wrap">
-                        <DietSelection
-                            label="Select All"
-                            selectAll={true}
-                            isSelected={selectAllDiets}
-                            onPress={() => handleSelectAll("diets", !selectAllDiets)}
-                        />
-                        {Object.entries(diets).map((diet) => (
+                <View className="flex flex-col sm:flex-row mb-5">
+                    <View className="w-full sm:w-1/2">
+                        <Text className="text-2xl">Régimes</Text>
+                        <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
+                        <View className="flex flex-row flex-wrap">
                             <DietSelection
-                                key={diet[0]}
-                                label={diet[1]}
+                                label="Tout Selectionner"
                                 selectAll={true}
-                                isSelected={selectedDiets[diet[0]] || false}
-                                onPress={() => handleCheckboxChange("diets", diet[0], !selectedDiets[diet[0]])}
+                                isSelected={selectAllDiets}
+                                onPress={() => handleSelectAll("diets", !selectAllDiets)}
                             />
-                        ))}
+                            {Object.entries(diets).map((diet) => (
+                                <DietSelection
+                                    key={diet[0]}
+                                    label={diet[1]}
+                                    selectAll={false}
+                                    isSelected={selectedDiets[diet[0]] || false}
+                                    onPress={() => handleCheckboxChange("diets", diet[0], !selectedDiets[diet[0]])}
+                                />
+                            ))}
+                        </View>
                     </View>
-                </View>
 
-                <View className="w-full sm:w-1/2">
-                    <Text className="text-2xl">Tags</Text>
-                    <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
-                    <View className="flex flex-row flex-wrap">
-                        <TagSelection
-                            label="Select All"
-                            isSelected={selectAllTags}
-                            selectAll={true}
-                            onPress={() => handleSelectAll("tags", !selectAllTags)}
-                        />
-                        {Object.entries(tags).map((tag) => (
+                    <View className="w-full sm:w-1/2">
+                        <Text className="text-2xl">Catégories</Text>
+                        <View className="w-full sm:w-1/2 h-1 bg-[#713235] mb-3"></View>
+                        <View className="flex flex-row flex-wrap">
                             <TagSelection
-                                key={tag[0]}
-                                label={tag[1]}
-                                selectAll={false}
-                                isSelected={selectedTags[tag[0]] || false}
-                                onPress={() => handleCheckboxChange("tags", tag[0], !selectedTags[tag[0]])}
+                                label="Tout Selectionner"
+                                isSelected={selectAllTags}
+                                selectAll={true}
+                                onPress={() => handleSelectAll("tags", !selectAllTags)}
                             />
-                        ))}
+                            {Object.entries(tags).map((tag) => (
+                                <TagSelection
+                                    key={tag[0]}
+                                    label={tag[1]}
+                                    selectAll={false}
+                                    isSelected={selectedTags[tag[0]] || false}
+                                    onPress={() => handleCheckboxChange("tags", tag[0], !selectedTags[tag[0]])}
+                                />
+                            ))}
+                        </View>
                     </View>
                 </View>
-            </View>
 
 
 
-            <SortingForm
-                sortingMethods={sortingMethods}
-                sortType={sortType}
-                sortOrder={sortingOrders}
-                onSortingChange={handleSortingChange}
-            />
-
-            <View className="flex-row items-center bg-white p-2 shadow border border-[#713235] rounded my-5">
-                <Icon name="search" size={20} color="#000" className="ml-5 mr-4" />
-                <TextInput
-                    placeholder="Que souhaitez-vous manger ?"
-                    value={search}
-                    onChangeText={setSearch}
-                    placeholderTextColor={"#808080"}
-                    className="flex-1 ml-5 text-2xl"
+                <SortingForm
+                    sortingMethods={sortingMethods}
+                    sortType={sortType}
+                    sortOrder={sortingOrders}
+                    onSortingChange={handleSortingChange}
                 />
             </View>
 
-
-
+            <View className="bg-white mt-5 mb-5 p-5 shadow-xl">
+                <View className="flex-row items-center bg-white p-2 shadow border border-[#713235] rounded my-5">
+                    <Icon name="search" size={20} color="#000" className="ml-5 mr-4" />
+                    <TextInput
+                        placeholder="Que souhaitez-vous manger ?"
+                        value={search}
+                        onChangeText={setSearch}
+                        placeholderTextColor={"#808080"}
+                        className="flex-1 ml-5 text-2xl"
+                    />
+                </View>
+            </View>
         </View>
+
+
+
     );
 };
 

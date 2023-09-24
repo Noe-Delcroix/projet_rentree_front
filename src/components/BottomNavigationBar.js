@@ -1,16 +1,18 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
-import {useApplicationContext} from "./ApplicationContext";
 import {useDispatch, useSelector} from "react-redux";
 import { selectBasketSize } from "../slices/Basket";
+import {useApplicationContext} from "./AuthContext";
 
 const BottomNavigationBar = ({ navigation, activeScreen }) => {
     const basketSize = useSelector(selectBasketSize);
 
+    const { IsAnyUserLogedIn } = useApplicationContext();
+
     return (
-        <View className="flex flex-row justify-around items-center h-[60px] bg-[#FDF7EF]">
+        <View className="flex flex-row justify-around items-center h-[60px] bg-white">
             <TouchableOpacity
-                onPress={() => navigation.navigate('Carte')}
+                onPress={() => navigation.replace('Carte')}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Carte' ? 'text-white' : 'text-gray-400'}`}
             >
                 <Image
@@ -19,7 +21,7 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-                onPress={() => navigation.navigate('Panier')}
+                onPress={() => navigation.replace('Panier')}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Panier' ? 'text-white' : 'text-gray-400'}`}
             >
                 <View>
@@ -35,7 +37,13 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-                onPress={() => navigation.navigate('Profil')}
+                onPress={() => {
+                    if (IsAnyUserLogedIn()) {
+                        navigation.replace('Profil')
+                    } else {
+                        navigation.navigate('LogIn')
+                    }
+                }}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Profil' ? 'text-white' : 'text-gray-400'}`}
             >
                 <Image
