@@ -7,27 +7,20 @@ import {useApplicationContext} from "../components/ApplicationContext";
 import FilterForm from "../components/FilterForm";
 import {useDispatch, useSelector} from 'react-redux';
 import { loadDishes} from '../slices/Dishes';
+import {loadTags} from "../slices/Tags";
+import {loadDiets} from "../slices/Diets";
 
 export default function Carte({ navigation }) {
 
     const dispatch = useDispatch();
     const dishes = useSelector(state => state.dishes.value)
-    const [tags, setTags] = useState({});
-    const [diets, setDiets] = useState({});
+    const tags = useSelector(state => state.tags.value)
+    const diets = useSelector(state => state.diets.value)
 
-
-
-    useEffect(() => {
-        axios.get('http://localhost:8080/api/dishes/tags').then((response) => {
-            setTags(response.data);
-        })
-        axios.get('http://localhost:8080/api/dishes/diets').then((response) => {
-            setDiets(response.data);
-        })
-
-    }, []);
 
     const handleQueryChange = (query) => {
+        dispatch(loadTags());
+        dispatch(loadDiets());
         dispatch(loadDishes(query));
     };
 

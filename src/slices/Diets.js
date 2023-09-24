@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 
-export const tagsSlice = createSlice({
-    name: 'tags',
+export const dietsSlice = createSlice({
+    name: 'diets',
     initialState: {
         value: [],
         status: 'idle',
@@ -13,14 +13,14 @@ export const tagsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loadTags.pending, (state) => {
+            .addCase(loadDiets.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(loadTags.fulfilled, (state, action) => {
+            .addCase(loadDiets.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.value = action.payload;
             })
-            .addCase(loadTags.rejected, (state, action) => {
+            .addCase(loadDiets.rejected, (state, action) => {
                 state.status = 'failed';
             });
     },
@@ -33,11 +33,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 
 // Définissez une fonction asynchrone pour charger les données
-export const loadTags = createAsyncThunk(
-    'tags/load',
+export const loadDiets = createAsyncThunk(
+    'diets/load',
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get('http://localhost:8080/api/dishes/tags');
+            const response = await axios.get('http://localhost:8080/api/dishes/diets');
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
@@ -48,6 +48,6 @@ export const loadTags = createAsyncThunk(
 // ...
 
 // Action creators are generated for each case reducer function
-export const { load } = tagsSlice.actions;
+export const { load } = dietsSlice.actions;
 
-export default tagsSlice.reducer
+export default dietsSlice.reducer
