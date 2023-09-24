@@ -8,20 +8,21 @@ import {addDishesToBasket} from "../slices/Basket";
 import {loadDish} from "../slices/Dish";
 import Product from "../components/Product";
 import {loadTags} from "../slices/Tags";
+import {loadDiets} from "../slices/Diets";
 
 export default function ObjectDetail({ route, navigation }) {
     const { id } = route.params;
 
-    const [quantity, setQuantity] = useState(1);
-
     const dish = useSelector(state => state.dish.value);
     const tags = useSelector(state => state.tags.value)
+    const diets = useSelector(state => state.diets.value)
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         console.log("useEffect")
         dispatch(loadTags());
+        dispatch(loadDiets());
         dispatch(loadDish(id));
         console.log(dish)
     }  , []);
@@ -43,7 +44,7 @@ export default function ObjectDetail({ route, navigation }) {
                         <Text className="text-4xl font-bold text-center">{dish?.name}</Text>
                         <Text className="text-3xl text-[#713235] font-bold mb-5">{dish?.price?.toFixed(2)}€</Text>
 
-                        <Text className="text-xl text-[#713235] text-center">Régime : {dish?.diet}</Text>
+                        <Text className="text-xl text-[#713235] text-center">Régime : {diets[dish?.diet]}</Text>
 
                         <View className="flex flex-row flex-wrap justify-center items-center">
                             {dish?.tags?.map((tag) => {

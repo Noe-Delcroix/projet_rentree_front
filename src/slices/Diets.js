@@ -31,8 +31,6 @@ export const dietsSlice = createSlice({
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-
-// Définissez une fonction asynchrone pour charger les données
 export const loadDiets = createAsyncThunk(
     'diets/load',
     async (_, thunkAPI) => {
