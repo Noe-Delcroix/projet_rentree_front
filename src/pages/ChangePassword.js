@@ -1,7 +1,9 @@
+
 import {useApplicationContext} from "../components/AuthContext";
 const ChangePassword = () => {
 
     const { changePassword } = useApplicationContext();
+
 
     return (
         <div>

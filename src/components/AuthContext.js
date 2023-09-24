@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 import axios from "axios";
 import {toaster} from "evergreen-ui";
 import {useDispatch, useSelector} from "react-redux";
-import {loadUserInfo} from "../features/dishes/User";
+import {loadUserInfo} from "../slices/User";
 
 const AuthContext = createContext();
 

@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Button, Image} from 'react-native';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { Card } from '@rneui/themed';
+import {View, Text, Image} from 'react-native';
 import {useApplicationContext} from "./AuthContext";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {loadDish} from "../features/dishes/Dish";
-import {loadOrderInfo} from "../features/dishes/Order";
+import {loadDish} from "../slices/Dish";
+import {loadOrderInfo} from "../slices/Order";
 
 
 
@@ -51,17 +49,15 @@ export default function Order({ orderId }) {
             {Object.entries(orderContent).map((([key, quantity]) => {
                 const dish = dishes.find((e) => e.id === parseInt(key));
                return(
-                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                   <View>
                        <Image
-                           source={{ uri: dish.image }} // Assurez-vous que item.image contient l'URL de l'image
-                           style={{ width: 100, height: 100, marginRight: 10 }}
+                           source={{ uri: dish.image }}
                        />
-                       <View style={{ flex: 1 }}>
+                       <View>
                            <Text>{dish.name}</Text>
                            <Text>{dish.price}€</Text>
                            <Text>{dish.description}</Text>
                            <Text>quantity :{quantity}</Text>
-
                        </View>
                    </View>
                )

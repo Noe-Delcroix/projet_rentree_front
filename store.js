@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import dishesReducer from './features/dishes/Dishes'
-import basketReducer from './features/dishes/Basket'
-import detailledBasketReducer from './features/dishes/DetailledBasket'
-import dishReducer from './features/dishes/Dish'
-import userReducer from './features/dishes/User'
-import orderReducer from './features/dishes/Order'
+import dishesReducer from './src/slices/Dishes'
+import basketReducer from './src/slices/Basket'
+import detailledBasketReducer from './src/slices/DetailledBasket'
+import dishReducer from './src/slices/Dish'
+import userReducer from './src/slices/User'
+import orderReducer from './src/slices/Order'
 export default configureStore({
     reducer: {
         dishes: dishesReducer,
