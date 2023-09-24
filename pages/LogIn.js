@@ -2,70 +2,19 @@ import React, {useEffect, useState} from 'react';
 import { Text, StyleSheet, View, TextInput, Button } from 'react-native';
 import axios from 'axios';
 import { toaster } from 'evergreen-ui'
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
 
 export default function LogIn({ navigation }) {
     const [login, setLogin] = useState(true);
     const [email, setEmail] = useState("")
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
-    const [password, setPassword1] = useState("")
-    const { setToken, setPassword } = useApplicationContext();
+    const [password, setPassword] = useState("")
+    const { tryLogIn, trySignIn, sendPasswordResetEmail } = useApplicationContext();
 
     useEffect(() => {
-        try {
-            axios.get('http://localhost:8080/api/users/info', ).then((response) => {
-                navigation.replace('Carte')
-            });
-        } catch (error) {
-        }
+        tryLogIn(undefined, undefined, undefined, undefined, navigation)
     }, []);
-    const tryLogIn = () => {
-        console.log(email)
-        console.log(password)
-        axios.post('http://localhost:8080/api/users/login', {
-            email:email,
-            password:password
-        }).then((response) => {
-            setPassword(password)
-            console.log(response);
-            setToken(response.data)
-            navigation.replace('Carte')
-        }, (error) => {
-            toaster.warning(error.response.data)
-        });
-    }
-
-    const trySignIn = () => {
-        console.log(firstname)
-        console.log(lastname)
-        console.log(email)
-        console.log(password)
-        
-        axios.post('http://localhost:8080/api/users/register', {
-            firstname:firstname,
-            lastname:lastname,
-            email:email,
-            password:password
-        }).then((response) => {
-            toaster.success('Votre compte a bien été crée!')
-            setLogin(!login)
-        }, (error) => {
-            console.log(error)
-            toaster.warning(error.response.data)
-        });
-    }
-
-    const sendPasswordResetEmail = () => {
-        console.log(email)
-        axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`).then((response) => {
-            console.log(response);
-            toaster.success('Votre mdp a été changé, un email vous a été envoyé!')
-        }, (error) => {
-            console.log(error)
-            toaster.warning(error.response.data)
-        });
-    }
 
     return (
         <View style={styles.container}>
@@ -78,16 +27,16 @@ export default function LogIn({ navigation }) {
                 style={styles.input}
                 secureTextEntry={true}
                 placeholder="Password"
-                onChangeText={setPassword1}
+                onChangeText={setPassword}
             />
             <Button
             title={login ? 'Log In' : 'Sign In'}
-            onPress={login ? () => tryLogIn() : () => trySignIn()}
+            onPress={login ? () => tryLogIn(email, password, firstname, lastname, navigation) : () => setLogin(trySignIn(email, password, firstname, lastname))}
             />
             <Text style={styles.toggleText} onPress={() => setLogin(!login)}>
             {login ? "I don't have an account already" : 'I already have an account'}
             </Text>
-            <Text style={styles.forgotPassword} onPress={sendPasswordResetEmail}>
+            <Text style={styles.forgotPassword} onPress={() => sendPasswordResetEmail(email)}>
             {login ? 'Password forgotten ?' : ''}
             </Text>
         </View>

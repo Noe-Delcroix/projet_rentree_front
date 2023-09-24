@@ -11,11 +11,13 @@ import Product from './components/Product';
 import LogIn from './pages/LogIn';
 import Header from './components/Header';
 import {useState} from "react";
-import {ApplicationContextProvider} from "./components/ApplicationContext";
+import { AuthContextProvider} from "./components/AuthContext";
 import axios from 'axios';
 import SeeOrder from "./pages/SeeOrder";
 import ChangePassword from "./pages/ChangePassword";
 import { enableScreens } from 'react-native-screens';
+import store from "./store";
+import { Provider } from 'react-redux'
 
 const Stack = createNativeStackNavigator();
 const linking = {
@@ -40,23 +42,26 @@ const App = () => {
     axios.defaults.withCredentials = true;
 
     return (
-      <ApplicationContextProvider>
-          <NavigationContainer linking={linking}>
-              <Stack.Navigator
-                  screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
-                  <Stack.Screen name="ChangePassword" component={ChangePassword}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+        <Provider store={store}>
+            <AuthContextProvider>
+                <NavigationContainer linking={linking}>
+                    <Stack.Navigator
+                        screenOptions={{ headerStyle: { backgroundColor: '#FDF7EF' } }}>
+                        <Stack.Screen name="ChangePassword" component={ChangePassword}  options={{ headerTitle: (props) => <Header {...props} /> }} />
 
-                  <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Carte" component={Carte}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Order" component={Order}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                        <Stack.Screen name="LogIn" component={LogIn} options={{ headerTitle: (props) => <Header {...props} /> }} />
+                        <Stack.Screen name="Carte" component={Carte}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                        <Stack.Screen name="ObjectDetail" component={ObjectDetail}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                        <Stack.Screen name="Order" component={Order}  options={{ headerTitle: (props) => <Header {...props} /> }} />
 
-                  <Stack.Screen name="SeeOrder" component={SeeOrder}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-                  <Stack.Screen name="Profil"  component={ProfileScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
-              </Stack.Navigator>
-          </NavigationContainer>
-      </ApplicationContextProvider>
+                        <Stack.Screen name="SeeOrder" component={SeeOrder}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                        <Stack.Screen name="Panier" component={Panier}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                        <Stack.Screen name="Profil"  component={ProfileScreen}  options={{ headerTitle: (props) => <Header {...props} /> }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </AuthContextProvider>
+        </Provider>
+
 
   );
 };

@@ -4,37 +4,22 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Product from '../components/Product';
 import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
 import FilterForm from "../components/FilterForm";
-
+import {useDispatch, useSelector} from 'react-redux';
+import { loadDishes} from '../features/dishes/Dishes';
 
 export default function Carte({ navigation, route }) {
 
     const screenWidth = Dimensions.get('screen').width;
     const screenHeight = Dimensions.get('screen').height;
 
-    const { dishes, setDishes } = useApplicationContext();
+    const dishes = useSelector(state => state.dishes.value)
 
     const [tags, setTags] = useState({});
     const [diets, setDiets] = useState({});
 
-
-    const loadDishes = async (query) => {
-        console.log("Loading dishes with query :");
-        console.log(query);
-
-        try {
-
-            axios.get('http://localhost:8080/api/dishes',{ params : query} ).then((response) => {
-                console.log(response.data);
-                setDishes(response.data);
-            });
-        } catch (error) {
-            console.log('ERREUR');
-            console.error(error);
-        }
-    };
-
+    const dispatch = useDispatch();
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/dishes/tags').then((response) => {
@@ -49,9 +34,8 @@ export default function Carte({ navigation, route }) {
     const productContainerStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1300) ? styles.smallScreenContainer : styles.largeScreenContainer;
     const titleStyle = (screenHeight > screenWidth && screenWidth < 600 && screenHeight < 1300) ? styles.smallScreentitle : styles.largeScreentitle;
 
-
     const handleQueryChange = (query) => {
-        loadDishes(query);
+            dispatch(loadDishes(query));
     };
 
     return (

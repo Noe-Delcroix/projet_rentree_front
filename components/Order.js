@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, Button, Image} from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "./AuthContext";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {loadDish} from "../features/dishes/Dish";
+import {loadOrderInfo} from "../features/dishes/Order";
 
 
 
@@ -16,9 +19,14 @@ export default function Order({ orderId }) {
     const [date, setDate] = useState("");
     const [adress, setAdress] = useState("");
 
+    const dispatch = useDispatch();
+
+    const order = useSelector(state => state.order.value);
+
     useEffect(() => {
-        getOrderDetails();
-    },[]);
+        console.log("useEffect")
+        dispatch(loadOrderInfo(orderId));
+    }  , []);
 
     const getOrderDetails = async () => {
         try {

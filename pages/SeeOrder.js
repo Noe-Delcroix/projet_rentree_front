@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Text, StyleSheet, View, TextInput, Button } from 'react-native';
 import axios from 'axios';
 import { toaster } from 'evergreen-ui'
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
 import Order from "../components/Order";
 
 export default function SeeOrder({ navigation }) {

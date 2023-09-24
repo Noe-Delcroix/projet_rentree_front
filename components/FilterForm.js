@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TextInput, ScrollView, Button } from 'react-native';
+import { Text, TextInput } from 'react-native';
 
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import axios from "axios";
 import {Checkbox} from "evergreen-ui";
 import SortingForm from "./SortingForm";
 

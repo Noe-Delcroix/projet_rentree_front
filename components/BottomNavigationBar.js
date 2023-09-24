@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
-import wallet from '../assets/wallet.png';
-import {useApplicationContext} from "./ApplicationContext";
+import {useApplicationContext} from "./AuthContext";
 
 const BottomNavigationBar = ({ navigation, activeScreen }) => {
     const { numberOfDishes } = useApplicationContext();

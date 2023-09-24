@@ -4,9 +4,12 @@ import Product from '../components/Product';
 import { Image } from 'react-native-web';
 import { CheckBox } from '@rneui/base';
 import {Select} from "evergreen-ui";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
+import {useDispatch, useSelector} from "react-redux";
+import {addDishesToBasket} from "../features/dishes/Basket";
+import {loadDish} from "../features/dishes/Dish";
 
 const styles = StyleSheet.create({
     container: {
@@ -60,13 +63,19 @@ const styles = StyleSheet.create({
 });
 
 export default function ObjectDetail({ route, navigation }) {
-    const { id, title, image, description, alergens, price } = route.params;
+    const { id } = route.params;
 
     // Ajoutez un state pour gérer la quantité de plats
     const [quantity, setQuantity] = useState(1);
 
-    const { addDishesToBasket } = useApplicationContext();
+    const dish = useSelector(state => state.dish.value);
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log("useEffect")
+        dispatch(loadDish(id));
+    }  , []);
 
     return (
         <View style={styles.container}>
@@ -74,13 +83,13 @@ export default function ObjectDetail({ route, navigation }) {
                 <Image
                     style={styles.fullwidthImage}
                     source={{
-                        uri: image,
+                        uri: dish?.image,
                     }}
                 />
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.price}>{price} €</Text>
+                <Text style={styles.title}>{dish?.title}</Text>
+                <Text style={styles.price}>{dish?.price} €</Text>
                 <Picker // Utilisez le Picker pour la quantité
                     selectedValue={quantity}
                     onValueChange={(itemValue, itemIndex) => setQuantity(itemValue)}
@@ -93,18 +102,18 @@ export default function ObjectDetail({ route, navigation }) {
                     <Picker.Item label="6" value={6} />
                     <Picker.Item label="7" value={7} />
                 </Picker>
-                <Button title={'ajouter au panier'} onPress={() => addDishesToBasket(id, quantity)} />
+                <Button title={'ajouter au panier'} onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))} />
             </View>
 
             <View style={styles.columnContainer}>
                 <View style={styles.halfContainer}>
                     <Text style={styles.title}>Description</Text>
-                    <Text style={styles.description}>{description}</Text>
+                    <Text style={styles.description}>{dish?.description}</Text>
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.halfContainer}>
                     <Text style={styles.title}>Allergènes</Text>
-                    <Text style={styles.allergenes}>{alergens}</Text>
+                    <Text style={styles.allergenes}>{dish?.alergens}</Text>
                 </View>
             </View>
             <View style={styles.bottomNavContainer}>

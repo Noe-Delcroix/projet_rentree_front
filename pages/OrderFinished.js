@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import axios from "axios";
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "../components/AuthContext";
 
 export default function OrderFinished({ route, navigation }) {
     const [solde, setSolde] = useState(0);

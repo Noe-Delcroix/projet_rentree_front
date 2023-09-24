@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Card } from '@rneui/themed';
-import {useApplicationContext} from "../components/ApplicationContext";
+import {useApplicationContext} from "./AuthContext";
+import {useDispatch, useSelector} from "react-redux";
+import {loadDishes} from "../features/dishes/Dishes";
+import {addDishesToBasket} from "../features/dishes/Basket";
 
 
 const styles = StyleSheet.create({
@@ -64,7 +67,8 @@ const styles = StyleSheet.create({
 export default function Product({id, name, image, price, description, alergens, route, navigation}) {
 
   const [quantity] = useState(1);
-  const { addDishesToBasket } = useApplicationContext();
+
+  const dispatch = useDispatch();
 
   const onPressCard = ()=> {
     navigation.navigate('ObjectDetail',
@@ -78,27 +82,10 @@ export default function Product({id, name, image, price, description, alergens, 
         });
   };
 
-  const dish = {
-    name: name,
-    image: image,
-    description: description,
-    alergens: alergens,
-    price: price
-  }
-
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  const [isSelected, setSelection] = useState(false);
+
   const isPortrait = windowHeight > windowWidth && windowWidth < 600 && windowHeight < 1500;
-
-
-  const select = () => {
-    setSelection(!isSelected)
-    if (!isSelected) {
-      console.log(dish)
-      setSelectedDishes(arr => [...arr, dish])
-    }
-  };
 
   return (
     <View style={[isPortrait ? styles.containerVer : styles.containerHor]}>
@@ -124,8 +111,8 @@ export default function Product({id, name, image, price, description, alergens, 
           </View>
           <View style={styles.button}>
             <TouchableOpacity
-              onPress={() => addDishesToBasket(id, quantity)}
-              style={[isPortrait ? styles.smallcustomButton : styles.largecustomButton]}
+                onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))}
+                style={[isPortrait ? styles.smallcustomButton : styles.largecustomButton]}
             >
               <Text style={[styles.customButtonText,{fontSize: isPortrait? RFPercentage(1.75) : 20,}]}>ADD</Text>
             </TouchableOpacity>

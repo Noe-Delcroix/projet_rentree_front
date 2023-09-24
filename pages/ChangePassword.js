@@ -1,30 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import {toaster} from "evergreen-ui";
-const ChangePassword = ({ route }) => {
+import {useApplicationContext} from "../components/AuthContext";
+const ChangePassword = () => {
 
-    const queryParameters = new URLSearchParams(window.location.search)
-    const token =queryParameters.get('token');
-    console.log(token);
-
-    const changePassword = async (password, confirmpassword) => {
-        if (password !== confirmpassword) {
-        }else{
-            try {
-                axios.get(`http://localhost:8080/api/users/resetPassword?token=${token}&password=${password}`)
-                    .then((response) => {
-                        toaster.success('votre mdp a été modifié!')
-                    }, (error) => {
-                        console.log(error)
-                        toaster.warning(error.response.data)
-                    });
-            } catch (error) {
-                console.log('ERREUR');
-                console.error(error);
-            }
-        }
-
-    }
+    const { changePassword } = useApplicationContext();
 
     return (
         <div>
@@ -44,7 +21,10 @@ const ChangePassword = ({ route }) => {
                         id={"confirmPassword"}
                     />
                 </div>
-                <button onClick={() => changePassword(document.getElementById("newPassword").value,document.getElementById("confirmPassword").value )} >Changer</button>
+                <button onClick={() => changePassword(
+                    document.getElementById("newPassword").value,
+                    document.getElementById("confirmPassword").value,
+                    new URLSearchParams(window.location.search).get('token'))} >Changer</button>
         </div>
     );
 };
