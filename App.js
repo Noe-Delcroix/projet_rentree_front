@@ -31,7 +31,7 @@ const linking = {
     config: {
         screens: {
             LogIn: 'LogIn',
-            ChangePassword: 'ChangePassword?token=:token',
+            ChangePassword: 'ChangePassword',
             Error: 'Error',
             Carte: '',
             ObjectDetail: 'ObjectDetail',
