@@ -75,7 +75,7 @@ export default function Panier({ navigation, route }) {
                                     <View className="w-full h-1 bg-[#713235] mb-5"></View>
 
                                     <Text className="text-2xl text-[#713235] font-bold mb-5">
-                                        Prix total : {totalPrice}€
+                                        Prix total : {totalPrice.toFixed(2)}€
                                     </Text>
 
 
