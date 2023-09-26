@@ -4,7 +4,7 @@ import {useApplicationContext} from "./AuthContext";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {loadDish} from "../slices/Dish";
-import {fetchOrderById} from "../slices/Orders";
+import {fetchOrderById, loadDetailledOrders, loadOrders} from "../slices/Orders";
 import {loadDishes} from "../slices/Dishes";
 
 
@@ -14,12 +14,12 @@ export default function Order({ orderId }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("order id :"+orderId)
         dispatch(loadDishes())
-        dispatch(fetchOrderById(orderId));
+        dispatch(loadDetailledOrders())
     }  , []);
     const dishes = useSelector(state => state.dishes.value)
-    const order = useSelector(state => state.orders.orderDetails);
+
+    const order = useSelector(state => state.orders.orderDetails.find(order => order.id === orderId))
 
     return (
         <View className="my-3 shadow-xl p-5 bg-white">
@@ -31,18 +31,18 @@ export default function Order({ orderId }) {
             {order?.orderContent && Object.entries(order?.orderContent).map(([key, quantity]) =>  {
                 const dish = dishes.find((e) => e.id === parseInt(key));
                 console.log(dishes)
-               return(
-                   <View>
-                       <Image
-                           source={{ uri: dish?.image }}
-                       />
-                       <View>
-                           <Text>{dish?.name}</Text>
-                           <Text>{dish?.price}€</Text>
-                           <Text>quantity :{quantity}</Text>
-                       </View>
-                   </View>
-               )
+                return(
+                    <View>
+                        <Image
+                            source={{ uri: dish?.image }}
+                        />
+                        <View>
+                            <Text>{dish?.name}</Text>
+                            <Text>{dish?.price}€</Text>
+                            <Text>quantity :{quantity}</Text>
+                        </View>
+                    </View>
+                )
             })}
         </View>
     );

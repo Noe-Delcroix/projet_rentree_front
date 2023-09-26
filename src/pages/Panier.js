@@ -3,7 +3,13 @@ import {View, Text, Button, FlatList, Image, CheckBox, ScrollView, TextInput} fr
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from "react-redux";
-import {addDishesToBasket, removeDishesFromBasket, selectTotalPrice, loadDetailledBasket} from "../slices/Basket";
+import {
+    addDishesToBasket,
+    removeDishesFromBasket,
+    selectTotalPrice,
+    loadDetailledBasket,
+    viderPanier
+} from "../slices/Basket";
 import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
 import {useApplicationContext} from "../components/AuthContext";
@@ -33,6 +39,7 @@ export default function Panier({ navigation, route }) {
             navigation.navigate('LogIn');
         }else{
             dispatch(addOrder({ address, basket }))
+            dispatch(viderPanier())
         }
     }
 

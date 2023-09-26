@@ -3,7 +3,7 @@ import {ScrollView, Text, View} from 'react-native';
 import {useApplicationContext} from "../components/AuthContext";
 import Order from "../components/Order";
 import {useDispatch, useSelector} from "react-redux";
-import {loadOrders} from "../slices/Orders";
+import {loadDetailledOrders, loadOrders} from "../slices/Orders";
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import SortingForm from "../components/SortingForm";
 
@@ -22,8 +22,7 @@ export default function SeeOrder({ navigation }) {
         // }else{
         //
         // }
-        dispatch(loadOrders());
-
+        dispatch(loadOrders({ sortType, sortingOrders }))
     }, []);
 
     const handleSortingChange = ({ sortType, sortOrder }) => {
@@ -52,7 +51,6 @@ export default function SeeOrder({ navigation }) {
 
 
                         {orders.map((order) => {
-                            console.log(order)
                             return (<Order orderId={order.id} />)
                         })}
                     </View>

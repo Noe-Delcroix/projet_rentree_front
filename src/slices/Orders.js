@@ -5,10 +5,7 @@ export const ordersSlice = createSlice({
     name: 'orders',
     initialState: {
         value: [],
-        orderDetails: {
-            orderContent: {},
-            // ... autres propriétés
-        },
+        orderDetails: [],
         status: 'idle',
         error: null,
     },
@@ -27,14 +24,14 @@ export const ordersSlice = createSlice({
             .addCase(loadOrders.rejected, (state, action) => {
                 state.status = 'failed';
             })
-            .addCase(fetchOrderById.pending, (state) => {
+            .addCase(loadDetailledOrders.pending, (state) => {
                     state.status = 'loading';
             })
-            .addCase(fetchOrderById.fulfilled, (state, action) => {
+            .addCase(loadDetailledOrders.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.orderDetails = action.payload;
             })
-            .addCase(fetchOrderById.rejected, (state, action) => {
+            .addCase(loadDetailledOrders.rejected, (state, action) => {
                 state.status = 'failed';
             });
     },
@@ -61,24 +58,30 @@ export const loadOrders = createAsyncThunk(
     }
 );
 
-export const fetchOrderById = createAsyncThunk(
-    'orders/fetchById',
-    async (orderId, thunkAPI) => {
-        console.log("orderId" + orderId);
+export const loadDetailledOrders = createAsyncThunk(
+    'orders/loadDetailled',
+    async (_, thunkAPI) => {
+        const state = thunkAPI.getState();
+        console.log("state" , state)
+        const axiosPromises = state.orders.value.map(async (e) => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/orders/' + e.id );
+                return response.data;
+            } catch (error) {
+                console.error("Erreur lors de la requête axios :", error);
+                return null;
+            }
+        });
+
+        // Attendre que toutes les requêtes soient terminées avant de mettre à jour detailledBasket
         try {
-            const response = await axios.get(`http://localhost:8080/api/orders/${orderId}`);
-            console.log(response.data);
-            return {
-                orderContent: response.data.orderContent,
-                totalPrice: response.data.totalPrice,
-                date: response.data.date,
-                address: response.data.address  // Assurez-vous que c'est "address" et non "adress" si c'est la clé correcte dans votre réponse
-            };
+            return await Promise.all(axiosPromises);
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);
         }
     }
 );
+
 export const addOrder = createAsyncThunk(
     'orders/add',
     async ({ address, basket }, thunkAPI) => {  // Utilisez une déstructuration pour extraire address et basket des arguments
