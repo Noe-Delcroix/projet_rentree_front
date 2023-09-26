@@ -42,6 +42,7 @@ export const ordersSlice = createSlice({
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {toaster} from "evergreen-ui";
+import {basketSlice} from "./Basket";
 
 
 // Définissez une fonction asynchrone pour charger les données
@@ -105,6 +106,7 @@ export const addOrder = createAsyncThunk(
             const response = await axios.post('http://localhost:8080/api/orders', d);
             console.log(response.data);
             toaster.success('Votre commande a bien été envoyé');
+            thunkAPI.dispatch(basketSlice.actions.clearBasket());
             // Utilisez NavigationContainer.navigate ou une autre méthode pour naviguer
         } catch (error) {
             console.log('ERREUR');
