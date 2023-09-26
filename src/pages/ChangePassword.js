@@ -2,6 +2,7 @@
 import {useApplicationContext} from "../components/AuthContext";
 import {useEffect} from "react";
 import PasswordInput from "../components/PasswordInput";
+import CustomButton from "../components/CustomButton";
 const ChangePassword = () => {
 
     const { changePassword } = useApplicationContext();
@@ -21,10 +22,11 @@ const ChangePassword = () => {
                     <label>Confirmer le nouveau mot de passe:</label>
                     <PasswordInput id={"confirmPassword"} />
                 </div>
-                <button onClick={() => changePassword(
+                <br/>
+                <CustomButton id={"changePassword"} text={"Changer"} onPress={() => changePassword(
                     document.getElementById("newPassword").value,
                     document.getElementById("confirmPassword").value,
-                    new URLSearchParams(window.location.search).get('token'))} >Changer</button>
+                    new URLSearchParams(window.location.search).get('token'))} />
         </div>
     );
 };
