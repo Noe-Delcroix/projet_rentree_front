@@ -11,6 +11,7 @@ const ProfileScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.value);
 
+
     useEffect(() => {
         if (!IsAnyUserLogedIn()) {
             navigation.replace('Carte');
