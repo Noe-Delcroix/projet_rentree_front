@@ -1,6 +1,7 @@
 
 import {useApplicationContext} from "../components/AuthContext";
 import {useEffect} from "react";
+import PasswordInput from "../components/PasswordInput";
 const ChangePassword = () => {
 
     const { changePassword } = useApplicationContext();
@@ -14,18 +15,11 @@ const ChangePassword = () => {
             <h2>Changer le mot de passe</h2>
                 <div>
                     <label>Nouveau mot de passe:</label>
-                    <input
-                        type="password"
-                        id={"newPassword"}
-
-                    />
+                    <PasswordInput id={"newPassword"} />
                 </div>
                 <div>
                     <label>Confirmer le nouveau mot de passe:</label>
-                    <input
-                        type="password"
-                        id={"confirmPassword"}
-                    />
+                    <PasswordInput id={"confirmPassword"} />
                 </div>
                 <button onClick={() => changePassword(
                     document.getElementById("newPassword").value,

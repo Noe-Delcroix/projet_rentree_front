@@ -4,6 +4,7 @@ import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useApplicationContext} from "../components/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
+import PasswordInput from "../components/PasswordInput";
 
 const ProfileScreen = ({ navigation, route }) => {
     const { resetPassword, handleLogOut, IsAnyUserLogedIn } = useApplicationContext();
@@ -18,6 +19,24 @@ const ProfileScreen = ({ navigation, route }) => {
             dispatch(loadUserInfo());
         }
     }, []);
+
+    function seeActualPassword(){
+        let password = document.getElementById("motDePasseActuel");
+        if (password.type === "password") {
+            password.type = "text";
+        } else {
+            password.type = "password";
+        }
+    }
+
+    function seeNewPassword(){
+        let password = document.getElementById("nouveauMotDePasse");
+        if (password.type === "password") {
+            password.type = "text";
+        } else {
+            password.type = "password";
+        }
+    }
 
     return (
         <View className="flex-1">
@@ -62,12 +81,12 @@ const ProfileScreen = ({ navigation, route }) => {
                         <View className="w-full md:w-2/3 flex flex-col items-center">
                             <View className="w-full mb-5">
                                 <Text className="text-xl mb-2">Mot de passe actuel</Text>
-                                <input id={"motDePasseActuel"}></input>
+                                <PasswordInput id={"motDePasseActuel"} />
                             </View>
 
                             <View className="w-full mb-10">
                                 <Text className="text-xl mb-2">Nouveau mot de passe</Text>
-                                <input id={"nouveauMotDePasse"}></input>
+                                <PasswordInput id={"motDePasseActuel"} />
                             </View>
 
                             <Pressable

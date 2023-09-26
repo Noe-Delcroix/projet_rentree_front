@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toaster } from 'evergreen-ui'
 import {useApplicationContext} from "../components/AuthContext";
 import {addDishesToBasket} from "../slices/Basket";
+import PasswordInput from "../components/PasswordInput";
 
 export default function LogIn({ navigation }) {
     const [login, setLogin] = useState(true);
@@ -13,6 +14,7 @@ export default function LogIn({ navigation }) {
     const [address, setAddress] = useState("")
     const [password, setPassword] = useState("")
     const { tryLogIn, trySignIn, sendPasswordResetEmail } = useApplicationContext();
+    console.log("password: ", password)
 
     return (
         <View className="flex-1 justify-center items-center">
@@ -23,12 +25,7 @@ export default function LogIn({ navigation }) {
                     {login ? null : <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Nom" onChangeText={setLastname}/>}
                     {login ? null : <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Adresse" onChangeText={setAddress}/>}
                     <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Adresse mail" onChangeText={setEmail}/>
-                    <TextInput
-                        className="mb-2 p-2 border border-[#713235] rounded"
-                        secureTextEntry={true}
-                        placeholder="Mot de passe"
-                        onChangeText={setPassword}
-                    />
+                    <PasswordInput id={"motDePasseActuel"} onChangeTextFunction={setPassword}/>
                     <Pressable
                         className="my-5"
                         onPress={login ? () => tryLogIn(email, password, navigation) : async () => {
