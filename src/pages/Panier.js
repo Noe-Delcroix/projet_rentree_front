@@ -39,7 +39,6 @@ export default function Panier({ navigation, route }) {
             navigation.navigate('LogIn');
         }else{
             dispatch(addOrder({ address, basket }))
-            dispatch(viderPanier())
         }
     }
 
