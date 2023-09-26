@@ -13,6 +13,7 @@ import {
 import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
 import {useApplicationContext} from "../components/AuthContext";
+import CustomButton from "../components/CustomButton";
 
 export default function Panier({ navigation, route }) {
 
@@ -55,13 +56,7 @@ export default function Panier({ navigation, route }) {
 
                             <Text className="text-3xl text-center mb-2">Votre panier est vide</Text>
                             <View className="mt-5">
-                                <Button
-                                    color={'#713235'}
-
-                                    className="text-white p-2 rounded"
-                                    title="Retour à la carte"
-                                    onPress={() => navigation.replace('Carte')}
-                                />
+                                <CustomButton text={"Retour à la carte"} onPress={() => navigation.replace('Carte')}/>
                             </View>
                         </View>
                     ) : (
@@ -85,13 +80,7 @@ export default function Panier({ navigation, route }) {
                                         onChangeText={setAddress}
                                     />
                                     <View className="mt-5">
-                                        <Button
-                                            color={'#713235'}
-
-                                            className="text-white p-2 rounded"
-                                            title="Payer"
-                                            onPress={launchOrder}
-                                        />
+                                        <CustomButton text={"Payer"} onPress={() => launchOrder()}/>
                                     </View>
                                 </View>
                             </View>
@@ -114,9 +103,9 @@ export default function Panier({ navigation, route }) {
 
                                                 <View className="flex flex-row items-center mb-5">
                                                     <View className="flex flex-row items-center">
-                                                        <Button title={"-"} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
+                                                        <CustomButton text={"-"} onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
                                                         <Text className="text-2xl mx-5">{basket.find((element) => element.id === item.id).quantity}</Text>
-                                                        <Button title={"+"} color="#713235"  onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
+                                                        <CustomButton text={"+"} onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
                                                     </View>
                                                 </View>
 

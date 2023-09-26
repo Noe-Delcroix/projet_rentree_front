@@ -9,6 +9,7 @@ import {loadDish} from "../slices/Dish";
 import Product from "../components/Product";
 import {loadTags} from "../slices/Tags";
 import {loadDiets} from "../slices/Diets";
+import CustomButton from "../components/CustomButton";
 
 export default function ObjectDetail({ route, navigation }) {
     const { id } = route.params;
@@ -68,10 +69,7 @@ export default function ObjectDetail({ route, navigation }) {
                                 <Text className="text-xl">{dish?.alergens}</Text>
                             </View>
                         </View>
-                        <Pressable
-                            onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: 1 }))}>
-                            <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Ajouter au panier</Text>
-                        </Pressable>
+                        <CustomButton text={"Ajouter au panier"} onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: 1 }))}/>
                     </View>
 
 

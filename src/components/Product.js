@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, Dimensions, Image, Button, Pressable} from
 import {useApplicationContext} from "./ApplicationContext";
 import {useDispatch} from "react-redux";
 import {addDishesToBasket} from "../slices/Basket";
+import CustomButton from "./CustomButton";
 export default function Product({id, name, image, price, description, navigation}) {
 
     const [quantity] = useState(1);
@@ -29,12 +30,7 @@ export default function Product({id, name, image, price, description, navigation
                     </View>
                     <Text className="my-5 text-xl">{description} </Text>
 
-
-                    <Pressable
-                        className="w-full"
-                        onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))}>
-                        <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Ajouter au panier</Text>
-                    </Pressable>
+                    <CustomButton onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: quantity }))} text={"Ajouter au panier"}></CustomButton>
 
                 </View>
             </View>

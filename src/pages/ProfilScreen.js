@@ -5,6 +5,7 @@ import {useApplicationContext} from "../components/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
 import PasswordInput from "../components/PasswordInput";
+import CustomButton from "../components/CustomButton";
 
 const ProfileScreen = ({ navigation, route }) => {
     const { resetPassword, handleLogOut, IsAnyUserLogedIn } = useApplicationContext();
@@ -60,20 +61,8 @@ const ProfileScreen = ({ navigation, route }) => {
                                 <Text className="text-2xl text-[#713235] mb-5">Vous avez {user?.balance?.toFixed(2)}€ sur votre compte</Text>
 
                                 <View className="flex flex-row flex-wrap justify-center items-center w-full">
-                                    <Pressable
-                                        className="mr-5 mb-5"
-                                        onPress={() => {
-                                            navigation.navigate('SeeOrder')
-                                        }}>
-                                        <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Historique de commandes</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        className="mr-5 mb-5"
-                                        onPress={() => {
-                                            handleLogOut(navigation)
-                                        }}>
-                                        <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Se déconnecter</Text>
-                                    </Pressable>
+                                    <CustomButton text={"Historique de commandes"} onPress={() => navigation.navigate('SeeOrder')}/>
+                                    <CustomButton text={"Se déconnecter"} onPress={() =>handleLogOut(navigation)}/>
                                 </View>
                             </View>
                         </View>
