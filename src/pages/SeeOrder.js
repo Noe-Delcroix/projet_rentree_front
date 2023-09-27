@@ -13,7 +13,7 @@ export default function SeeOrder({ navigation }) {
 
     const dispatch = useDispatch();
     const [sortType, setSortType] = useState("DATE");
-    const [sortingOrders, setSortingOrders] = useState('asc')
+    const [sortingOrders, setSortingOrders] = useState('desc')
 
     const orders = useSelector(state => state.orders.value)
 
