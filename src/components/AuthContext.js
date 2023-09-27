@@ -1,4 +1,3 @@
-// SelectedDishesContext.js
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {toaster} from "evergreen-ui";
@@ -25,15 +24,15 @@ export const AuthContextProvider = ({ children, navigation}) => {
             try {
                 await axios.get('http://localhost:8080/api/users/info')
                     .then((response) => {
-                        setToken(response.headers['token']);  // Récupérez le cookie de l'en-tête Set-Cookie
+                        setToken(response.headers['token']);
                         setUserPassword(response.data.password);
                         if (navigation !== undefined) navigation.replace('Carte');
                     })
                     .catch((error) => {
-                        console.error(error);
+                        toaster.warning("Vous n'êtes pas connecté");
                     });
             } catch (error) {
-                console.error(error);
+
             }
         } else {
             await axios.post('http://localhost:8080/api/users/login', {
@@ -41,7 +40,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
                 password: password
             })
                 .then((response) => {
-                    setToken(response.headers['token']);  // Récupérez le cookie de l'en-tête Set-Cookie
+                    setToken(response.headers['token']);
                     setUserPassword(password);
                     navigation.replace('Carte');
                 })
@@ -69,7 +68,6 @@ export const AuthContextProvider = ({ children, navigation}) => {
             toaster.success('Votre compte a bien été crée!')
 
         }, (error) => {
-            console.log(error)
             ret = false
             toaster.warning(error.response.data)
         });
@@ -78,10 +76,8 @@ export const AuthContextProvider = ({ children, navigation}) => {
 
     const sendPasswordResetEmail = (email) => {
         axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`).then((response) => {
-            console.log(response);
             toaster.success('Votre mot de passe a été changé, un email vous a été envoyé!')
         }, (error) => {
-            console.log(error)
             toaster.warning(error.response.data)
         });
     }
@@ -92,23 +88,19 @@ export const AuthContextProvider = ({ children, navigation}) => {
             return
         }
         axios.post(`http://localhost:8080/api/users/verifyPassword?password=${actualPassword}`).then((response) => {
-            console.log(response.data);
             if (response.data === true) {
 
                 axios.get(`http://localhost:8080/api/users/resetPasswordAuthentificated?oldPassword=${actualPassword}&password=${newPassword}`, {
                     email: user.email,
                 }).then((response) => {
-                    console.log(response);
                     toaster.success('Votre mot de passe a été modifié, un email vous a été envoyé!')
                     dispatch(loadUserInfo());
                 }, (error) => {
-                    console.log(error)
                     toaster.warning(error.response.data)
                 });
             }
 
         }, (error) => {
-            console.log(error)
             toaster.warning(error.response.data)
         })
     }
@@ -118,7 +110,6 @@ export const AuthContextProvider = ({ children, navigation}) => {
             axios.post('http://localhost:8080/api/users/logout').then((response) => {
                 dispatch(loadUserInfo());
                 setUserPassword("");
-                console.log(response.data)
                 toaster.success('Vous avez été déconnecté!')
                 navigation.navigate('Carte')
 
@@ -136,12 +127,10 @@ export const AuthContextProvider = ({ children, navigation}) => {
                     .then((response) => {
                         toaster.success('votre mdp a été modifié!')
                     }, (error) => {
-                        console.log(error)
                         toaster.warning(error.response.data)
                     });
             } catch (error) {
-                console.log('ERREUR');
-                console.error(error);
+                toaster.danger("Une erreur est survenue");
             }
         }
 

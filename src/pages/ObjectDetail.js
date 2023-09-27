@@ -1,12 +1,10 @@
-import {Button, Picker, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Button, ScrollView, Text, View} from 'react-native';
 import { Image } from 'react-native-web';
-import React, {useState, useEffect} from "react";
+import React, { useEffect} from "react";
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {addDishesToBasket} from "../slices/Basket";
 import {loadDish} from "../slices/Dish";
-import Product from "../components/Product";
 import {loadTags} from "../slices/Tags";
 import {loadDiets} from "../slices/Diets";
 
@@ -20,17 +18,15 @@ export default function ObjectDetail({ route, navigation }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("useEffect")
         dispatch(loadTags());
         dispatch(loadDiets());
         dispatch(loadDish(id));
-        console.log(dish)
     }  , []);
-
 
     return (
         <View className="flex-1">
             <ScrollView>
+
                 <View className="mx-5 xl:mx-48">
                     <Image
                         className="w-full h-[200px] md:h-[400px]"
@@ -54,25 +50,27 @@ export default function ObjectDetail({ route, navigation }) {
                             })}
                         </View>
 
-
-
                         <View className="flex flex-col md:flex-row">
+
                             <View className="w-full md:w-1/2 p-3">
                                 <Text className="text-3xl">Description</Text>
                                 <View className="w-full h-1 bg-[#713235] mb-3"></View>
                                 <Text className="text-xl">{dish?.description}</Text>
                             </View>
+
                             <View className="w-full md:w-1/2 p-3">
                                 <Text className="text-3xl">Alergènes</Text>
                                 <View className="w-full h-1 bg-[#713235] mb-3"></View>
                                 <Text className="text-xl">{dish?.alergens}</Text>
                             </View>
+
                         </View>
+
                         <Button title="Ajouter au panier" color="#713235" onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: 1 }))}/>
                     </View>
 
-
                 </View>
+
             </ScrollView>
             <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
         </View>

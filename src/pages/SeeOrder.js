@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {useApplicationContext} from "../components/AuthContext";
 import Order from "../components/Order";
 import {useDispatch, useSelector} from "react-redux";
-import {loadDetailledOrders, loadOrders} from "../slices/Orders";
+import { loadOrders} from "../slices/Orders";
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import SortingForm from "../components/SortingForm";
-import {loadDetailledBasket} from "../slices/Basket";
 
 export default function SeeOrder({ navigation }) {
     const {IsAnyUserLogedIn} = useApplicationContext();
@@ -55,9 +54,6 @@ export default function SeeOrder({ navigation }) {
                             return (<Order orderId={order.id} />)
                         })}
                     </View>
-
-
-
                 </View>
             </ScrollView>
             <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>

@@ -1,21 +1,17 @@
 import React, { useState} from 'react';
-import {View, Text, Button, FlatList, Image, CheckBox, ScrollView, TextInput} from 'react-native';
+import {View, Text, Button, ScrollView, TextInput} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addDishesToBasket,
-    removeDishesFromBasket,
     selectTotalPrice,
     loadDetailledBasket,
-    viderPanier
 } from "../slices/Basket";
 import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
 import {useApplicationContext} from "../components/AuthContext";
 import BasketDish from "../components/BasketDish";
 
-export default function Panier({ navigation, route }) {
+export default function Panier({ navigation }) {
 
     const basket = useSelector(state => state.basket.basket)
     const detailledBasket = useSelector(state => state.basket.detailledBasket)
@@ -27,10 +23,8 @@ export default function Panier({ navigation, route }) {
     useFocusEffect(
         React.useCallback(() => {
             dispatch(loadDetailledBasket());
-            console.log("basket :"+basket)
-            // Retournez une fonction de nettoyage si nécessaire
             return () => {};
-        }, [dispatch])  // spécifiez les dépendances pour éviter des appels excessifs
+        }, [dispatch])
     );
   
     const { IsAnyUserLogedIn } = useApplicationContext();
@@ -42,8 +36,6 @@ export default function Panier({ navigation, route }) {
             dispatch(addOrder({ address, basket }))
         }
     }
-
-    console.log("basket :",basket.length)
 
     return (
 

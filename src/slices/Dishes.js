@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import {toaster} from "evergreen-ui";
 
 export const dishesSlice = createSlice({
     name: 'dishes',
@@ -7,9 +9,6 @@ export const dishesSlice = createSlice({
         value: [],
         status: 'idle',
         error: null,
-    },
-    reducers: {
-        // ...
     },
     extraReducers: (builder) => {
         builder
@@ -26,13 +25,6 @@ export const dishesSlice = createSlice({
     },
 });
 
-// ...
-
-
-import { createAsyncThunk } from '@reduxjs/toolkit';
-
-
-// Définissez une fonction asynchrone pour charger les données
 export const loadDishes = createAsyncThunk(
     'dishes/load',
     async (query, thunkAPI) => {
@@ -40,14 +32,12 @@ export const loadDishes = createAsyncThunk(
             const response = await axios.get('http://localhost:8080/api/dishes', { params: query });
             return response.data;
         } catch (error) {
+            toaster.danger(error.message);
             return thunkAPI.rejectWithValue(error.message);
         }
     }
 );
 
-// ...
-
-// Action creators are generated for each case reducer function
 export const { load, addDishes } = dishesSlice.actions;
 
 export default dishesSlice.reducer

@@ -1,9 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, TextInput, Button, Pressable} from 'react-native';
-import axios from 'axios';
-import { toaster } from 'evergreen-ui'
+import React, { useState} from 'react';
+import {Text, View, TextInput, Button} from 'react-native';
 import {useApplicationContext} from "../components/AuthContext";
-import {addDishesToBasket} from "../slices/Basket";
 import PasswordInput from "../components/PasswordInput";
 
 export default function LogIn({ navigation }) {
@@ -25,6 +22,7 @@ export default function LogIn({ navigation }) {
                     {login ? null : <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Adresse" onChangeText={setAddress}/>}
                     <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Adresse mail" onChangeText={setEmail}/>
                     <PasswordInput id={"motDePasseActuel"} onChangeTextFunction={setPassword} placeholder="Mot de passe"/>
+
                     <View className="my-5">
                         <Button color="#713235"
                                 title={login ? 'Connexion' : 'Je crée mon compte'}
@@ -38,11 +36,13 @@ export default function LogIn({ navigation }) {
                     <Text className="mb-2 text-[#713235] text-center" onPress={() => setLogin(!login)}>
                         {login ? "Créer un compte" : 'J\'ai déja un compte'}
                     </Text>
+
                     {login && (
                         <Text className="text-[#713235] text-center" onPress={() => sendPasswordResetEmail(email)}>
                             Mot de passe oublié ?
                         </Text>
                     )}
+
                 </View>
             </View>
         </View>
