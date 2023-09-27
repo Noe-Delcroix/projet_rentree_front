@@ -46,58 +46,59 @@ export default function Panier({ navigation, route }) {
     console.log("basket :",basket.length)
 
     return (
-        <View className="flex-1">
-            <ScrollView>
-                <View className="mx-5 xl:mx-20 mt-10">
-                    <Text className="text-4xl text-center mb-2">Votre panier</Text>
-                    <View className="w-full h-1 bg-[#713235] mb-5"></View>
-                    {basket.length === 0 ? (
-                        <View className="flex flex-col items-center mt-20">
 
-                            <Text className="text-3xl text-center mb-2">Votre panier est vide</Text>
-                            <View className="mt-5 w-full md:w-1/4">
-                                <Button title={"Retour à la carte"} color="#713235" onPress={() => navigation.replace('Carte')}/>
-                            </View>
-                        </View>
-                    ) : (
-                    <View className="flex flex-col lg:flex-row-reverse">
+        basket.length === 0 ? (
+            <View className="flex-1 justify-center items-center">
+                <View className="w-full md:w-1/3 p-10 flex flex-col items-center justify-center bg-white shadow-xl">
+                    <Text className="text-3xl text-center mb-2">Votre panier est vide</Text>
+                    <View className="mt-5 w-full md:w-1/3">
+                        <Button title={"Retour à la carte"} color="#713235" onPress={() => navigation.replace('Carte')}/>
+                    </View>
+                </View>
+            </View>
+        ):(
+                <View className="flex-1">
+                    <ScrollView>
+                        <View className="mx-5 xl:mx-20 mt-10">
+                            <Text className="text-4xl text-center mb-2">Votre panier</Text>
+                            <View className="w-full h-1 bg-[#713235] mb-5"></View>
+                            <View className="flex flex-col lg:flex-row-reverse">
+                                <View className="w-full lg:w-1/3">
+                                    <View className="m-10">
+                                        <View className="bg-white shadow-xl p-5">
+                                            <Text className="text-3xl mb-2">Votre commande</Text>
+                                            <View className="w-full h-1 bg-[#713235] mb-5"></View>
 
+                                            <Text className="text-2xl text-[#713235] font-bold mb-5">
+                                                Prix total : {totalPrice.toFixed(2)}€
+                                            </Text>
 
-                        <View className="w-full lg:w-1/3">
-                            <View className="m-10">
-                                <View className="bg-white shadow-xl p-5">
-                                    <Text className="text-3xl mb-2">Votre commande</Text>
-                                    <View className="w-full h-1 bg-[#713235] mb-5"></View>
+                                            <TextInput
+                                                className="mb-2 p-2 border border-[#713235] rounded"
+                                                placeholder="Adresse de livraison"
+                                                onChangeText={setAddress}
+                                            />
+                                            <View className="mt-5">
+                                                <Button title={"Passer la commande"} color="#713235" onPress={() => launchOrder()}/>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
 
-                                    <Text className="text-2xl text-[#713235] font-bold mb-5">
-                                        Prix total : {totalPrice.toFixed(2)}€
-                                    </Text>
-
-                                    <TextInput
-                                        className="mb-2 p-2 border border-[#713235] rounded"
-                                        placeholder="Adresse de livraison"
-                                        onChangeText={setAddress}
-                                    />
-                                    <View className="mt-5">
-                                        <Button title={"Passer la commande"} color="#713235" onPress={() => launchOrder()}/>
+                                <View className="w-full lg:w-2/3">
+                                    <View className="m-10">
+                                        {
+                                            detailledBasket.map((item) => (
+                                                <BasketDish item={item} key={item.id} />
+                                            ))
+                                        }
                                     </View>
                                 </View>
                             </View>
                         </View>
-
-                        <View className="w-full lg:w-2/3">
-                            <View className="m-10">
-                                {
-                                    detailledBasket.map((item) => (
-                                        <BasketDish item={item} key={item.id} />
-                                    ))
-                                }
-                            </View>
-                        </View>
-                    </View>)}
+                    </ScrollView>
+                    <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
                 </View>
-            </ScrollView>
-            <BottomNavigationBar className="absolute bottom-0 left-0 right-0" navigation={navigation}/>
-        </View>
+            )
     );
 }
