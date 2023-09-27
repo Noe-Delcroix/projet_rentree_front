@@ -9,7 +9,6 @@ import {loadDish} from "../slices/Dish";
 import Product from "../components/Product";
 import {loadTags} from "../slices/Tags";
 import {loadDiets} from "../slices/Diets";
-import CustomButton from "../components/CustomButton";
 
 export default function ObjectDetail({ route, navigation }) {
     const { id } = route.params;
@@ -69,7 +68,7 @@ export default function ObjectDetail({ route, navigation }) {
                                 <Text className="text-xl">{dish?.alergens}</Text>
                             </View>
                         </View>
-                        <CustomButton text={"Ajouter au panier"} onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: 1 }))}/>
+                        <Button title="Ajouter au panier" color="#713235" onPress={() => dispatch(addDishesToBasket({ dishId: id, quantity: 1 }))}/>
                     </View>
 
 
