@@ -18,6 +18,7 @@ export default function PasswordInput({ id, placeholder, onChangeTextFunction })
                 onChangeText={onChangeTextFunction}
                 placeholder={placeholder}
             />
+
             <TouchableOpacity onPress={handleTogglePasswordVisibility}>
                 <Icon name={isPasswordVisible ? 'eye-slash' : 'eye'} size={20} color="#000" className="ml-5 mr-4" />
             </TouchableOpacity>

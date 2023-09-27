@@ -1,5 +1,5 @@
 import React, {useEffect, useState,} from 'react';
-import {View, Text, Button, ScrollView, Image, Pressable} from 'react-native';
+import {View, Text, Button, ScrollView, Image} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useApplicationContext} from "../components/AuthContext";
 import {useDispatch, useSelector} from "react-redux";

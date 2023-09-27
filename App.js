@@ -38,9 +38,7 @@ const linking = {
             Order: 'Order',
             SeeOrder: 'SeeOrder',
             Panier: 'Panier',
-            Profil: 'Profil',
-            Wallet: 'Wallet',
-
+            Profil: 'Profil'
         },
     },
 };

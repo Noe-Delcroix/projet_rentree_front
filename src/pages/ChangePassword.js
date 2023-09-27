@@ -1,15 +1,11 @@
-
 import {useApplicationContext} from "../components/AuthContext";
-import React, {useEffect} from "react";
+import React from "react";
 import PasswordInput from "../components/PasswordInput";
-import {Button, Text, TextInput, View} from "react-native";
+import {Button, Text, View} from "react-native";
+
 const ChangePassword = () => {
 
     const { changePassword } = useApplicationContext();
-
-    useEffect(() => {
-        console.log("ChangePassword");
-    });
 
     return (
         <View className="flex-1 justify-center items-center">

@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useState} from 'react';
+import { View, Text, Image } from 'react-native';
 import axios from "axios";
 import {useApplicationContext} from "../components/AuthContext";
+import {toaster} from "evergreen-ui";
 
 export default function OrderFinished({ route, navigation }) {
     const [solde, setSolde] = useState(0);
@@ -15,19 +16,12 @@ export default function OrderFinished({ route, navigation }) {
                     token: token,
                 },
             });
-            console.log(response.data);
             setSolde(response.data.balance);
         } catch (error) {
-            console.log('ERREUR');
-            console.error(error);
+            toaster.danger(error.response.data);
         }
 
     };
-
-
-    useEffect(() =>{
-        soldeRestant().then(r => console.log(r));
-    },[]);
 
     return (
         <View>

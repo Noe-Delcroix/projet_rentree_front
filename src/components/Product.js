@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image, Button, Pressable} from 'react-native';
-import {useApplicationContext} from "./ApplicationContext";
+import {View, Text, TouchableOpacity, Image, Button} from 'react-native';
 import {useDispatch} from "react-redux";
 import {addDishesToBasket} from "../slices/Basket";
 export default function Product({id, name, image, price, description, navigation}) {

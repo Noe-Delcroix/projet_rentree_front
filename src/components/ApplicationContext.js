@@ -1,4 +1,3 @@
-// SelectedDishesContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const ApplicationContext = createContext();
@@ -13,21 +12,19 @@ export const ApplicationContextProvider = ({ children }) => {
 
     const removeDishesFromBasket = (dishId, number = 0) => {
         const existingDishIndex = basket.findIndex(item => item.id === dishId);
-        console.log("dans removeDishesFromBasket" + basket)
         if (existingDishIndex !== -1) {
             const updatedBasket = [...basket];
             if (number === 0) {
                 setNumberOfDishes(numberOfDishes - updatedBasket.find(e => e.id === dishId).quantity)
-                updatedBasket.splice(existingDishIndex, 1); // Retirer le plat du panier
+                updatedBasket.splice(existingDishIndex, 1);
             } else {
-                updatedBasket[existingDishIndex].quantity -= number; // Mettre à jour la quantité
+                updatedBasket[existingDishIndex].quantity -= number;
                 setNumberOfDishes(numberOfDishes - number)
                 if (updatedBasket[existingDishIndex].quantity <= 0) {
                     setNumberOfDishes(numberOfDishes - updatedBasket[existingDishIndex].quantity)
-                    updatedBasket.splice(existingDishIndex, 1); // Retirer le plat si la quantité devient nulle
+                    updatedBasket.splice(existingDishIndex, 1);
                 }
             }
-            console.log("updated basket" + updatedBasket)
             setBasket(updatedBasket);
         }
     };
@@ -44,7 +41,6 @@ export const ApplicationContextProvider = ({ children }) => {
             setBasket([...basket, newBasketItem]);
         }
         setNumberOfDishes(numberOfDishes + quantity)
-        console.log(basket)
     };
     return (
         <ApplicationContext.Provider value={{ dishes, setDishes, numberOfDishes, addDishesToBasket, removeDishesFromBasket, token, setToken, basket }}>

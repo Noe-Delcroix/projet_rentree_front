@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, Dimensions } from 'react-native';
+import React from 'react';
+import { View, ScrollView } from 'react-native';
 import Product from '../components/Product';
-import axios from 'axios';
 import BottomNavigationBar from '../components/BottomNavigationBar';
-import {useApplicationContext} from "../components/ApplicationContext";
 import FilterForm from "../components/FilterForm";
 import {useDispatch, useSelector} from 'react-redux';
 import { loadDishes} from '../slices/Dishes';
@@ -16,7 +14,6 @@ export default function Carte({ navigation }) {
     const dishes = useSelector(state => state.dishes.value)
     const tags = useSelector(state => state.tags.value)
     const diets = useSelector(state => state.diets.value)
-
 
     const handleQueryChange = (query) => {
         dispatch(loadTags());

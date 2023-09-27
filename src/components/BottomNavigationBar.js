@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import { selectBasketSize } from "../slices/Basket";
 import {useApplicationContext} from "./AuthContext";
 
