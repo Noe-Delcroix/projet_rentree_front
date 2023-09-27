@@ -20,25 +20,24 @@ const ProfileScreen = ({ navigation, route }) => {
         }else{
             dispatch(loadUserInfo());
         }
+
+        const handleKeyDown = async (event) => {
+            console.log(event.key)
+            if (event.key === "Enter") {
+                resetPassword(
+                    document.getElementById("motDePasseActuel").value,
+                    document.getElementById("nouveauMotDePasse").value,
+                    user.email
+                )
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
     }, []);
-
-    function seeActualPassword(){
-        let password = document.getElementById("motDePasseActuel");
-        if (password.type === "password") {
-            password.type = "text";
-        } else {
-            password.type = "password";
-        }
-    }
-
-    function seeNewPassword(){
-        let password = document.getElementById("nouveauMotDePasse");
-        if (password.type === "password") {
-            password.type = "text";
-        } else {
-            password.type = "password";
-        }
-    }
 
     return (
         <View className="flex-1">

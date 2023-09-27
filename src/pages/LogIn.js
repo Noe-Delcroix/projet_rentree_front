@@ -15,7 +15,27 @@ export default function LogIn({ navigation }) {
     const [address, setAddress] = useState("")
     const [password, setPassword] = useState("")
     const { tryLogIn, trySignIn, sendPasswordResetEmail } = useApplicationContext();
-    console.log("password: ", password)
+
+    useEffect(() => {
+        const handleKeyDown = async (event) => {
+            console.log(event.key)
+            if (event.key === "Enter") {
+                if (login) {
+                    tryLogIn(email, password, navigation);
+                } else {
+                    const res = await trySignIn(email, password, firstname, lastname, address);
+                    setLogin(res);
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [email, password, firstname, lastname, address, login, tryLogIn, trySignIn, navigation]);
+
 
     return (
         <View className="flex-1 justify-center items-center">
