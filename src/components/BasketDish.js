@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
-import CustomButton from './CustomButton';
+import {View, Image, Text, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDishesToBasket, removeDishesFromBasket } from '../slices/Basket';
@@ -25,9 +24,9 @@ export default function BasketDish({ item }) {
 
                 <View className="flex flex-row items-center mb-5">
                     <View className="flex flex-row items-center">
-                        <CustomButton text={"-"} onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
-                        <Text className="text-2xl mx-5">{quantity}</Text>
-                        <CustomButton text={"+"} onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
+                        <Button title={"-"} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
+                        <Text className="text-2xl mx-5">{basket.find((element) => element.id === item.id).quantity}</Text>
+                        <Button title={"+"} color="#713235" onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
                     </View>
                 </View>
 

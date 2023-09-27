@@ -5,8 +5,6 @@ import {useApplicationContext} from "../components/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
 import PasswordInput from "../components/PasswordInput";
-import CustomButton from "../components/CustomButton";
-
 const ProfileScreen = ({ navigation, route }) => {
     const { resetPassword, handleLogOut, IsAnyUserLogedIn } = useApplicationContext();
 
@@ -46,8 +44,12 @@ const ProfileScreen = ({ navigation, route }) => {
                                 <Text className="text-2xl text-[#713235] mb-5">Vous avez {user?.balance?.toFixed(2)}€ sur votre compte</Text>
 
                                 <View className="flex flex-row flex-wrap justify-center items-center w-full">
-                                    <CustomButton text={"Historique de commandes"} onPress={() => navigation.navigate('SeeOrder')}/>
-                                    <CustomButton text={"Se déconnecter"} onPress={() =>handleLogOut(navigation)}/>
+                                    <View className="m-2">
+                                        <Button title="Historique de commandes" color="#713235" onPress={() => navigation.navigate('SeeOrder')}/>
+                                    </View>
+                                    <View className="m-2">
+                                        <Button title="Se déconnecter" color="#713235" onPress={() =>handleLogOut(navigation)}/>
+                                    </View>
                                 </View>
                             </View>
                         </View>
@@ -64,17 +66,18 @@ const ProfileScreen = ({ navigation, route }) => {
                                 <PasswordInput id={"motDePasseActuel"} onChangeTextFunction={setNewPassword}/>
                             </View>
 
-                            <Pressable
-                                className="w-full xl:w-1/2"
-                                onPress={() => {
-                                    resetPassword(
-                                        actualPassword,
-                                        newPassword,
-                                        user.email
-                                    )
-                                }}>
-                                <Text className="text-xl uppercase bg-[#713235] text-white py-2 px-5 rounded shadow text-center">Modifier le mot de passe</Text>
-                            </Pressable>
+                            <View className="w-full xl:w-1/2">
+                                <Button title={"Modifier le mot de passe"}
+                                        color={"#713235"}
+                                        onPress={() => {
+                                            resetPassword(
+                                                actualPassword,
+                                                newPassword,
+                                                user.email
+                                            )
+                                        }}
+                                />
+                            </View>
                         </View>
                     </View>
                 </View>
