@@ -1,4 +1,4 @@
-import React, {useEffect,} from 'react';
+import React, {useEffect, useState,} from 'react';
 import {View, Text, Button, ScrollView, Image, Pressable} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useApplicationContext} from "../components/AuthContext";
@@ -10,6 +10,9 @@ import CustomButton from "../components/CustomButton";
 const ProfileScreen = ({ navigation, route }) => {
     const { resetPassword, handleLogOut, IsAnyUserLogedIn } = useApplicationContext();
 
+    const [actualPassword, setActualPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("")
+
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.value);
 
@@ -20,24 +23,7 @@ const ProfileScreen = ({ navigation, route }) => {
         }else{
             dispatch(loadUserInfo());
         }
-
-        const handleKeyDown = async (event) => {
-            console.log(event.key)
-            if (event.key === "Enter") {
-                resetPassword(
-                    document.getElementById("motDePasseActuel").value,
-                    document.getElementById("nouveauMotDePasse").value,
-                    user.email
-                )
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
+    }, [actualPassword, newPassword]);
 
     return (
         <View className="flex-1">
@@ -70,20 +56,20 @@ const ProfileScreen = ({ navigation, route }) => {
                         <View className="w-full md:w-2/3 flex flex-col items-center">
                             <View className="w-full mb-5">
                                 <Text className="text-xl mb-2">Mot de passe actuel</Text>
-                                <PasswordInput id={"motDePasseActuel"} />
+                                <PasswordInput id={"motDePasseActuel"} onChangeTextFunction={setActualPassword}/>
                             </View>
 
                             <View className="w-full mb-10">
                                 <Text className="text-xl mb-2">Nouveau mot de passe</Text>
-                                <PasswordInput id={"motDePasseActuel"} />
+                                <PasswordInput id={"motDePasseActuel"} onChangeTextFunction={setNewPassword}/>
                             </View>
 
                             <Pressable
                                 className="w-full xl:w-1/2"
                                 onPress={() => {
                                     resetPassword(
-                                        document.getElementById("motDePasseActuel").value,
-                                        document.getElementById("nouveauMotDePasse").value,
+                                        actualPassword,
+                                        newPassword,
                                         user.email
                                     )
                                 }}>
