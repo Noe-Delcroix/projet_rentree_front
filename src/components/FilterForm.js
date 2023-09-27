@@ -13,8 +13,8 @@ const FilterForm = ({ onQueryChange, tags, diets, sortingMethods, sortOrder: def
     const [selectedDiets, setSelectedDiets] = useState({});
     const [selectAllTags, setSelectAllTags] = useState(false);
     const [selectAllDiets, setSelectAllDiets] = useState(false);
-    const [sortType, setSortType] = useState(Object.keys(sortingMethods)[0]);  // Default to the first sorting type
-    const [sortingOrders, setSortingOrders] = useState(defaultSortOrder || 'asc'); // Default to ascending
+    const [sortType, setSortType] = useState(Object.keys(sortingMethods)[0]);
+    const [sortingOrders, setSortingOrders] = useState(defaultSortOrder || 'asc');
 
     const handleCheckboxChange = (type, key, checked) => {
         if (type === "tags") {
