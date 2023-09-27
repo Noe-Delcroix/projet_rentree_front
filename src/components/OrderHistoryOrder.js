@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { loadDetailledOrders} from "../slices/Orders";
 import {loadDishes} from "../slices/Dishes";
 
-export default function Order({ orderId }) {
+export default function OrderHistoryOrder({ orderId }) {
 
     const dispatch = useDispatch();
 

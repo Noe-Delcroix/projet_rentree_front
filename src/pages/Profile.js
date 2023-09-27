@@ -1,11 +1,11 @@
 import React, {useEffect, useState,} from 'react';
 import {View, Text, Button, ScrollView, Image} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
-import {useApplicationContext} from "../components/AuthContext";
+import {useApplicationContext} from "../contexts/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
 import PasswordInput from "../components/PasswordInput";
-const ProfileScreen = ({ navigation, route }) => {
+const Profile = ({ navigation, route }) => {
     const { resetPassword, handleLogOut, IsAnyUserLogedIn } = useApplicationContext();
 
     const [actualPassword, setActualPassword] = useState("")
@@ -17,7 +17,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (!IsAnyUserLogedIn()) {
-            navigation.replace('Carte');
+            navigation.replace('Menu');
         }else{
             dispatch(loadUserInfo());
         }
@@ -45,7 +45,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
                                 <View className="flex flex-row flex-wrap justify-center items-center w-full">
                                     <View className="m-2">
-                                        <Button title="Historique de commandes" color="#713235" onPress={() => navigation.navigate('SeeOrder')}/>
+                                        <Button title="Historique de commandes" color="#713235" onPress={() => navigation.navigate('OrderHistory')}/>
                                     </View>
                                     <View className="m-2">
                                         <Button title="Se déconnecter" color="#713235" onPress={() =>handleLogOut(navigation)}/>
@@ -87,4 +87,4 @@ const ProfileScreen = ({ navigation, route }) => {
     );
 };
 
-export default ProfileScreen;
+export default Profile;

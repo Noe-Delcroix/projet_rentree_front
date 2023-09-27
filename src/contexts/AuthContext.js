@@ -21,19 +21,14 @@ export const AuthContextProvider = ({ children, navigation}) => {
 
     const tryLogIn = async (email, password, navigation) => {
         if (email === undefined && password === undefined) {
-            try {
-                await axios.get('http://localhost:8080/api/users/info')
-                    .then((response) => {
-                        setToken(response.headers['token']);
-                        setUserPassword(response.data.password);
-                        if (navigation !== undefined) navigation.replace('Carte');
-                    })
-                    .catch((error) => {
-                        toaster.warning("Vous n'êtes pas connecté");
-                    });
-            } catch (error) {
-
-            }
+            await axios.get('http://localhost:8080/api/users/info')
+                .then((response) => {
+                    setToken(response.headers['token']);
+                    setUserPassword(response.data.password);
+                    if (navigation !== undefined) navigation.replace('Menu');
+                })
+                .catch((error) => {
+                });
         } else {
             await axios.post('http://localhost:8080/api/users/login', {
                 email: email,
@@ -42,7 +37,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
                 .then((response) => {
                     setToken(response.headers['token']);
                     setUserPassword(password);
-                    navigation.replace('Carte');
+                    navigation.replace('Menu');
                 })
                 .catch((error) => {
                     toaster.warning(error.response.data);
@@ -111,7 +106,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
                 dispatch(loadUserInfo());
                 setUserPassword("");
                 toaster.success('Vous avez été déconnecté!')
-                navigation.navigate('Carte')
+                navigation.navigate('Menu')
 
             })
         } catch (error) {

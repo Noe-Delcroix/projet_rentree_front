@@ -1,4 +1,4 @@
-import {useApplicationContext} from "../components/AuthContext";
+import {useApplicationContext} from "../contexts/AuthContext";
 import React from "react";
 import PasswordInput from "../components/PasswordInput";
 import {Button, Text, View} from "react-native";

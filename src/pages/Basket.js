@@ -8,11 +8,10 @@ import {
 } from "../slices/Basket";
 import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
-import {useApplicationContext} from "../components/AuthContext";
+import {useApplicationContext} from "../contexts/AuthContext";
 import BasketDish from "../components/BasketDish";
 import {toaster} from "evergreen-ui";
-
-export default function Panier({ navigation }) {
+export default function Basket({ navigation }) {
 
     const basket = useSelector(state => state.basket.basket)
     const detailledBasket = useSelector(state => state.basket.detailledBasket)
@@ -32,11 +31,11 @@ export default function Panier({ navigation }) {
 
     const launchOrder = async () => {
         if (!IsAnyUserLogedIn()) {
-            navigation.navigate('LogIn');
+            navigation.navigate('Authentification');
         }else{
             dispatch(addOrder({ address, basket })).then((result) => {
                 if (result.payload !== "error") {
-                    navigation.replace('Order');
+                    navigation.replace('OrderCompleted');
                 }
             });
         }
@@ -49,7 +48,7 @@ export default function Panier({ navigation }) {
                 <View className="w-full md:w-1/3 p-10 flex flex-col items-center justify-center bg-white shadow-xl">
                     <Text className="text-3xl text-center mb-2">Votre panier est vide</Text>
                     <View className="mt-5 w-full md:w-1/3">
-                        <Button title={"Retour à la carte"} color="#713235" onPress={() => navigation.replace('Carte')}/>
+                        <Button title={"Retour à la carte"} color="#713235" onPress={() => navigation.replace('Menu')}/>
                     </View>
                 </View>
             </View>

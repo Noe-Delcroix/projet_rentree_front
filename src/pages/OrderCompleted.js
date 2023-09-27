@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, Button} from 'react-native';
 import axios from "axios";
-import {useApplicationContext} from "../components/AuthContext";
+import {useApplicationContext} from "../contexts/AuthContext";
 import {toaster} from "evergreen-ui";
 import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
 
-export default function OrderFinished({ route, navigation }) {
+export default function OrderCompleted({ route, navigation }) {
     const [solde, setSolde] = useState(0);
 
     const { token, dishes } = useApplicationContext();
@@ -19,7 +19,7 @@ export default function OrderFinished({ route, navigation }) {
 
     useEffect(() => {
         if (!IsAnyUserLogedIn()) {
-            navigation.replace('Carte');
+            navigation.replace('Menu');
         }else{
             dispatch(loadUserInfo());
         }
@@ -59,10 +59,10 @@ export default function OrderFinished({ route, navigation }) {
                 </Text>
                 <View className="mt-5 flex flex-row justify-center flex-wrap">
                     <View className="mx-3 my-1">
-                        <Button title={"Retour à la carte"} color="#713235" onPress={() => navigation.replace('Carte')}/>
+                        <Button title={"Retour à la carte"} color="#713235" onPress={() => navigation.replace('Menu')}/>
                     </View>
                     <View className="mx-3 my-1">
-                        <Button title={"Voir mon historique de commande"} color="#713235" onPress={() => navigation.replace('SeeOrder')}/>
+                        <Button title={"Voir mon historique de commande"} color="#713235" onPress={() => navigation.replace('OrderHistory')}/>
                     </View>
                 </View>
 

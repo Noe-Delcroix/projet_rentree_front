@@ -1,9 +1,9 @@
 import React, { useState} from 'react';
 import {Text, View, TextInput, Button} from 'react-native';
-import {useApplicationContext} from "../components/AuthContext";
+import {useApplicationContext} from "../contexts/AuthContext";
 import PasswordInput from "../components/PasswordInput";
 
-export default function LogIn({ navigation }) {
+export default function Authentification({ navigation }) {
     const [login, setLogin] = useState(true);
     const [email, setEmail] = useState("")
     const [firstname, setFirstname] = useState("")

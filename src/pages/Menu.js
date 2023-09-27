@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import Product from '../components/Product';
+import MenuDish from '../components/MenuDish';
 import BottomNavigationBar from '../components/BottomNavigationBar';
 import FilterForm from "../components/FilterForm";
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,7 +8,7 @@ import { loadDishes} from '../slices/Dishes';
 import {loadTags} from "../slices/Tags";
 import {loadDiets} from "../slices/Diets";
 
-export default function Carte({ navigation }) {
+export default function Menu({ navigation }) {
 
     const dispatch = useDispatch();
     const dishes = useSelector(state => state.dishes.value)
@@ -35,7 +35,7 @@ export default function Carte({ navigation }) {
                     <View className="flex flex-row flex-wrap w-full items-stretch">
                         {dishes.map((dish) => {
                             return (
-                                <Product
+                                <MenuDish
                                     id={dish.id}
                                     key={dish.id}
                                     navigation={navigation}

@@ -36,7 +36,6 @@ export const loadUserInfo = createAsyncThunk(
             return response.data;
         } catch (error) {
             if (error.response.status === 401) {
-                toaster.danger("Vous n'êtes pas connecté");
                 return thunkAPI.rejectWithValue("Vous n'êtes pas connecté");
             }
             return thunkAPI.rejectWithValue(error.message);

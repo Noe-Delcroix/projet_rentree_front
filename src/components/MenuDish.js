@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import {View, Text, TouchableOpacity, Image, Button} from 'react-native';
 import {useDispatch} from "react-redux";
 import {addDishesToBasket} from "../slices/Basket";
-export default function Product({id, name, image, price, description, navigation}) {
+export default function MenuDish({id, name, image, price, description, navigation}) {
 
     const [quantity] = useState(1);
     const dispatch = useDispatch();
     const onPressCard = ()=> {
-        navigation.navigate('ObjectDetail',
+        navigation.navigate('DishDetail',
             {
                 id: id,
             });

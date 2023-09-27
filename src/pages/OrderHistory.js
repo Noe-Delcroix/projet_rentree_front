@@ -1,13 +1,13 @@
 import React, { useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
-import {useApplicationContext} from "../components/AuthContext";
-import Order from "../components/Order";
+import {useApplicationContext} from "../contexts/AuthContext";
+import OrderHistoryOrder from "../components/OrderHistoryOrder";
 import {useDispatch, useSelector} from "react-redux";
 import { loadOrders} from "../slices/Orders";
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import SortingForm from "../components/SortingForm";
 
-export default function SeeOrder({ navigation }) {
+export default function OrderHistory({ navigation }) {
     const {IsAnyUserLogedIn} = useApplicationContext();
 
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export default function SeeOrder({ navigation }) {
 
     React.useCallback(() => {
         if (!IsAnyUserLogedIn()) {
-            navigation.replace('Carte');
+            navigation.replace('Menu');
         }else{
             dispatch(loadOrders({ sortType, sortingOrders }))
         }
@@ -51,7 +51,7 @@ export default function SeeOrder({ navigation }) {
 
 
                         {orders.map((order) => {
-                            return (<Order orderId={order.id} />)
+                            return (<OrderHistoryOrder orderId={order.id} />)
                         })}
                     </View>
                 </View>

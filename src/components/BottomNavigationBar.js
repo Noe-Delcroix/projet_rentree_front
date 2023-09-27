@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import {useSelector} from "react-redux";
 import { selectBasketSize } from "../slices/Basket";
-import {useApplicationContext} from "./AuthContext";
+import {useApplicationContext} from "../contexts/AuthContext";
 
 const BottomNavigationBar = ({ navigation, activeScreen }) => {
     const basketSize = useSelector(selectBasketSize);
@@ -12,8 +12,8 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
     return (
         <View className="flex flex-row justify-around items-center h-[60px] bg-white">
             <TouchableOpacity
-                onPress={() => navigation.replace('Carte')}
-                className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Carte' ? 'text-white' : 'text-gray-400'}`}
+                onPress={() => navigation.replace('Menu')}
+                className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Menu' ? 'text-white' : 'text-gray-400'}`}
             >
                 <Image
                     className="w-8 h-8"
@@ -21,7 +21,7 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-                onPress={() => navigation.replace('Panier')}
+                onPress={() => navigation.replace('Basket')}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Panier' ? 'text-white' : 'text-gray-400'}`}
             >
                 <View>
@@ -39,9 +39,9 @@ const BottomNavigationBar = ({ navigation, activeScreen }) => {
             <TouchableOpacity
                 onPress={() => {
                     if (IsAnyUserLogedIn()) {
-                        navigation.replace('Profil')
+                        navigation.replace('Profile')
                     } else {
-                        navigation.navigate('LogIn')
+                        navigation.navigate('Authentification')
                     }
                 }}
                 className={`w-1/3 h-full flex flex-col items-center justify-center ${activeScreen === 'Profil' ? 'text-white' : 'text-gray-400'}`}

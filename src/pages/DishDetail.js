@@ -8,7 +8,7 @@ import {loadDish} from "../slices/Dish";
 import {loadTags} from "../slices/Tags";
 import {loadDiets} from "../slices/Diets";
 
-export default function ObjectDetail({ route, navigation }) {
+export default function DishDetail({ route, navigation }) {
     const { id } = route.params;
 
     const dish = useSelector(state => state.dish.value);
