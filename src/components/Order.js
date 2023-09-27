@@ -42,7 +42,7 @@ export default function Order({ orderId }) {
                             { quantity > 1 &&
                                 <View className="flex flex-row items-center mb-1">
                                     <Text className="text-xl text-[#713235]">Quantité : {quantity}</Text>
-                                    <Text className="text-xl ml-10">Total : { dish?.price * quantity }€</Text>
+                                    <Text className="text-xl ml-10">Total : { (dish?.price * quantity).toFixed(2) }€</Text>
                                 </View>
                             }
 

@@ -10,6 +10,7 @@ import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
 import {useApplicationContext} from "../components/AuthContext";
 import BasketDish from "../components/BasketDish";
+import {toaster} from "evergreen-ui";
 
 export default function Panier({ navigation }) {
 
@@ -33,7 +34,11 @@ export default function Panier({ navigation }) {
         if (!IsAnyUserLogedIn()) {
             navigation.navigate('LogIn');
         }else{
-            dispatch(addOrder({ address, basket }))
+            dispatch(addOrder({ address, basket })).then((result) => {
+                if (result.payload !== "error") {
+                    navigation.replace('Order');
+                }
+            });
         }
     }
 

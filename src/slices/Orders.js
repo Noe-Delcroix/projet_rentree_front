@@ -94,18 +94,11 @@ export const addOrder = createAsyncThunk(
 
         try {
             await axios.post('http://localhost:8080/api/orders', d);
-            toaster.success('Votre commande a bien été envoyé');
+            toaster.success('Votre commande a bien été envoyée');
             thunkAPI.dispatch(basketSlice.actions.clearBasket());
+            return true;
         } catch (error) {
             toaster.warning('Une erreur est survenue');
-            return thunkAPI.rejectWithValue(error.message);
-        }
-
-        try {
-            const response = await axios.get('http://localhost:8080/api/orders?sortBy=DATE&sortOrder=DESC');
-            return response.data;
-        } catch (error) {
-            toaster.danger(error.message);
             return thunkAPI.rejectWithValue(error.message);
         }
     }
