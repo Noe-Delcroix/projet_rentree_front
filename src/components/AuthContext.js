@@ -26,7 +26,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
                 await axios.get('http://localhost:8080/api/users/info')
                     .then((response) => {
                         setToken(response.headers['token']);  // Récupérez le cookie de l'en-tête Set-Cookie
-                        setUserPassword(password);
+                        setUserPassword(response.data.password);
                         if (navigation !== undefined) navigation.replace('Carte');
                     })
                     .catch((error) => {
@@ -87,23 +87,30 @@ export const AuthContextProvider = ({ children, navigation}) => {
     }
 
     const resetPassword = (actualPassword, newPassword) => {
-        if (actualPassword !== userPassword) {
-            toaster.warning("Mot de passe incorrect")
-        }else if (newPassword.length < 6){
+        if (newPassword.length < 6){
             toaster.warning("Mot de passe trop court")
+            return
         }
-        else{
-            axios.get(`http://localhost:8080/api/users/resetPasswordAuthentificated?oldPassword=${actualPassword}&password=${newPassword}`, {
-                email:user.email,
-            }).then((response) => {
-                console.log(response);
-                toaster.success('Votre mot de passe a été modifié, un email vous a été envoyé!')
-                dispatch(loadUserInfo());
-            }, (error) => {
-                console.log(error)
-                toaster.warning(error.response.data)
-            });
-        }
+        axios.post(`http://localhost:8080/api/users/verifyPassword?password=${actualPassword}`).then((response) => {
+            console.log(response.data);
+            if (response.data === true) {
+
+                axios.get(`http://localhost:8080/api/users/resetPasswordAuthentificated?oldPassword=${actualPassword}&password=${newPassword}`, {
+                    email: user.email,
+                }).then((response) => {
+                    console.log(response);
+                    toaster.success('Votre mot de passe a été modifié, un email vous a été envoyé!')
+                    dispatch(loadUserInfo());
+                }, (error) => {
+                    console.log(error)
+                    toaster.warning(error.response.data)
+                });
+            }
+
+        }, (error) => {
+            console.log(error)
+            toaster.warning(error.response.data)
+        })
     }
 
     const handleLogOut = (navigation) => {

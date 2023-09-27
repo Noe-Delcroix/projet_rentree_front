@@ -57,7 +57,6 @@ export const basketSlice = createSlice({
             .addCase(loadDetailledBasket.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.detailledBasket = action.payload;
-                console.log("c'est fini" + action.payload)
             })
             .addCase(loadDetailledBasket.rejected, (state, action) => {
                 state.status = 'failed';

@@ -14,7 +14,6 @@ export default function LogIn({ navigation }) {
     const [address, setAddress] = useState("")
     const [password, setPassword] = useState("")
     const { tryLogIn, trySignIn, sendPasswordResetEmail } = useApplicationContext();
-    console.log("password: ", password)
 
     return (
         <View className="flex-1 justify-center items-center">

@@ -19,7 +19,6 @@ export const userSlice = createSlice({
             .addCase(loadUserInfo.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.value = action.payload;
-                console.log("c'est fini" + action.payload)
             })
             .addCase(loadUserInfo.rejected, (state, action) => {
                 state.status = 'failed';
@@ -42,7 +41,6 @@ export const loadUserInfo = createAsyncThunk(
     async (thunkAPI) => {
         try {
             const response = await axios.get('http://localhost:8080/api/users/info');
-            console.log("dans axios" + response.data);
             return response.data;
         } catch (error) {
             if (error.response.status === 401) {

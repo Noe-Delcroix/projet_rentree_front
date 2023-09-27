@@ -13,6 +13,7 @@ import {
 import {useFocusEffect} from "@react-navigation/native";
 import {addOrder} from "../slices/Orders";
 import {useApplicationContext} from "../components/AuthContext";
+import BasketDish from "../components/BasketDish";
 
 export default function Panier({ navigation, route }) {
 
@@ -88,38 +89,11 @@ export default function Panier({ navigation, route }) {
                             <View className="m-10">
                                 {
                                     detailledBasket.map((item) => (
-                                        <View className="flex flex-col md:flex-row justify-start bg-white mb-10 shadow-xl">
-                                            <Image
-                                                source={{ uri: item.image }}
-                                                className="w-full h-[200px] md:h-full md:w-[200px]"
-                                            />
-                                            <View className="m-5 flex-1">
-                                                <View className="flex flex-row items-center justify-between w-full mb-5">
-                                                    <Text className="text-3xl">{item.name}</Text>
-                                                    <Text className="text-2xl text-[#713235] font-bold">{item.price.toFixed(2)}€</Text>
-                                                </View>
-
-                                                <View className="flex flex-row items-center mb-5">
-                                                    <View className="flex flex-row items-center">
-                                                        <Button title={"-"} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 1 }))}/>
-                                                        <Text className="text-2xl mx-5">{basket.find((element) => element.id === item.id).quantity}</Text>
-                                                        <Button title={"+"} color="#713235" onPress={() => dispatch(addDishesToBasket({ dishId: item.id, quantity: 1 }))}/>
-                                                    </View>
-                                                </View>
-
-                                                <View className="flex flex-row items-center justify-between w-full mb-5">
-                                                    <Text className="text-xl">Total : { (item.price*basket.find((element) => element.id === item.id).quantity).toFixed(2) }€</Text>
-                                                    <Icon name="trash" size={30} color="#713235" onPress={() => dispatch(removeDishesFromBasket({ dishId: item.id, quantity: 0 }))}/>
-                                                </View>
-                                            </View>
-                                        </View>
+                                        <BasketDish item={item} key={item.id} />
                                     ))
                                 }
                             </View>
                         </View>
-
-
-
                     </View>)}
                 </View>
             </ScrollView>
