@@ -14,7 +14,7 @@ export default function MenuDish({id, name, image, price, description, navigatio
     };
 
     return (
-        <View className="w-full md:w-1/2 xl:w-1/4">
+        <View className="w-full md:w-1/2 xl:w-1/4 mt-5">
             <View className="bg-white shadow-xl m-3 h-full">
                 <TouchableOpacity onPress={onPressCard}>
                     <Image className="w-full h-[400px]"
