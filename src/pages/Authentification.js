@@ -13,9 +13,9 @@ export default function Authentification({ navigation }) {
     const { tryLogIn, trySignIn, sendPasswordResetEmail } = useApplicationContext();
 
     return (
-        <View className="flex-1 justify-center items-center">
+        <View className="flex-1 justify-center items-center px-2">
             <View className="w-full md:w-1/3 p-10 flex flex-col items-center justify-center bg-white shadow-xl">
-                <Text className="text-5xl font-bold mb-10">{login ? 'Se connecter' : 'Créer un compte'}</Text>
+                <Text className="text-5xl font-bold mb-10 text-center">{login ? 'Se connecter' : 'Créer un compte'}</Text>
                 <View className="w-full">
                     {login ? null : <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Prénom" onChangeText={setFirstname}/>}
                     {login ? null : <TextInput className="mb-2 p-2 border border-[#713235] rounded" placeholder="Nom" onChangeText={setLastname}/>}
