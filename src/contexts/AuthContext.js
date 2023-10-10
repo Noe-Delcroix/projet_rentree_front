@@ -51,6 +51,10 @@ export const AuthContextProvider = ({ children, navigation}) => {
 
 
     const trySignIn = async (email, password, firstname, lastname, address) => {
+        if (password.length < 8){
+            toaster.warning("Mot de passe trop court")
+            return
+        }
         let ret = false;
         await axios.post('http://localhost:8080/api/users/register', {
             firstname: firstname,
@@ -78,7 +82,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
     }
 
     const resetPassword = (actualPassword, newPassword) => {
-        if (newPassword.length < 6){
+        if (newPassword.length < 8){
             toaster.warning("Mot de passe trop court")
             return
         }
