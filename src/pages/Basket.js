@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Button, ScrollView, TextInput} from 'react-native';
 import BottomNavigationBar from "../components/BottomNavigationBar";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,6 +11,7 @@ import {addOrder} from "../slices/Orders";
 import {useApplicationContext} from "../contexts/AuthContext";
 import BasketDish from "../components/BasketDish";
 import {toaster} from "evergreen-ui";
+import {loadUserInfo} from "../slices/User";
 export default function Basket({ navigation }) {
 
     const basket = useSelector(state => state.basket.basket)
@@ -19,6 +20,11 @@ export default function Basket({ navigation }) {
     const dispatch = useDispatch();
     const [address, setAddress] = useState("")
     const totalPrice = useSelector(selectTotalPrice);
+    const user = useSelector(state => state.user.value);
+
+    useEffect(() => {
+        dispatch(loadUserInfo());
+    }, user);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -73,6 +79,7 @@ export default function Basket({ navigation }) {
                                                 className="mb-2 p-2 border border-[#713235] rounded"
                                                 placeholder="Adresse de livraison"
                                                 onChangeText={setAddress}
+                                                value={user?.address}
                                             />
                                             <View className="mt-5">
                                                 <Button title={"Passer la commande"} color="#713235" onPress={() => launchOrder()}/>
