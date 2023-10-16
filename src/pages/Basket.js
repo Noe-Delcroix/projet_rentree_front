@@ -22,17 +22,21 @@ export default function Basket({ navigation }) {
     const user = useSelector(state => state.user.value);
 
     const [addressInput, setAddressInput] = useState(user?.address);
+    const [isloaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        dispatch(loadUserInfo())
-            .then(() => {
-                console.log("user: ", user);
-                setAddressInput(user?.address);
-            })
-            .catch(error => {
-                console.error("Erreur lors de la récupération des infos utilisateur : ", error);
-            });
-    }, [addressInput]);
+        if(isloaded){
+            dispatch(loadUserInfo())
+                .then(() => {
+                    setIsLoaded(true);
+                    console.log("user: ", user);
+                    setAddressInput(user?.address);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la récupération des infos utilisateur : ", error);
+                });
+        }
+    }, [isloaded]);
 
     useFocusEffect(
         React.useCallback(() => {
