@@ -76,14 +76,14 @@ export const loadDetailledOrders = createAsyncThunk(
 
 export const addOrder = createAsyncThunk(
     'orders/add',
-    async ({ address, basket }, thunkAPI) => {
-        if (address === null || address === undefined || address === '') {
+    async ({ addressInput, basket }, thunkAPI) => {
+        if (addressInput === null || addressInput === undefined || addressInput === '') {
             toaster.warning('Veuillez renseigner une adresse');
             return thunkAPI.rejectWithValue("L'adresse est vide");
         }
         const d = {
             orderContent: {},
-            address: address
+            address: addressInput
         };
 
         basket.forEach(e => {

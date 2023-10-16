@@ -18,17 +18,23 @@ export default function Basket({ navigation }) {
     const detailledBasket = useSelector(state => state.basket.detailledBasket)
 
     const dispatch = useDispatch();
-    const [address, setAddress] = useState("")
     const totalPrice = useSelector(selectTotalPrice);
     const user = useSelector(state => state.user.value);
 
+    const [addressInput, setAddressInput] = useState(user?.address);
+
     useEffect(() => {
-        dispatch(loadUserInfo());
+        dispatch(loadUserInfo()).then(
+            () => setAddressInput(user?.address)
+    );
     }, user);
 
     useFocusEffect(
         React.useCallback(() => {
             dispatch(loadDetailledBasket());
+            if (user && user.address) {
+                setAddressInput(user.address);
+            }
             return () => {};
         }, [dispatch])
     );
@@ -39,8 +45,13 @@ export default function Basket({ navigation }) {
         if (!IsAnyUserLogedIn()) {
             navigation.navigate('Authentification');
         }else{
-            dispatch(addOrder({ address, basket })).then((result) => {
-                if (result.payload !== "error") {
+            console.log("adress: ", addressInput)
+            let bidule = {
+                addressInput,
+                basket
+            }
+            dispatch(addOrder(bidule)).then((result) => {
+                if (result.payload !== "failed") {
                     navigation.replace('OrderCompleted');
                 }
             });
@@ -78,8 +89,8 @@ export default function Basket({ navigation }) {
                                             <TextInput
                                                 className="mb-2 p-2 border border-[#713235] rounded"
                                                 placeholder="Adresse de livraison"
-                                                onChangeText={setAddress}
-                                                value={user?.address}
+                                                onChangeText={setAddressInput}
+                                                value={addressInput}
                                             />
                                             <View className="mt-5">
                                                 <Button title={"Passer la commande"} color="#713235" onPress={() => launchOrder()}/>
