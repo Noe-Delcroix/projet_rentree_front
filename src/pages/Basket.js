@@ -25,7 +25,7 @@ export default function Basket({ navigation }) {
     const [isloaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        if(isloaded){
+        if(!isloaded){
             dispatch(loadUserInfo())
                 .then(() => {
                     setIsLoaded(true);
@@ -36,7 +36,7 @@ export default function Basket({ navigation }) {
                     console.error("Erreur lors de la récupération des infos utilisateur : ", error);
                 });
         }
-    }, [isloaded]);
+    }, [isloaded, user]);
 
     useFocusEffect(
         React.useCallback(() => {
