@@ -24,10 +24,15 @@ export default function Basket({ navigation }) {
     const [addressInput, setAddressInput] = useState(user?.address);
 
     useEffect(() => {
-        dispatch(loadUserInfo()).then(
-            () => setAddressInput(user?.address)
-    );
-    }, user);
+        dispatch(loadUserInfo())
+            .then(() => {
+                console.log("user: ", user);
+                setAddressInput(user?.address);
+            })
+            .catch(error => {
+                console.error("Erreur lors de la récupération des infos utilisateur : ", error);
+            });
+    }, [addressInput]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -51,6 +56,7 @@ export default function Basket({ navigation }) {
                 basket
             }
             dispatch(addOrder(bidule)).then((result) => {
+                console.log("result: ", result)
                 if (result.payload !== "failed") {
                     navigation.replace('OrderCompleted');
                 }
