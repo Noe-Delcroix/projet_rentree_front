@@ -68,7 +68,7 @@ cd projet-rentree-front
 docker build . -t front_projet
 
 #lance un conteiner de l'image, redirige le port 19006 de la machine docker au port de votre machine 49160
-docker run -p 49160:19006 -d front_projet
+docker run -p 19006:19006 -d front_projet
 
 ```
 
