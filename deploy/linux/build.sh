@@ -27,7 +27,7 @@ fi
 
 
 if [ "$env_value" = "blue" ]; then
-    port=8081
+    port=19007
 fi
 
 # Nom du conteneur Docker
@@ -45,7 +45,7 @@ docker build ../../. -t projet-rentree-front:"$env_value"
 echo "Image Docker construite"
 
 # Lance le conteneur Docker du projet Maven sur le réseau personnalisé, le build est lancé automatiquement
-docker run --name $nomConteneur --network mon-reseau -p $port:$port -d projet-rentree-front:"$env_value"
+docker run --name $nomConteneur --network mon-reseau -p $port:19006 -d projet-rentree-front:"$env_value"
 echo "Conteneur Docker lancé"
 
 # Commande à exécuter dans le conteneur

@@ -122,9 +122,11 @@ sonarqubeURL="http://$sonarqubeIP:9000"
 echo "SonarQube URL: $sonarqubeURL"
 echo "Sonar Token: $sonarToken"
 
-nomConteneur="projet-rentree-back-$env_value"
+nomConteneur="projet-rentree-front-$env_value"
 
-dockerCommand="docker exec -e SONAR_HOST_URL=$sonarqubeURL -e SONAR_TOKEN=$sonarToken $nomConteneur mvn clean verify sonar:sonar"
+# Assurez-vous que ce conteneur est déjà en cours d'exécution
+dockerCommand="docker exec -e SONAR_HOST_URL=$sonarqubeURL -e SONAR_TOKEN=$sonarToken $nomConteneur sonar-scanner"
+
 echo "Exécution de la commande Docker pour l'analyse SonarQube"
-eval $dockerCommand
+eval "$dockerCommand"
 
