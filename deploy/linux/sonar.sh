@@ -125,7 +125,7 @@ echo "Sonar Token: $sonarToken"
 nomConteneur="projet-rentree-front-$env_value"
 
 # Assurez-vous que ce conteneur est déjà en cours d'exécution
-dockerCommand="docker exec -e SONAR_HOST_URL=$sonarqubeURL -e SONAR_TOKEN=$sonarToken $nomConteneur sonar-scanner -Dsonar.host.url=$sonarqubeURL -Dsonar.token=$sonarToken"
+dockerCommand="docker exec -e SONAR_HOST_URL=$sonarqubeURL -e SONAR_TOKEN=$sonarToken $nomConteneur sonar-scanner -Dsonar.host.url=$sonarqubeURL -Dsonar.token=$sonarToken -Dsonar.login=$adminUsername -Dsonar.password=$newPassword"
 
 echo "Exécution de la commande Docker pour l'analyse SonarQube"
 eval "$dockerCommand"
