@@ -29,10 +29,6 @@ fi
 if [ "$env_value" = "blue" ]; then
     port=8081
 fi
-#modiife le port dans le fichier application.properties
-app_properties_file="../../src/main/resources/application.properties"
-sed -i "s/^server.port=.*$/server.port=$port/" "$app_properties_file"
-echo "Fichier application.properties mis à jour avec le port $port"
 
 # Nom du conteneur Docker
 nomConteneur="projet-rentree-front-$env_value"
@@ -45,7 +41,7 @@ if [ ! -z "$conteneurExistant" ]; then
 fi
 
 # Construit l'image Docker pour le projet Maven
-docker build ../../. -t projet-rentree-back:"$env_value"
+docker build ../../. -t projet-rentree-front:"$env_value"
 echo "Image Docker construite"
 
 # Lance le conteneur Docker du projet Maven sur le réseau personnalisé, le build est lancé automatiquement
