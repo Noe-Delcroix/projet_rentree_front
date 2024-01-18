@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# Lancer mvn spring-boot:run en arrière-plan et rediriger la sortie vers un fichier de log
-npm run web > app.log 2>&1 &
+# Lancer npm run web en arrière-plan en utilisant nohup
+nohup npm run web > app.log 2>&1 &
 
-# Attendre que la chaîne "Started" apparaisse dans le fichier de log
+# Attendre que la chaîne "web compiled successfully" apparaisse dans le fichier de log
 while ! grep -q "web compiled successfully" app.log; do
   echo "waiting for web to compile"
   sleep 1
