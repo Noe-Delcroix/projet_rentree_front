@@ -30,7 +30,7 @@ commande="/usr/src/app/run.sh"
 # Exécute la commande dans le conteneur Docker
 echo "Exécution de la commande dans le conteneur Docker : $nomConteneur"
 docker exec -it "$nomConteneur" chmod u+x $commande
-docker exec -it "$nomConteneur" $commande
+docker exec -it "$nomConteneur" $commande &
 
 # Vérifie le code de retour de la commande
 if [ $? -eq 0 ]; then
