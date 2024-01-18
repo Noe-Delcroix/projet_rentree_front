@@ -4,7 +4,7 @@
 npm run web > app.log 2>&1 &
 
 # Attendre que la chaîne "Started" apparaisse dans le fichier de log
-while ! grep -q "Started" app.log; do
+while ! grep -q "Web is waiting on" app.log; do
   sleep 1
 done
 
