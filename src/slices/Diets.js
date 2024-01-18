@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {toaster} from "evergreen-ui";
+import port from "../back";
 export const dietsSlice = createSlice({
     name: 'diets',
     initialState: {
@@ -28,7 +29,7 @@ export const loadDiets = createAsyncThunk(
     'diets/load',
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get('http://localhost:8080/api/dishes/diets');
+            const response = await axios.get(`http://localhost:${port}/api/dishes/diets`);
             return response.data;
         } catch (error) {
             toaster.danger(error.message);

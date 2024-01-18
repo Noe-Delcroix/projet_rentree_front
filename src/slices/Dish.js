@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
+import port from "../back";
 export const dishSlice = createSlice({
     name: 'dish',
     initialState: {
@@ -28,7 +28,7 @@ export const loadDish = createAsyncThunk(
     'dish/load',
     async (id, thunkAPI) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/dishes/${id}`);
+            const response = await axios.get(`http://localhost:${port}/api/dishes/${id}`);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.message);

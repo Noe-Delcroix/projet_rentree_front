@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
 import {toaster} from "evergreen-ui";
+import port from "../back";
 
 export const basketSlice = createSlice({
     name: 'basket',
@@ -80,7 +81,7 @@ export const loadDetailledBasket = createAsyncThunk(
         const state = thunkAPI.getState();
         const axiosPromises = state.basket.basket.map(async (e) => {
             try {
-                const response = await axios.get('http://localhost:8080/api/dishes/' + e.id );
+                const response = await axios.get(`http://localhost:${port}/api/dishes/` + e.id );
                 return response.data;
             } catch (error) {
                 toaster.danger("erreur lors du chargement du panier");

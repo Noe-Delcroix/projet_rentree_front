@@ -3,7 +3,7 @@ import axios from "axios";
 import {toaster} from "evergreen-ui";
 import {useDispatch, useSelector} from "react-redux";
 import {loadUserInfo} from "../slices/User";
-
+import port from "../back";
 const AuthContext = createContext();
 
 export const useApplicationContext = () => useContext(AuthContext);
@@ -21,7 +21,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
 
     const tryLogIn = async (email, password, navigation) => {
         if (email === undefined && password === undefined) {
-            await axios.get('http://localhost:8080/api/users/info')
+            await axios.get(`http://localhost:${port}/api/users/info`)
                 .then((response) => {
                     setToken(response.headers['token']);
                     setUserPassword(response.data.password);
@@ -30,7 +30,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
                 .catch((error) => {
                 });
         } else {
-            await axios.post('http://localhost:8080/api/users/login', {
+            await axios.post(`http://localhost:${port}/api/users/login`, {
                 email: email,
                 password: password
             })
@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
             return
         }
         let ret = false;
-        await axios.post('http://localhost:8080/api/users/register', {
+        await axios.post(`http://localhost:${port}/api/users/register`, {
             firstname: firstname,
             lastname: lastname,
             email: email,
@@ -74,7 +74,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
     }
 
     const sendPasswordResetEmail = (email) => {
-        axios.get(`http://localhost:8080/api/users/resetPasswordMail?email=${email}`).then((response) => {
+        axios.get(`http://localhost:${port}/api/users/resetPasswordMail?email=${email}`).then((response) => {
             toaster.success('Votre mot de passe a été changé, un email vous a été envoyé!')
         }, (error) => {
             toaster.warning(error.response.data)
@@ -86,10 +86,10 @@ export const AuthContextProvider = ({ children, navigation}) => {
             toaster.warning("Mot de passe trop court")
             return
         }
-        axios.post(`http://localhost:8080/api/users/verifyPassword?password=${actualPassword}`).then((response) => {
+        axios.post(`http://localhost:${port}/api/users/verifyPassword?password=${actualPassword}`).then((response) => {
             if (response.data === true) {
 
-                axios.get(`http://localhost:8080/api/users/resetPasswordAuthentificated?oldPassword=${actualPassword}&password=${newPassword}`, {
+                axios.get(`http://localhost:${port}/api/users/resetPasswordAuthentificated?oldPassword=${actualPassword}&password=${newPassword}`, {
                     email: user.email,
                 }).then((response) => {
                     toaster.success('Votre mot de passe a été modifié, un email vous a été envoyé!')
@@ -106,7 +106,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
 
     const handleLogOut = (navigation) => {
         try {
-            axios.post('http://localhost:8080/api/users/logout').then((response) => {
+            axios.post('http://localhost:${port}/api/users/logout').then((response) => {
                 dispatch(loadUserInfo());
                 setUserPassword("");
                 toaster.success('Vous avez été déconnecté!')
@@ -122,7 +122,7 @@ export const AuthContextProvider = ({ children, navigation}) => {
         if (password !== confirmpassword) {
         }else{
             try {
-                axios.get(`http://localhost:8080/api/users/resetPassword?token=${token}&password=${password}`)
+                axios.get(`http://localhost:${port}/api/users/resetPassword?token=${token}&password=${password}`)
                     .then((response) => {
                         toaster.success('votre mdp a été modifié!')
                     }, (error) => {

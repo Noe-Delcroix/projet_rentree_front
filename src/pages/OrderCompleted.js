@@ -26,20 +26,6 @@ export default function OrderCompleted({ route, navigation }) {
     }, []);
 
 
-    const soldeRestant = async () => {
-        try{
-            const response = await axios.get('http://localhost:8080/api/users/info', {
-                headers: {
-                    token: token,
-                },
-            });
-            setSolde(response.data.balance);
-        } catch (error) {
-            toaster.danger(error.response.data);
-        }
-
-    };
-
     return (
 
         <View className="flex-1 justify-center items-center">

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {toaster} from "evergreen-ui";
-
+import port from "../back";
 export const orderSlice = createSlice({
     name: 'order',
     initialState: {
@@ -32,7 +32,7 @@ export const loadOrderInfo = createAsyncThunk(
     'order/load',
     async (id,thunkAPI) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/orders/${id}`);
+            const response = await axios.get(`http://localhost:${port}/api/orders/${id}`);
             return response.data;
         } catch (error) {
             if (error.response.status === 401) {

@@ -3,7 +3,7 @@ import axios from "axios";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {toaster} from "evergreen-ui";
 import {basketSlice} from "./Basket";
-
+import port from "../back";
 
 export const ordersSlice = createSlice({
     name: 'orders',
@@ -42,7 +42,7 @@ export const loadOrders = createAsyncThunk(
     'orders/load',
     async ({ sortType = 'DATE', sortOrder = 'DESC' }, thunkAPI) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/orders?sortBy=${sortType}&sortOrder=${sortOrder}`);
+            const response = await axios.get(`http://localhost:${port}/api/orders?sortBy=${sortType}&sortOrder=${sortOrder}`);
             return response.data;
         } catch (error) {
             toaster.danger("Il y a eu une erreur dans le chargement des commandes");
@@ -57,7 +57,7 @@ export const loadDetailledOrders = createAsyncThunk(
         const state = thunkAPI.getState();
         const axiosPromises = state.orders.value.map(async (e) => {
             try {
-                const response = await axios.get('http://localhost:8080/api/orders/' + e.id );
+                const response = await axios.get(`http://localhost:${port}/api/orders/` + e.id );
                 return response.data;
             } catch (error) {
                 toaster.danger("Une commande n'a pas pu être chargé");
@@ -93,7 +93,7 @@ export const addOrder = createAsyncThunk(
         });
 
         try {
-            await axios.post('http://localhost:8080/api/orders', d);
+            await axios.post(`http://localhost:${port}/api/orders`, d);
             toaster.success('Votre commande a bien été envoyée');
             thunkAPI.dispatch(basketSlice.actions.clearBasket());
             return true;
