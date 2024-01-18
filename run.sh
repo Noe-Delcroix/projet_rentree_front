@@ -1,9 +1,7 @@
 #!/bin/sh
 
-#!/bin/sh
-
-# Lancer npm run web en arrière-plan
-npm run web > app.log 2>&1 &
+# Lancer npm run web en arrière-plan en utilisant nohup
+nohup npm run web > app.log 2>&1 &
 
 # Attendre que le fichier app.log soit créé (indiquant que npm run web a commencé)
 while [ ! -f app.log ]; do
@@ -19,6 +17,3 @@ while ! grep -q "web compiled successfully" app.log; do
 done
 
 echo "L'application est maintenant en cours d'exécution."
-
-# Laissez le terminal ouvert
-tail -f /dev/null
