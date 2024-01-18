@@ -41,3 +41,27 @@ else
 fi
 
 ./remove_docker.sh
+
+image_name="projet-rentree-back"
+
+# Nom recherché
+search_name="projet-rentree-back"
+
+# Exécuter "docker ps" pour lister les conteneurs en cours d'exécution
+# Utiliser "grep" pour filtrer les résultats par le nom du conteneur
+# Utiliser "awk" pour extraire le dernier mot du nom du conteneur
+back_env_value=$(docker ps --format "{{.Names}}" | grep "$search_name" | awk -F '-' '{print $NF}')
+
+if [ -n "$back_env_value" ]; then
+    echo "Le dernier mot du nom du conteneur est : $back_env_value"
+else
+    echo "Aucun conteneur contenant '$search_name' n'est actuellement en cours d'exécution."
+fi
+
+if [ "$back_env_value" = "blue" ]; then
+    docker exec -it projet-rentree-front-blue chmod u+x ./change_back_port.sh
+    docker exec -it projet-rentree-front-blue ./change_back_port.sh 8081
+else
+    docker exec -it projet-rentree-front-green chmod u+x ./change_back_port.sh
+    docker exec -it projet-rentree-front-green ./change_back_port.sh 8080
+fi
