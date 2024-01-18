@@ -1,17 +1,19 @@
 #!/bin/bash
 
 FILE="./src/back.js"
-PORT_8080="let port = 8080;"
-PORT_8081="let port = 8081;"
 
-echo "Changing port in $FILE"
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <port>"
+    exit 1
+fi
 
-if grep -q "$PORT_8080" "$FILE"; then
-    sed -i "s/$PORT_8080/$PORT_8081/g" "$FILE"
-    echo "Port changed to 8081"
-elif grep -q "$PORT_8081" "$FILE"; then
-    sed -i "s/$PORT_8081/$PORT_8080/g" "$FILE"
-    echo "Port changed to 8080"
+NEW_PORT="$1"
+echo "Changing port in $FILE to $NEW_PORT"
+
+sed -i "s/let port = [0-9]\+;/let port = $NEW_PORT;/g" "$FILE"
+
+if [ $? -eq 0 ]; then
+    echo "Port changed to $NEW_PORT"
 else
     echo "No matching port found in $FILE"
 fi
