@@ -40,6 +40,7 @@ else
     exit $?
 fi
 
+chmod u+x ./remove_docker.sh
 ./remove_docker.sh
 
 image_name="projet-rentree-back"

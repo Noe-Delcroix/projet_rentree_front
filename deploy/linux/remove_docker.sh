@@ -1,3 +1,5 @@
+#!/bin/bash
+
 env_file="../env.env"
 
 env_value=""
