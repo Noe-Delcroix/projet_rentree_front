@@ -59,10 +59,20 @@ else
     echo "Aucun conteneur contenant '$search_name' n'est actuellement en cours d'exécution."
 fi
 
-if [ "$back_env_value" = "projet_rentree_front_blue" ]; then
-    docker exec projet_rentree_front_blue chmod u+x ./change_back_port.sh
-    docker exec projet_rentree_front_blue ./change_back_port.sh 8081
+if [ "$env_value" = "blue" ]; then
+    if [ "$back_env_value" = "projet_rentree_back_blue" ]; then
+        docker exec projet_rentree_front_blue chmod u+x ./change_back_port.sh
+        docker exec projet_rentree_front_blue ./change_back_port.sh 8081
+    else
+        docker exec projet_rentree_front_blue chmod u+x ./change_back_port.sh
+        docker exec projet_rentree_front_blue ./change_back_port.sh 8080
+    fi
 else
-    docker exec projet_rentree_front_green chmod u+x ./change_back_port.sh
-    docker exec projet_rentree_front_green ./change_back_port.sh 8080
+    if [ "$back_env_value" = "projet_rentree_back_blue" ]; then
+        docker exec projet_rentree_front_green chmod u+x ./change_back_port.sh
+        docker exec projet_rentree_front_green ./change_back_port.sh 8080
+    else
+        docker exec projet_rentree_front_green chmod u+x ./change_back_port.sh
+        docker exec projet_rentree_front_green ./change_back_port.sh 8081
+    fi
 fi
