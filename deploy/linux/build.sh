@@ -43,7 +43,7 @@ if [ "$env_value" = "blue" ]; then
 fi
 
 # Nom du conteneur Docker
-nomConteneur="projet-rentree-front-$env_value"
+nomConteneur="projet_rentree_front_$env_value"
 
 # Vérifie si un conteneur avec le même nom existe déjà et le supprime le cas échéant
 conteneurExistant=$(docker ps -a -q -f name=^/${nomConteneur}$)
@@ -53,11 +53,11 @@ if [ ! -z "$conteneurExistant" ]; then
 fi
 
 # Construit l'image Docker pour le projet Maven
-docker build ../../. -t projet-rentree-front:"$env_value"
+docker build ../../. -t projet_rentree_front:"$env_value"
 echo "Image Docker construite"
 
 # Lance le conteneur Docker du projet Maven sur le réseau personnalisé, le build est lancé automatiquement
-docker run --name $nomConteneur --network mon-reseau -p $port:19006 -d projet-rentree-front:"$env_value"
+docker run --name $nomConteneur --network mon-reseau -p $port:19006 -d projet_rentree_front:"$env_value"
 echo "Conteneur Docker lancé"
 
 # Commande à exécuter dans le conteneur

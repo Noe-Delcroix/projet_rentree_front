@@ -23,7 +23,7 @@ fi
 
 
 # Nom du conteneur Docker
-nomConteneur="projet-rentree-front-$env_value"
+nomConteneur="projet_rentree_front_$env_value"
 
 commande="/usr/src/app/run.sh"
 
@@ -43,10 +43,10 @@ fi
 chmod u+x ./remove_docker.sh
 ./remove_docker.sh
 
-image_name="projet-rentree-back"
+image_name="projet_rentree_back"
 
 # Nom recherché
-search_name="projet-rentree-back"
+search_name="projet_rentree_back"
 
 # Exécuter "docker ps" pour lister les conteneurs en cours d'exécution
 # Utiliser "grep" pour filtrer les résultats par le nom du conteneur
@@ -60,9 +60,9 @@ else
 fi
 
 if [ "$back_env_value" = "blue" ]; then
-    docker exec -it projet-rentree-front-blue chmod u+x ./change_back_port.sh
-    docker exec -it projet-rentree-front-blue ./change_back_port.sh 8081
+    docker exec -it projet_rentree_front_blue chmod u+x ./change_back_port.sh
+    docker exec -it projet_rentree_front_blue ./change_back_port.sh 8081
 else
-    docker exec -it projet-rentree-front-green chmod u+x ./change_back_port.sh
-    docker exec -it projet-rentree-front-green ./change_back_port.sh 8080
+    docker exec -it projet_rentree_front_green chmod u+x ./change_back_port.sh
+    docker exec -it projet_rentree_front_green ./change_back_port.sh 8080
 fi

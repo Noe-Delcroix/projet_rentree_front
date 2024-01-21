@@ -133,7 +133,7 @@ sonarqubeURL="http://$sonarqubeIP:9000"
 echo "SonarQube URL: $sonarqubeURL"
 echo "Sonar Token: $sonarToken"
 
-nomConteneur="projet-rentree-front-$env_value"
+nomConteneur="projet_rentree_front_$env_value"
 
 # Assurez-vous que ce conteneur est déjà en cours d'exécution
 dockerCommand="docker exec -e SONAR_HOST_URL=$sonarqubeURL -e SONAR_TOKEN=$sonarToken $nomConteneur sonar-scanner -Dsonar.host.url=$sonarqubeURL -Dsonar.token=$sonarToken -Dsonar.login=$adminUsername -Dsonar.password=$newPassword"
