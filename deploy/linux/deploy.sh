@@ -27,10 +27,20 @@ nomConteneur="projet_rentree_front_$env_value"
 
 commande="/usr/src/app/run.sh"
 
-# Exécute la commande dans le conteneur Docker
 echo "Exécution de la commande dans le conteneur Docker : $nomConteneur"
-docker exec -it "$nomConteneur" chmod u+x $commande
-docker exec "$nomConteneur" $commande
+
+# Affiche la commande chmod que vous allez exécuter
+echo "docker exec -it \"$nomConteneur\" chmod u+x $commande"
+
+# Exécute la commande chmod dans le conteneur Docker
+docker exec -it "$nomConteneur" chmod u+x "$commande"
+
+# Affiche la commande que vous allez exécuter ensuite
+echo "docker exec \"$nomConteneur\" $commande"
+
+# Exécute la commande suivante dans le conteneur Docker
+docker exec "$nomConteneur" "$commande"
+
 
 # Vérifie le code de retour de la commande
 if [ $? -eq 0 ]; then
