@@ -61,34 +61,13 @@ newPassword="admin1"
 # URL de SonarQube
 sonarqubeURL="http://localhost:9000"
 
-# Essayer de se connecter avec le nouveau mot de passe
-echo "Tentative de connexion à SonarQube avec le nouveau mot de passe..."
-testConnectionResponse=$(curl -s -o /dev/null -w "%{http_code}" -u "${adminUsername}:${newPassword}" "${sonarqubeURL}/api/authentication/validate")
+# Changement de mot de passe
+response=$(curl -s -o /dev/null -w '%{http_code}' -u "$adminUsername:$adminPassword" -X POST "$sonarqubeURL/api/users/change_password?login=admin&previousPassword=admin&password=$newPassword")
 
-# Vérifier la réponse de la tentative de connexion
-if [ "$testConnectionResponse" -eq "200" ]; then
-    echo "Connexion réussie avec le nouveau mot de passe. Pas besoin de changer le mot de passe."
+if [ "$response" -eq 200 ]; then
+    echo "Mot de passe changé avec succès."
 else
-    echo "Echec de la connexion avec le nouveau mot de passe. Changement de mot de passe en cours..."
-
-    # Changement de mot de passe
-    changePasswordResponse=$(curl -s -o /dev/null -w "%{http_code}" -u "${adminUsername}:${adminPassword}" -X POST "${sonarqubeURL}/api/users/change_password?login=${adminUsername}&previousPassword=${adminPassword}&password=${newPassword}")
-
-    # Vérification de la réponse de la requête de changement de mot de passe
-    if [ "$changePasswordResponse" -eq "200" ]; then
-        echo "Mot de passe changé avec succès."
-    else
-        echo "Erreur lors du changement de mot de passe. Réponse HTTP: $changePasswordResponse"
-        exit 1
-    fi
-fi
-# Mise à jour des informations d'authentification avec le nouveau mot de passe
-base64AuthInfo=$(echo -n "${adminUsername}:${newPassword}" | base64)
-
-# Vérifie si l'URL de SonarQube est accessible avec le nouveau mot de passe
-if ! curl -s -f -u "${adminUsername}:${newPassword}" $sonarqubeURL; then
-    echo "Erreur : Impossible de se connecter à l'URL de SonarQube ($sonarqubeURL) avec le nouveau mot de passe."
-    exit 1
+    echo "Mot de passe inchangé."
 fi
 
 # Configuration des paramètres pour la requête de création de projet
@@ -142,10 +121,9 @@ sonarqubeTokenGenerationURL="$sonarqubeURL/api/user_tokens/generate"
 
 # Envoi de la requête
 tokenResponse=$(curl -s -u "${adminUsername}:${newPassword}" -X POST -d "$tokenGenerationQueryString" -H "Content-Type: application/x-www-form-urlencoded" $sonarqubeTokenGenerationURL)
-if [ -z "$tokenResponse
-" ]; then
-echo "Erreur lors de la génération du token"
-exit 1
+if [ -z "$tokenResponse" ]; then
+  echo "Erreur lors de la génération du token"
+  exit 1
 fi
 echo "Token généré avec succès"
 
