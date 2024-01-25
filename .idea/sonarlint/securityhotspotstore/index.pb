@@ -6,3 +6,5 @@
 :
 
 Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
+E
+deploy/linux/sonar.sh,d\a\da7304b216e4ec822f40ffa2a5b042c02a291749
